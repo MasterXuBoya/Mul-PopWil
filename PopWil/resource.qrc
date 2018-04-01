@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/Icon">
+        <file>Icon/editcopy.png</file>
+        <file>Icon/editcut.png</file>
+        <file>Icon/editpaste.png</file>
+        <file>Icon/editredo.png</file>
+        <file>Icon/editundo.png</file>
+        <file>Icon/exportpdf.png</file>
+        <file>Icon/filenew.png</file>
+        <file>Icon/fileopen.png</file>
+        <file>Icon/fileprint.png</file>
+        <file>Icon/filesave.png</file>
+        <file>Icon/pointer.png</file>
+        <file>Icon/save.png</file>
+        <file>Icon/textbold.png</file>
+        <file>Icon/textcenter.png</file>
+        <file>Icon/textitalic.png</file>
+        <file>Icon/textjustify.png</file>
+        <file>Icon/textleft.png</file>
+        <file>Icon/textright.png</file>
+        <file>Icon/zoomin.png</file>
+        <file>Icon/zoomout.png</file>
+    </qresource>
+</RCC>
