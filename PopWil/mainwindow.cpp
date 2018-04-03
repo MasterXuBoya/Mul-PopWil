@@ -111,16 +111,9 @@ MainWindow::MainWindow(QWidget *parent) :
         this->close();
     }
     Enc7480_Set_Encoder(0,0);
-//**********************************PCI1716************************************************************
+//**********************************PCI1716初始化************************************************************
     instantAoCtrl = InstantAoCtrl::Create();
-    /*
-    errorCode = instantAoCtrl->setSelectedDevice(selected);
-    CheckError(errorCode);
 
-    for (int i = 0; i < instantAoCtrl->getChannels()->getCount(); i++) {
-        errorCode = instantAoCtrl->getChannels()->getItem(i).setValueRange(configure.valueRange);
-        CheckError(errorCode);
-    }*/
     startFlag=false;
     dataScaled[0]=0;
     dataScaled[1]=0;
@@ -179,9 +172,6 @@ void MainWindow::Initialize() {
     this->setWindowTitle(tr("Static AO - Run(") + configureAO.deviceName + tr(")"));
     errorCode = instantAoCtrl->setSelectedDevice(selected);
     CheckError(errorCode);
-    qDebug()<<"Error occur!";
-
-
     for (int i = 0; i < instantAoCtrl->getChannels()->getCount(); i++) {
         errorCode = instantAoCtrl->getChannels()->getItem(i).setValueRange(configureAO.valueRange);
         CheckError(errorCode);

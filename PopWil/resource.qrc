@@ -28,5 +28,6 @@
         <file>Icon/zoomin.png</file>
         <file>Icon/zoomout.png</file>
         <file>Icon/节点-开始.png</file>
+        <file>Icon/channel.png</file>
     </qresource>
 </RCC>

@@ -363,6 +363,7 @@
    <addaction name="action_ZoomIn"/>
    <addaction name="action_ZoomOut"/>
    <addaction name="separator"/>
+   <addaction name="action_ChannelParameters"/>
   </widget>
   <action name="action_Open">
    <property name="icon">
@@ -466,6 +467,10 @@
    </property>
   </action>
   <action name="action_ChannelParameters">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/Icon/Icon/channel.png</normaloff>:/Icon/Icon/channel.png</iconset>
+   </property>
    <property name="text">
     <string>通道参数</string>
    </property>
