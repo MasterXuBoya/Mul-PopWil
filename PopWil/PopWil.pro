@@ -9,6 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #the extern header file
 INCLUDEPATH += ../include
+INCLUDEPATH += ../Inc
 
 #注： 1、-L 参数指定 .lib/.a 文件的位置
 #        2、-l  参数指定导入库文件名(不要加扩展名)
@@ -43,7 +44,8 @@ SOURCES += main.cpp\
     inihelper.cpp \
     randomwalk.cpp \
     testwindow.cpp \
-    aboutform.cpp
+    aboutform.cpp \
+    configuredialog.cpp
 
 HEADERS  += mainwindow.h \
     qchartviewer.h \
@@ -54,15 +56,18 @@ HEADERS  += mainwindow.h \
     inihelper.h \
     randomwalk.h \
     testwindow.h \
-    aboutform.h
+    aboutform.h \
+    configuredialog.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \
-    aboutform.ui
+    aboutform.ui \
+    configuredialog.ui
 
 
 QMAKE_CXXFLAGS += -Wno-unused-variable
 QMAKE_CXXFLAGS += -Wno-unused-parameter
+QMAKE_CXXFLAGS += -Wcomment
 
 
 RESOURCES += \

@@ -21,8 +21,11 @@
 #include <QProcess>
 #include "Enc7480.h"
 #include "qmath.h"
+#include "bdaqctrl.h"
+#include "configuredialog.h"
 
 using namespace std;
+using namespace Automation::BDaq;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -108,6 +111,20 @@ MainWindow::MainWindow(QWidget *parent) :
         this->close();
     }
     Enc7480_Set_Encoder(0,0);
+//**********************************PCI1716************************************************************
+    instantAoCtrl = InstantAoCtrl::Create();
+    /*
+    errorCode = instantAoCtrl->setSelectedDevice(selected);
+    CheckError(errorCode);
+
+    for (int i = 0; i < instantAoCtrl->getChannels()->getCount(); i++) {
+        errorCode = instantAoCtrl->getChannels()->getItem(i).setValueRange(configure.valueRange);
+        CheckError(errorCode);
+    }*/
+    startFlag=false;
+    dataScaled[0]=0;
+    dataScaled[1]=0;
+
 //*********************************参数初始化************************************************************
 
     //
@@ -153,6 +170,32 @@ MainWindow::~MainWindow()
     //delete m_ViewPortControl->getChart();
     delete dataSource;
     delete ui;
+}
+
+void MainWindow::Initialize() {
+    ErrorCode errorCode = Success;
+    std::wstring description = configureAO.deviceName.toStdWString();
+    DeviceInformation selected(description.c_str());
+    this->setWindowTitle(tr("Static AO - Run(") + configureAO.deviceName + tr(")"));
+    errorCode = instantAoCtrl->setSelectedDevice(selected);
+    CheckError(errorCode);
+    qDebug()<<"Error occur!";
+
+
+    for (int i = 0; i < instantAoCtrl->getChannels()->getCount(); i++) {
+        errorCode = instantAoCtrl->getChannels()->getItem(i).setValueRange(configureAO.valueRange);
+        CheckError(errorCode);
+    }
+
+}
+
+void MainWindow::CheckError(ErrorCode errorCode)
+{
+    if (BioFailed(errorCode)) {
+        QString message = tr("Sorry, there are some errors occurred, Error Code: 0x") +
+            QString::number(errorCode, 16).right(8).toUpper();
+        QMessageBox::information(this, "Warning Information", message);
+    }
 }
 
 //
@@ -607,7 +650,8 @@ void MainWindow::slotFuction()
     }
     //*********************************读取位移数据*******************************************************
     int x_position = Enc7480_Get_Encoder(0);//
-    qDebug()<<"水平位置："<<x_position;
+    ui->lineEdit_S->setText(QString::number(x_position*(-0.0024)));
+    //qDebug()<<"水平位置："<<x_position;
     //*********************************将数据放入缓冲区*****************************************************
     msCount+=10;
     double series0;
@@ -615,8 +659,8 @@ void MainWindow::slotFuction()
     double currentTime =msCount*0.01;
     double elapsedTime;
 
-    series0=x_position;
-    series1=x_position+2;
+    series0=x_position*(-0.0024);
+    series1=x_position*(-0.0024);
 
     /*
     //Test1
@@ -652,7 +696,13 @@ void MainWindow::slotFuction()
     buffer.put(packet);
     //((RealTimeViewPort *)self)->buffer.put(packet);
 
-    //**************************************************************************************
+    //*****************************AO输出*********************************************************
+    if (startFlag)
+    {
+        ErrorCode errorCode = Success;
+        errorCode = instantAoCtrl->Write(configureAO.channelStart,configureAO.channelCount, dataScaled);
+        CheckError(errorCode);
+    }
 
 }
 
@@ -706,14 +756,62 @@ void MainWindow::on_action_HelpF1_triggered()
     */
 }
 
+void MainWindow::on_action_ChannelParameters_triggered()
+{
+    ConfigureDialog dialog;
+    int resultDialog = dialog.exec();
+    if (resultDialog == QDialog::Rejected)
+    {
+        //exit(0);
+    }
+    else if(resultDialog == QDialog::Accepted)
+    {
+        SetConfigureParameter(dialog.GetConfigureParameter());
+        qDebug()<<configureAO.deviceName;
+        qDebug()<<configureAO.channelStart<<configureAO.channelCount<<configureAO.valueRange;
+        Initialize();
+    }
+}
+
 void MainWindow::on_btnStart_clicked()
 {
+    double AoValue;
+
     if (ui->btnStart->isFlat())
     {
         ui->btnStart->setFlat(false);
         ui->btnStart->setStyleSheet("background-color:green");
-        //ui->btnStart->setIcon(":/ICon/Icon/");
     }
     else
         ui->btnStart->setFlat(true);
+
+    AoValue=ui->lineEdit->text().toDouble();
+    qDebug()<<"输出电压"<<AoValue;
+    if(AoValue<=-10||AoValue>=10)
+    {
+        QMessageBox::information(NULL,"提示","Too large Voltage!",QMessageBox::Ok|QMessageBox::Cancel);
+        exit;
+    }
+    for (int i = 0; i < 2; i++)
+        dataScaled[i]=AoValue;
+    startFlag=true;
+}
+
+
+
+void MainWindow::on_btnStop_clicked()
+{
+    if (ui->btnStop->isFlat())//没按
+    {
+        ui->btnStop->setFlat(false);
+        ui->btnStop->setStyleSheet("background-color:green");
+    }
+    else
+    {
+        ui->btnStop->setFlat(true);
+    }
+
+    dataScaled[0]=0;
+    dataScaled[1]=0;
+    ui->lineEdit->setText("0");
 }

@@ -2,6 +2,9 @@
 #define CONSTVAR_H
 
 #include "QString"
+#include "bdaqctrl.h"
+using namespace Automation::BDaq;
+
 //********************************************************************
 //定义结构型变量
 typedef struct
@@ -12,10 +15,20 @@ typedef struct
     int d;
 
 }TChannelCoef;
+
+struct ConfigureParameter
+{
+    QString deviceName;
+    int channelCount;
+    int channelStart;
+    ValueRange valueRange;
+    int pointCountPerWave;
+    const wchar_t* profilePath;
+};
 //********************************************************************
 //全局变量
+/*
 extern int ss;
-extern int min;
 extern QString str;
 extern TChannelCoef tchannelcoef;
 //使用static定义的全局变量是局部全局变量，用extern定义的是真正意义上的全局变量
@@ -26,6 +39,6 @@ extern const int m;
 //全局函数,这种全局函数可以集成到类里面，也可以直接用这样的方式进行全局调用
 int sum(int a,int b);
 
-
+*/
 
 #endif // CONSTVAR_H

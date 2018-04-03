@@ -16,6 +16,7 @@
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -55,6 +56,17 @@ public:
     QPushButton *btnStart;
     QPushButton *btnStop;
     QLabel *labeStatusl;
+    QLabel *label_S;
+    QLabel *label_V;
+    QLabel *label_A;
+    QLineEdit *lineEdit_S;
+    QLineEdit *lineEdit_V;
+    QLineEdit *lineEdit_A;
+    QLabel *label_S_2;
+    QLabel *label_S_3;
+    QLabel *label_S_4;
+    QLineEdit *lineEdit;
+    QLabel *label_S_5;
     QFrame *lastFrame;
     QLabel *labeStatusl_2;
     QMenuBar *menuBar;
@@ -160,6 +172,39 @@ public:
         labeStatusl->setObjectName(QStringLiteral("labeStatusl"));
         labeStatusl->setGeometry(QRect(2, 0, 231, 31));
         labeStatusl->setTextFormat(Qt::PlainText);
+        label_S = new QLabel(rightFrame);
+        label_S->setObjectName(QStringLiteral("label_S"));
+        label_S->setGeometry(QRect(30, 90, 41, 16));
+        label_V = new QLabel(rightFrame);
+        label_V->setObjectName(QStringLiteral("label_V"));
+        label_V->setGeometry(QRect(30, 120, 54, 12));
+        label_A = new QLabel(rightFrame);
+        label_A->setObjectName(QStringLiteral("label_A"));
+        label_A->setGeometry(QRect(20, 150, 54, 12));
+        lineEdit_S = new QLineEdit(rightFrame);
+        lineEdit_S->setObjectName(QStringLiteral("lineEdit_S"));
+        lineEdit_S->setGeometry(QRect(70, 90, 113, 20));
+        lineEdit_V = new QLineEdit(rightFrame);
+        lineEdit_V->setObjectName(QStringLiteral("lineEdit_V"));
+        lineEdit_V->setGeometry(QRect(70, 120, 113, 20));
+        lineEdit_A = new QLineEdit(rightFrame);
+        lineEdit_A->setObjectName(QStringLiteral("lineEdit_A"));
+        lineEdit_A->setGeometry(QRect(70, 150, 113, 20));
+        label_S_2 = new QLabel(rightFrame);
+        label_S_2->setObjectName(QStringLiteral("label_S_2"));
+        label_S_2->setGeometry(QRect(190, 90, 41, 16));
+        label_S_3 = new QLabel(rightFrame);
+        label_S_3->setObjectName(QStringLiteral("label_S_3"));
+        label_S_3->setGeometry(QRect(190, 120, 41, 16));
+        label_S_4 = new QLabel(rightFrame);
+        label_S_4->setObjectName(QStringLiteral("label_S_4"));
+        label_S_4->setGeometry(QRect(190, 150, 41, 16));
+        lineEdit = new QLineEdit(rightFrame);
+        lineEdit->setObjectName(QStringLiteral("lineEdit"));
+        lineEdit->setGeometry(QRect(90, 200, 113, 20));
+        label_S_5 = new QLabel(rightFrame);
+        label_S_5->setObjectName(QStringLiteral("label_S_5"));
+        label_S_5->setGeometry(QRect(10, 200, 71, 21));
         lastFrame = new QFrame(centralWidget);
         lastFrame->setObjectName(QStringLiteral("lastFrame"));
         lastFrame->setGeometry(QRect(665, 270, 235, 252));
@@ -272,6 +317,13 @@ public:
         btnStart->setText(QString());
         btnStop->setText(QString());
         labeStatusl->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\347\212\266\346\200\201", 0));
+        label_S->setText(QApplication::translate("MainWindow", "\344\275\215\347\247\273\357\274\232", 0));
+        label_V->setText(QApplication::translate("MainWindow", "\351\200\237\345\272\246\357\274\232", 0));
+        label_A->setText(QApplication::translate("MainWindow", "\345\212\240\351\200\237\345\272\246\357\274\232", 0));
+        label_S_2->setText(QApplication::translate("MainWindow", "mm", 0));
+        label_S_3->setText(QApplication::translate("MainWindow", "mm/s", 0));
+        label_S_4->setText(QApplication::translate("MainWindow", "mm/ss", 0));
+        label_S_5->setText(QApplication::translate("MainWindow", "\350\276\223\345\207\272\347\224\265\345\216\213:V", 0));
         labeStatusl_2->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\344\277\241\346\201\257", 0));
         menu_File->setTitle(QApplication::translate("MainWindow", "\346\226\207\344\273\266(&F)", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\346\226\260\345\273\272\350\257\225\351\252\214", 0));

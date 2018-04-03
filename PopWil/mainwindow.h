@@ -10,7 +10,10 @@
 #include "qchartviewer.h"
 #include "qdoublebufferedqueue.h"
 #include "randomwalk.h"
+#include "bdaqctrl.h"
+#include "configuredialog.h"
 
+using namespace Automation::BDaq;
 namespace Ui {
 class MainWindow;
 }
@@ -23,9 +26,19 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void Initialize();
+    void CheckError(ErrorCode errorCode);
+    void SetConfigureParameter(ConfigureParameter value){this->configureAO = value;}
+
+
 private:
     Ui::MainWindow *ui;
-
+    //*****************************PCI1716*******************************************************
+    bool startFlag;
+    InstantAoCtrl * instantAoCtrl;
+    ConfigureParameter configureAO;
+    double dataScaled[2];
+    //*******************************************************************************************
     // The random data source
     RandomWalk *dataSource;
 
@@ -92,6 +105,8 @@ private slots:
     void on_action_About_triggered();
     void on_action_HelpF1_triggered();
     void on_btnStart_clicked();
+    void on_action_ChannelParameters_triggered();
+    void on_btnStop_clicked();
 };
 #endif // MAINWINDOW_H
 

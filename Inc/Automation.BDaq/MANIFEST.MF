@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Vendor: Advantech Co., Ltd.
+Implementation-Title: Advantech DAQNavi Device Controls For Java
+Implementation-Version: 4.0.0.0
+Specification-Version: 4.0.0.0

@@ -17,6 +17,7 @@
         <file>Icon/pointer.png</file>
         <file>Icon/save.png</file>
         <file>Icon/startIcon.png</file>
+        <file>Icon/startIcon2.png</file>
         <file>Icon/stopIcon.png</file>
         <file>Icon/textbold.png</file>
         <file>Icon/textcenter.png</file>
@@ -26,7 +27,6 @@
         <file>Icon/textright.png</file>
         <file>Icon/zoomin.png</file>
         <file>Icon/zoomout.png</file>
-        <file>Icon/节点-开始(1).png</file>
         <file>Icon/节点-开始.png</file>
     </qresource>
 </RCC>
