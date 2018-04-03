@@ -13,10 +13,13 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
@@ -48,6 +51,12 @@ public:
     QAction *action_ZoomOut;
     QAction *action_Pointer;
     QWidget *centralWidget;
+    QFrame *rightFrame;
+    QPushButton *btnStart;
+    QPushButton *btnStop;
+    QLabel *labeStatusl;
+    QFrame *lastFrame;
+    QLabel *labeStatusl_2;
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu;
@@ -64,7 +73,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(747, 475);
+        MainWindow->resize(912, 537);
         action_Open = new QAction(MainWindow);
         action_Open->setObjectName(QStringLiteral("action_Open"));
         QIcon icon;
@@ -126,10 +135,44 @@ public:
         action_Pointer->setIcon(icon4);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        rightFrame = new QFrame(centralWidget);
+        rightFrame->setObjectName(QStringLiteral("rightFrame"));
+        rightFrame->setGeometry(QRect(665, 0, 235, 271));
+        rightFrame->setFrameShape(QFrame::StyledPanel);
+        rightFrame->setFrameShadow(QFrame::Plain);
+        btnStart = new QPushButton(rightFrame);
+        btnStart->setObjectName(QStringLiteral("btnStart"));
+        btnStart->setGeometry(QRect(30, 40, 61, 41));
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/Icon/Icon/startIcon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btnStart->setIcon(icon5);
+        btnStart->setIconSize(QSize(40, 40));
+        btnStart->setFlat(true);
+        btnStop = new QPushButton(rightFrame);
+        btnStop->setObjectName(QStringLiteral("btnStop"));
+        btnStop->setGeometry(QRect(140, 40, 61, 41));
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/Icon/Icon/stopIcon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btnStop->setIcon(icon6);
+        btnStop->setIconSize(QSize(40, 40));
+        btnStop->setFlat(true);
+        labeStatusl = new QLabel(rightFrame);
+        labeStatusl->setObjectName(QStringLiteral("labeStatusl"));
+        labeStatusl->setGeometry(QRect(2, 0, 231, 31));
+        labeStatusl->setTextFormat(Qt::PlainText);
+        lastFrame = new QFrame(centralWidget);
+        lastFrame->setObjectName(QStringLiteral("lastFrame"));
+        lastFrame->setGeometry(QRect(665, 270, 235, 252));
+        lastFrame->setFrameShape(QFrame::StyledPanel);
+        lastFrame->setFrameShadow(QFrame::Plain);
+        labeStatusl_2 = new QLabel(lastFrame);
+        labeStatusl_2->setObjectName(QStringLiteral("labeStatusl_2"));
+        labeStatusl_2->setGeometry(QRect(2, 0, 231, 31));
+        labeStatusl_2->setTextFormat(Qt::PlainText);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 747, 23));
+        menuBar->setGeometry(QRect(0, 0, 912, 23));
         menu_File = new QMenu(menuBar);
         menu_File->setObjectName(QStringLiteral("menu_File"));
         menu = new QMenu(menu_File);
@@ -226,6 +269,10 @@ public:
         action_ZoomIn->setText(QApplication::translate("MainWindow", "\346\224\276\345\244\247", 0));
         action_ZoomOut->setText(QApplication::translate("MainWindow", "\347\274\251\345\260\217", 0));
         action_Pointer->setText(QApplication::translate("MainWindow", "\346\214\207\351\222\210", 0));
+        btnStart->setText(QString());
+        btnStop->setText(QString());
+        labeStatusl->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\347\212\266\346\200\201", 0));
+        labeStatusl_2->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\344\277\241\346\201\257", 0));
         menu_File->setTitle(QApplication::translate("MainWindow", "\346\226\207\344\273\266(&F)", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\346\226\260\345\273\272\350\257\225\351\252\214", 0));
         menu_View->setTitle(QApplication::translate("MainWindow", "\350\247\206\345\233\276(&V)", 0));

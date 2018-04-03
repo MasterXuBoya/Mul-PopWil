@@ -143,8 +143,12 @@ debug/qrc_resource.cpp: ../PopWil/resource.qrc \
 		../PopWil/Icon/editredo.png \
 		../PopWil/Icon/textleft.png \
 		../PopWil/Icon/textright.png \
+		../PopWil/Icon/mainIcon.png \
+		../PopWil/Icon/dashboard.png \
+		../PopWil/Icon/startIcon.png \
 		../PopWil/Icon/editundo.png \
 		../PopWil/Icon/editpaste.png \
+		../PopWil/Icon/controlpanel.png \
 		../PopWil/Icon/editcut.png \
 		../PopWil/Icon/editcopy.png \
 		../PopWil/Icon/filesave.png \
@@ -156,6 +160,7 @@ debug/qrc_resource.cpp: ../PopWil/resource.qrc \
 		../PopWil/Icon/exportpdf.png \
 		../PopWil/Icon/filenew.png \
 		../PopWil/Icon/zoomout.png \
+		../PopWil/Icon/stopIcon.png \
 		../PopWil/Icon/save.png \
 		../PopWil/Icon/pointer.png \
 		../PopWil/Icon/fileopen.png
@@ -1042,10 +1047,6 @@ debug/mainwindow.o: ../PopWil/mainwindow.cpp ../PopWil/mainwindow.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/QThread \
 		../../Qt/5.6/mingw49_32/include/QtCore/qthread.h \
 		ui_mainwindow.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/QVariant \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QAction \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qaction.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qactiongroup.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/QApplication \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qapplication.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/qcoreapplication.h \
@@ -1055,12 +1056,12 @@ debug/mainwindow.o: ../PopWil/mainwindow.cpp ../PopWil/mainwindow.h \
 		../../Qt/5.6/mingw49_32/include/QtGui/qinputmethod.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/QButtonGroup \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qbuttongroup.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QHeaderView \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qheaderview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractscrollarea.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qabstractitemmodel.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qitemselectionmodel.h \
+		../../Qt/5.6/mingw49_32/include/QtGui/QIcon \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/QPushButton \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/qpushbutton.h \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractbutton.h \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/QComboBox \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/qcombobox.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemdelegate.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyleoption.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractspinbox.h \
@@ -1070,21 +1071,7 @@ debug/mainwindow.o: ../PopWil/mainwindow.cpp ../PopWil/mainwindow.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyle.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qtabbar.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qrubberband.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QMenu \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qmenu.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QMenuBar \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qmenubar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QStatusBar \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstatusbar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QToolBar \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qtoolbar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QWidget \
-		../../Qt/5.6/mingw49_32/include/QtGui/QIcon \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QPushButton \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qpushbutton.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractbutton.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QComboBox \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qcombobox.h \
+		../../Qt/5.6/mingw49_32/include/QtCore/qabstractitemmodel.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/QFileDialog \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qfiledialog.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/qdir.h \
@@ -1094,11 +1081,13 @@ debug/mainwindow.o: ../PopWil/mainwindow.cpp ../PopWil/mainwindow.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/QTime \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qmessagebox.h \
 		../PopWil/aboutform.h \
+		../../Qt/5.6/mingw49_32/include/QtWidgets/QWidget \
 		../../Qt/5.6/mingw49_32/include/QtGui/qdesktopservices.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/qstandardpaths.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/QProcess \
 		../../Qt/5.6/mingw49_32/include/QtCore/qprocess.h \
-		../include/Enc7480.h
+		../include/Enc7480.h \
+		../../Qt/5.6/mingw49_32/include/QtCore/qmath.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mainwindow.o ..\PopWil\mainwindow.cpp
 
 debug/qchartviewer.o: ../PopWil/qchartviewer.cpp ../PopWil/qchartviewer.h \
@@ -1721,59 +1710,7 @@ debug/testwindow.o: ../PopWil/testwindow.cpp ../PopWil/testwindow.h \
 		../../Qt/5.6/mingw49_32/include/QtGui/qtouchdevice.h \
 		../../Qt/5.6/mingw49_32/include/QtWidgets/qtabwidget.h \
 		../../Qt/5.6/mingw49_32/include/QtGui/qicon.h \
-		ui_testwindow.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/QVariant \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QAction \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qaction.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qactiongroup.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QApplication \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qcoreapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qeventloop.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qdesktopwidget.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qguiapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qinputmethod.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QButtonGroup \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qbuttongroup.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QGridLayout \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qgridlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlayoutitem.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qboxlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QHBoxLayout \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QHeaderView \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qheaderview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractscrollarea.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qframe.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qabstractitemmodel.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qitemselectionmodel.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemdelegate.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyleoption.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractspinbox.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qvalidator.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qregularexpression.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qslider.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractslider.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyle.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qtabbar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qrubberband.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QListView \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlistview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QMenuBar \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qmenubar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qmenu.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QPushButton \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qpushbutton.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractbutton.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QRadioButton \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qradiobutton.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QStatusBar \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstatusbar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QTreeView \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qtreeview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QVBoxLayout \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QWidget
+		ui_testwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\testwindow.o ..\PopWil\testwindow.cpp
 
 debug/aboutform.o: ../PopWil/aboutform.cpp ../PopWil/aboutform.h \
@@ -1881,49 +1818,7 @@ debug/aboutform.o: ../PopWil/aboutform.cpp ../PopWil/aboutform.h \
 		../../Qt/5.6/mingw49_32/include/QtCore/qfiledevice.h \
 		../../Qt/5.6/mingw49_32/include/QtGui/qvector2d.h \
 		../../Qt/5.6/mingw49_32/include/QtGui/qtouchdevice.h \
-		ui_aboutform.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/QVariant \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QAction \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qaction.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qicon.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qactiongroup.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QApplication \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qcoreapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qeventloop.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qdesktopwidget.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qguiapplication.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qinputmethod.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QButtonGroup \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qbuttongroup.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QGroupBox \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qgroupbox.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qframe.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QHBoxLayout \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qboxlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlayoutitem.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qgridlayout.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QHeaderView \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qheaderview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemview.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractscrollarea.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qabstractitemmodel.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qitemselectionmodel.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractitemdelegate.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyleoption.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractspinbox.h \
-		../../Qt/5.6/mingw49_32/include/QtGui/qvalidator.h \
-		../../Qt/5.6/mingw49_32/include/QtCore/qregularexpression.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qslider.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qabstractslider.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qstyle.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qtabbar.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qtabwidget.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qrubberband.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QLabel \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/qlabel.h \
-		../../Qt/5.6/mingw49_32/include/QtWidgets/QVBoxLayout
+		ui_aboutform.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\aboutform.o ..\PopWil\aboutform.cpp
 
 debug/qrc_resource.o: debug/qrc_resource.cpp 

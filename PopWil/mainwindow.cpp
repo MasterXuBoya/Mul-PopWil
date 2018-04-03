@@ -36,7 +36,6 @@ MainWindow::MainWindow(QWidget *parent) :
     widget->setLayout(ui->mainGridLayout);
     */
     setFixedSize(900, 600);
-    //setWindowTitle("Real-Time Chart with Viewport Control");
 //*********************************************************************************************
 
     // Pointer push button
@@ -67,31 +66,48 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->action_ZoomOut,SIGNAL(triggered()),zoomOutPB,SLOT(click()));
 
     //这是右边一整块，包括上下两部分
-//******************************实时曲线绘制UI***************************************************************
-    QFrame *rightFrame = new QFrame(this);
-    rightFrame->setGeometry(4, 62, 660, 500);
+//******************************实时曲线绘制UI----LeftFrame***************************************************************
+    leftFrame = new QFrame(this);
+    leftFrame->setGeometry(4, 62, 660, 500);
 
-    rightFrame->setStyleSheet("background-color:white");
+    leftFrame->setStyleSheet("background-color:white");
 
     // Chart Viewer
-    m_ChartViewer = new QChartViewer(rightFrame);
+    m_ChartViewer = new QChartViewer(leftFrame);
     m_ChartViewer->setGeometry(10, 25, 640, 480);
     connect(m_ChartViewer, SIGNAL(viewPortChanged()), SLOT(onViewPortChanged()));
     connect(m_ChartViewer, SIGNAL(mouseMovePlotArea(QMouseEvent*)),
         SLOT(onMouseMovePlotArea(QMouseEvent*)));
+//***************************控制---RightFrame******************************************************************************
+    ui->labeStatusl->setStyleSheet("font:bold;font-size:12px;background-color:#7FFFD4");
+    ui->labeStatusl_2->setStyleSheet("font:bold;font-size:12px;background-color:#7FFFD4");
+
 //*********************************状态栏************************************************************
-
-
     currentLabel=new QLabel;
     currentLabel->setMinimumSize(200,25);
     //currentLabel->setFrameShadow(QFrame::Sunken);
     currentLabel->setFrameShape(QFrame::WinPanel);
 
+
     ui->statusBar->addWidget(currentLabel);
 //********************************颜色样式************************************************************
-    //ui->menuBar->setStyleSheet("background-color:##909090");
+    setWindowIcon(QPixmap(":/Icon/Icon/dashboard.png"));
+
+    ui->menuBar->setStyleSheet("background-color:#EEE9E9");
     ui->toolBar->setStyleSheet("background-color:#C0C0C0");
     ui->statusBar->setStyleSheet("background-color:#CCFFFF");
+    //leftFrame->setStyleSheet(QString::fromUtf8("border:1px solid red"));
+
+//********************************ENC7480****************************************************************
+    int d7480rtn= Enc7480_Init();
+    qDebug()<<"leisai number:"<<d7480rtn;
+    if(d7480rtn < 1)
+    {
+        qDebug()<<"初始化ENC7480计数卡失败!";
+        QMessageBox::information(NULL,"提示","初始化ENC7480计数卡失败",QMessageBox::Ok|QMessageBox::Cancel);
+        close();
+    }
+    Enc7480_Set_Encoder(0,0);
 //*********************************参数初始化************************************************************
 
     //
@@ -230,7 +246,7 @@ void MainWindow::onChartUpdateTimer()
             m_dataSeriesB[i] = m_dataSeriesB[srcIndex];
         }
     }
-    qDebug()<<"显示缓冲区的数据个数："<<m_currentIndex;
+    //qDebug()<<"显示缓冲区的数据个数："<<m_currentIndex;
     // Append the data from the queue to the data arrays
     //将packet类型数组中数据取出来，放到显示数组中去
     for (int n = 0; n < count; ++n)
@@ -379,7 +395,8 @@ void MainWindow::drawChart(QChartViewer *viewer)
     c->yAxis()->setMargin(20);
 
     // Configure the x-axis labels to be to the left of the vertical grid lines
-    c->xAxis()->setLabelAlignment(1);
+    //设置X轴标签与竖直网格线的位置关系，0表示正下方，1表示向右偏
+    c->xAxis()->setLabelAlignment(0);
 
     //================================================================================
     // Add data to chart
@@ -392,7 +409,7 @@ void MainWindow::drawChart(QChartViewer *viewer)
 
     // Add a line layer for the lines, using a line width of 2 pixels
     LineLayer *layer = c->addLineLayer();
-    layer->setLineWidth(2);
+    layer->setLineWidth(1);
     layer->setFastLineMode();
 
     // Now we add the 2 data series to the line layer with red (ff0000) and green (00cc00) colors
@@ -416,7 +433,7 @@ void MainWindow::drawChart(QChartViewer *viewer)
     c->xAxis()->setLabelFormat("{value|hh:nn:ss}");
 
     // We make sure the tick increment must be at least 1 second.
-    c->xAxis()->setMinTickInc(1);
+    //c->xAxis()->setMinTickInc(1);
 
     // Set the auto-scale margin to 0.05, and the zero affinity to 0.6
     c->yAxis()->setAutoScale(0.05, 0.05, 0.6);
@@ -578,16 +595,18 @@ void MainWindow::slotFuction()
     /*msCount:真是的时间，毫秒为单位
      * currentTime:真实的时间，以s为单位
     */
+    //*********************状态栏***********************
     if (msCount%1000==0)
     {
         QDateTime time = QDateTime::currentDateTime();
         QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
         currentLabel->setText(str);
     }
+    //*********************将数据放入缓冲区*********************
     msCount+=10;
     double series0;
     double series1;
-    double currentTime =msCount*0.001;
+    double currentTime =msCount*0.01;
     double elapsedTime;
     //Test1
     //series0=30*sin(0.001*currentTime)+30*sin(0.002*currentTime)+30*sin(0.004*currentTime);
@@ -599,8 +618,18 @@ void MainWindow::slotFuction()
     series0=qExp(-currentTime/10.0);
     series1=qSin(currentTime)*qExp(-currentTime/10.0);
 
-    series0=qSqrt(currentTime);
-    series1=qSin(currentTime)*qSqrt(currentTime);
+    if (currentTime<100)
+    {
+        series0=1/100.0*qSin(currentTime)*currentTime;
+        series1=1/100.0*currentTime;
+    }else
+    {
+        series0=qSin(currentTime);
+        series1=1;
+    }
+
+    //series0=qSqrt(currentTime);
+    //series1=qSin(currentTime)*qSqrt(currentTime);
 
     elapsedTime=msCount / 1000.0;
 
@@ -665,4 +694,16 @@ void MainWindow::on_action_HelpF1_triggered()
     QUrl qqq(strUrl);
     desktopServices.openUrl(qqq);
     */
+}
+
+void MainWindow::on_btnStart_clicked()
+{
+    if (ui->btnStart->isFlat())
+    {
+        ui->btnStart->setFlat(false);
+        ui->btnStart->setStyleSheet("background-color:green");
+        //ui->btnStart->setIcon(":/ICon/Icon/");
+    }
+    else
+        ui->btnStart->setFlat(true);
 }

@@ -6,20 +6,137 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>747</width>
-    <height>475</height>
+    <width>912</width>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>单自由度模拟振动台控制系统</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QFrame" name="rightFrame">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>0</y>
+      <width>235</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <widget class="QPushButton" name="btnStart">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>61</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resource.qrc">
+       <normaloff>:/Icon/Icon/startIcon.png</normaloff>:/Icon/Icon/startIcon.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnStop">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>40</y>
+       <width>61</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resource.qrc">
+       <normaloff>:/Icon/Icon/stopIcon.png</normaloff>:/Icon/Icon/stopIcon.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+     <property name="flat">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="labeStatusl">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>231</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>试验状态</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="lastFrame">
+    <property name="geometry">
+     <rect>
+      <x>665</x>
+      <y>270</y>
+      <width>235</width>
+      <height>252</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Plain</enum>
+    </property>
+    <widget class="QLabel" name="labeStatusl_2">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>0</y>
+       <width>231</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>试验信息</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+    </widget>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>747</width>
+     <width>912</width>
      <height>23</height>
     </rect>
    </property>
