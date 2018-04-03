@@ -105,7 +105,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         qDebug()<<"初始化ENC7480计数卡失败!";
         QMessageBox::information(NULL,"提示","初始化ENC7480计数卡失败",QMessageBox::Ok|QMessageBox::Cancel);
-        close();
+        this->close();
     }
     Enc7480_Set_Encoder(0,0);
 //*********************************参数初始化************************************************************
@@ -590,24 +590,35 @@ void MainWindow::drawFullChart(QViewPortControl *vpc)
     vpc->setChart(c);
 }
 
+//******************************************************************************************************************
+//10ms多媒体定时器
+//100ms绘图
 void MainWindow::slotFuction()
 {
     /*msCount:真是的时间，毫秒为单位
      * currentTime:真实的时间，以s为单位
     */
-    //*********************状态栏***********************
+    //*************************************状态栏*********************************************
     if (msCount%1000==0)
     {
         QDateTime time = QDateTime::currentDateTime();
         QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
         currentLabel->setText(str);
     }
-    //*********************将数据放入缓冲区*********************
+    //*********************************读取位移数据*******************************************************
+    int x_position = Enc7480_Get_Encoder(0);//
+    qDebug()<<"水平位置："<<x_position;
+    //*********************************将数据放入缓冲区*****************************************************
     msCount+=10;
     double series0;
     double series1;
     double currentTime =msCount*0.01;
     double elapsedTime;
+
+    series0=x_position;
+    series1=x_position+2;
+
+    /*
     //Test1
     //series0=30*sin(0.001*currentTime)+30*sin(0.002*currentTime)+30*sin(0.004*currentTime);
     //series1=30*sin(0.0005*currentTime);
@@ -630,7 +641,7 @@ void MainWindow::slotFuction()
 
     //series0=qSqrt(currentTime);
     //series1=qSin(currentTime)*qSqrt(currentTime);
-
+*/
     elapsedTime=msCount / 1000.0;
 
     DataPacket packet;
@@ -642,8 +653,7 @@ void MainWindow::slotFuction()
     //((RealTimeViewPort *)self)->buffer.put(packet);
 
     //**************************************************************************************
-    int x_position = Enc7480_Get_Encoder(0);//
-    qDebug()<<"水平位置："<<x_position;
+
 }
 
 void MainWindow::on_action_Quit_triggered()
