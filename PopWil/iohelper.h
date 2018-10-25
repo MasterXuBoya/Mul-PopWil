@@ -13,6 +13,7 @@ public:
     //void writeToIni();
     //void readFromIni();
     bool writeToTestIni(TChannelCoef tmp);
+    bool writeToPCIIni(ConfigureParameterAI tmpAI,ConfigureParameterAO tmpAO);
 private:
     QSettings *configIniWrite;
     //QString fileName;

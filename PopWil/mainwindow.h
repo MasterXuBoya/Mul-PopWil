@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "stdio.h"
+#include <QObject>
+#include <string>
 #include <QMainWindow>
 #include <QDialog>
 #include <QDateTime>
@@ -9,96 +12,108 @@
 #include <QScrollbar>
 #include "qchartviewer.h"
 #include "qdoublebufferedqueue.h"
-#include "randomwalk.h"
 #include "bdaqctrl.h"
 #include "configuredialog.h"
+#include "performancetimer.h"
+#include "QStandardItemModel"
+#include "qstring.h"
+#include "logger.h"
+#include "aiinstant.h"
+#include "aoinstant.h"
+#include <QCloseEvent>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QIcon>
+#include <QPushButton>
+#include <QComboBox>
+#include <QFileDialog>
+#include "chartdir.h"
+#include <math.h>
+#include <vector>
+#include <sstream>
+#include "qdebug.h"
+#include "QTime"
+#include "qmessagebox.h"
+#include "aboutform.h"
+#include "qdesktopservices.h"
+#include <QProcess>
+#include "Enc7480.h"
+#include "qmath.h"
+#include "inihelper.h"
+#include "ctrldialog.h"
+#include "rbf.h"
+#include "systemsettings.h"
+#include "QStandardItem"
+#include "mathtool.h"
+//#include "QtXlsx"
+#include "signalprocess.h"
+#include "constvar.h"
+#include <QTextCodec>
+#include <QTextStream>
+#include "doinstant.h"
+#include "aistreaming.h"
+#include "mychartviewer.h"
+#include "staticpositioncontroller.h"
+#include "sinepositioncontroller.h"
+#include <vector>
 
 using namespace Automation::BDaq;
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
+class MainWindow : public QMainWindow//当前窗体继承自系统自带QMainWindow
 {
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-    void Initialize();
-    void CheckError(ErrorCode errorCode);
-    void SetConfigureParameter(ConfigureParameter value){this->configureAO = value;}
-
+    //*************************PCI1716***********************************
+    void SetConfigureParameterAI(ConfigureParameterAI value){this->configureAI = value;}
+    void SetConfigureParameterAO(ConfigureParameterAO value){this->configureAO = value;}
+    //************************文件操作********************************
+    void addItemToListView(QString str);
+    void dataSaveToTxt();
+    void closeEvent(QCloseEvent *event);
+    double getPosition(int direct);
 
 private:
     Ui::MainWindow *ui;
-    //*****************************PCI1716*******************************************************
-    bool startFlag;
-    InstantAoCtrl * instantAoCtrl;
-    ConfigureParameter configureAO;
-    double dataScaled[2];
-    //*******************************************************************************************
-    // The random data source
-    RandomWalk *dataSource;
+    bool startFlag;//开始按钮点击标志
 
-    // Handles callback from the RandomWalk
-    static void OnData(void *self, double elapsedTime, double series0, double series1);
+    QString dataSaveBasePath;//试验数据保存位置
+    QString log;//临时变量，需要保存的日志信息，在此处定义，主要是不需要再每个函数中分别定义
+    Logger *logger;//日志
+    //**************************PCI1716************************************
+    DoInstant *doInstant;
+    AoInstant *aoInstant;//输出电压控制柄
+    AiInstant *aiInstant;
+    ConfigureParameterAO configureAO;//AO,InstantAi,InstantDo输出配置
 
-    // A thread-safe queue with minimal read/write contention
-    struct DataPacket
-    {
-        double elapsedTime;
-        double series0;
-        double series1;
-    };
-    QDoubleBufferedQueue<DataPacket> buffer;//每组数据有三个
-
-    // The number of samples per data series used in this demo
-    //显示缓冲区的图像大小
-    static const int sampleSize = 10000;
-
-    // The full range is initialized to 180 seconds. It will extend when more data are available.
-    static const int initialFullRange = 180;
-
-    // The visible range is initialized to 30 seconds.
-    //视野中可视化的秒数，非常重要的一个量
-    static const int initialVisibleRange = 5;
-
-    // The maximum zoom in is 5 seconds.
-    static const int zoomInLimit = 5;
+    AiStreaming *aiStreaming;
+    ConfigureParameterAI configureAI;//AI输入配置    
+    //***********************控制器***********************************************
     long msCount;
-    QFrame *leftFrame;
+    long msStartCount;
+    StaticPositionController *sController;
+    SinePositionController *sineController;
+
+    double x0,x1;
+    PerformanceTimer *timer;
+    int PERFORMANCEINTERVAL;
+    //************************动态绘图**********************************************
+    MyChartViewer *dPlot;
+    QChartViewer *m_ChartViewer;
+    //************************UI**********************************************
     QLabel *currentLabel;
+    QStandardItemModel *model;
 
-
-    // If the track cursor is at the end of the data series, we will automatic move the track
-    // line when new data arrives.
-    double trackLineEndPos;
-    bool trackLineIsAtEnd;
-
-    double m_timeStamps[sampleSize];        // The timestamps for the data series
-    double m_dataSeriesA[sampleSize];       // The values for the data series A
-    double m_dataSeriesB[sampleSize];       // The values for the data series B
-
-    int m_currentIndex;                     // Index of the array position to which new values are added.
-
-    QChartViewer *m_ChartViewer;            // QChartViewer control
-    //QViewPortControl *m_ViewPortControl;    // QViewPortControl
-    QTimer *m_ChartUpdateTimer;             // The chart update timer
-
-    void drawChart(QChartViewer *viewer);           // Draw chart
-    void drawFullChart(QViewPortControl *vpc);      // Draw full chart
-    double trackLineLabel(XYChart *c, int mouseX);  // Draw track cursor
-
-
+    void outUToPCI(double value);
+    void outDataToExcel();
+    void testFunction();
 private slots:
-    void onMouseUsageChanged(int mouseUsage);       // Pointer/zoom in/zoom out button clicked
-    void onSave(bool);                              // Save button clicked
-    void onMouseMovePlotArea(QMouseEvent *event);   // Mouse move on plot area
-    void onChartUpdateTimer();                      // Update the chart.
-    void onViewPortChanged();                       // Viewport has changed
-    void slotFuction();     //100ms多媒体定时器
+    void slotFuction();     //1ms多媒体定时器
     void on_action_Quit_triggered();
     void on_action_ToolFlag_triggered();
     void on_action_StatusFlag_triggered();
@@ -107,6 +122,19 @@ private slots:
     void on_btnStart_clicked();
     void on_action_ChannelParameters_triggered();
     void on_btnStop_clicked();
+    void on_action_ControlParameters_triggered();
+    void on_action_SaveAsDefalut_triggered();
+    void on_action_Identity_triggered();
+    void on_actionAction_SystemSettings_triggered();
+    void on_btn_clearZero_clicked();
+    void on_btn_static_comfirm_clicked();
+    void on_btn_DO_clicked();
+    void on_action_Pointer_triggered();//pointer,zoomIn,zoomOut按钮
+    void on_action_ZoomIn_triggered();
+    void on_action_ZoomOut_triggered();
+    void on_btn_out_uk_clicked();
+    void on_btn_sine_load_clicked();
+    void on_btn_preview_earth_clicked();
 };
 #endif // MAINWINDOW_H
 

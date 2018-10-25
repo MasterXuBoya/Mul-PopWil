@@ -16,9 +16,7 @@
         <file>Icon/Pasue.png</file>
         <file>Icon/pointer.png</file>
         <file>Icon/save.png</file>
-        <file>Icon/startIcon.png</file>
         <file>Icon/startIcon2.png</file>
-        <file>Icon/stopIcon.png</file>
         <file>Icon/textbold.png</file>
         <file>Icon/textcenter.png</file>
         <file>Icon/textitalic.png</file>
@@ -29,5 +27,14 @@
         <file>Icon/zoomout.png</file>
         <file>Icon/节点-开始.png</file>
         <file>Icon/channel.png</file>
+        <file>Icon/ctrlSetting.png</file>
+        <file>Icon/settings.png</file>
+        <file>Icon/settings2.png</file>
+        <file>Icon/startIcon.png</file>
+        <file>Icon/stopIcon.png</file>
+        <file>Icon/startIconClicked.png</file>
+        <file>Icon/stopIconClicked.png</file>
+        <file>Icon/switch_off.png</file>
+        <file>Icon/switch_on.png</file>
     </qresource>
 </RCC>

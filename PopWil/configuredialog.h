@@ -17,17 +17,19 @@ public:
 	~ConfigureDialog();
 	void Initailization();
 	void CheckError(ErrorCode errorCode);
-	ConfigureParameter GetConfigureParameter(){return configure;}
+    ConfigureParameterAO GetConfigureParameter(){return configure;}
+    ConfigureParameterAI GetConfigureParameterAI(){return configureAI;}
+    void SetConfigureParameterAO(ConfigureParameterAO tmpConfigure,ConfigureParameterAI tmpConfigureAI);
 
 private:
 	Ui::ConfigureDialog ui;
-	ConfigureParameter configure;
+    ConfigureParameterAO configure;
+    ConfigureParameterAI configureAI;
 
 	private slots:
 		void DeviceChanged(int index);
 		void ButtonOKClicked();
 		void ButtonCancelClicked();
-		void ButtonBrowseClicked();
 };
 
 #endif // CONFIGUREDIALOG_H

@@ -18,7 +18,7 @@ public:
     //
     // Constructor - construct a queue with the given buffer size
     //
-    QDoubleBufferedQueue(int bufferSize = 10000) :
+    QDoubleBufferedQueue(int bufferSize = 100) :
         bufferLen(0), bufferSize(bufferSize)
 	{ 
 		buffer0 = buffer = new T[bufferSize]; 

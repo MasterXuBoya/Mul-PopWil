@@ -8,23 +8,38 @@ ConfigureDialog::ConfigureDialog(QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
-
 	//Set the minimum and close button of the main frame.
 	this->setWindowFlags(Qt::WindowFlags(Qt::WindowSystemMenuHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint));
 
 	connect(ui.cmbDevice, SIGNAL(currentIndexChanged(int)), this, SLOT(DeviceChanged(int)));
 	connect(ui.btnOK, SIGNAL(clicked()), this, SLOT(ButtonOKClicked()));
-	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(ButtonCancelClicked()));
-	connect(ui.btnBrowse, SIGNAL(clicked()), this, SLOT(ButtonBrowseClicked()));
-
-	ui.txtPointCount->setValidator(new QIntValidator(0, 10000000, this));
-	
+	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(ButtonCancelClicked()));	
 	Initailization();
+    //qDebug()<<"the window is :"<<configure.channelStart<<configure.channelCount<<configure.deviceName;
+
 }
 
 ConfigureDialog::~ConfigureDialog()
 {
 	
+}
+//将Ini文件中默认的配置显示出来
+void ConfigureDialog::SetConfigureParameterAO(ConfigureParameterAO tmpConfigure,ConfigureParameterAI tmpConfigureAI)
+{
+    configure=tmpConfigure;
+    ui.cmbDevice->setCurrentIndex(0);
+    ui.cmbChannelStart->setCurrentIndex(0);
+    ui.cmbChannelCount->setCurrentIndex(0);
+    ui.cmbValueRange->setCurrentIndex(2);
+
+    //*****************************************
+    configureAI=tmpConfigureAI;
+    ui.cmbChannelStart_AI->setCurrentIndex(0);
+    ui.cmbChannelCount_AI->setCurrentIndex(0);
+    ui.cmbValueRange_AI->setCurrentIndex(4);
+    ui.edtClockRatePerChan_AI->setText(QString::number(configureAI.clockRatePerChan));
+    ui.edtSectionLength_AI->setText(QString::number(configureAI.sectionLength));
+
 }
 
 void ConfigureDialog::Initailization()
@@ -51,6 +66,7 @@ void ConfigureDialog::Initailization()
 	configure.profilePath = L"";
 	instantAoCtrl->Dispose();
 	supportedDevices->Dispose();
+
 }
 
 void ConfigureDialog::CheckError(ErrorCode errorCode)
@@ -63,6 +79,12 @@ void ConfigureDialog::CheckError(ErrorCode errorCode)
 	}
 }
 
+
+/*ValueRange:
+ *  Array<ValueRange>* ValueRanges存储ValueRange数组，
+ *  ui.cmbValueRange将这些ValueRanges类型的数据转化成可视化的实际电压
+ *  ui.cmbValueRange自身还有标号i
+*/
 void ConfigureDialog::DeviceChanged(int index)
 {
 	ui.cmbChannelCount->clear();
@@ -119,6 +141,69 @@ void ConfigureDialog::DeviceChanged(int index)
 	ui.cmbChannelStart->setCurrentIndex(0);
 	ui.cmbChannelCount->setCurrentIndex(1);
 	ui.cmbValueRange->setCurrentIndex(0);
+
+
+    //***********************************AO********************************************
+    ui.cmbChannelCount_AI->clear();
+    ui.cmbChannelStart_AI->clear();
+    ui.cmbValueRange_AI->clear();
+
+
+    WaveformAiCtrl * waveformAiCtrl = WaveformAiCtrl::Create();
+    errorCode = waveformAiCtrl->setSelectedDevice(selected);
+    ui.btnOK->setEnabled(true);
+    if (errorCode != 0){
+        QString str;
+        QString des = QString::fromStdWString(description);
+        str.sprintf("Error:the error code is 0x%x\n\
+                   The %s is busy or not exit in computer now.\n\
+                   Select other device please!", errorCode, des.toUtf8().data());
+        QMessageBox::information(this, "Warning Information", str);
+        ui.btnOK->setEnabled(false);
+        return;
+    }
+
+    channelCount = (waveformAiCtrl->getChannelCount() < 16) ?
+      waveformAiCtrl->getChannelCount() : 16;
+    logicChannelCount = waveformAiCtrl->getChannelCount();
+
+    for (int i = 0; i < logicChannelCount; i++)
+    {
+        ui.cmbChannelStart_AI->addItem(QString("%1").arg(i));
+    }
+
+    for (int i = 0; i < channelCount; i++)
+    {
+        ui.cmbChannelCount_AI->addItem(QString("%1").arg(i + 1));
+    }
+
+    Array<ValueRange> *ValueRangesAI = waveformAiCtrl->getFeatures()->getValueRanges();
+    wchar_t		 vrgDescriptionAI[128];
+    MathInterval rangesAI;
+    ValueUnit		valueUnit;
+    for(int i = 0; i < ValueRangesAI->getCount(); i++)
+    {
+        errorCode = AdxGetValueRangeInformation(ValueRangesAI->getItem(i),
+            sizeof(vrgDescriptionAI), vrgDescriptionAI, &rangesAI, &valueUnit);
+        CheckError(errorCode);
+
+        //qDebug()<<ValueRangesAI->getItem(i);
+
+        //we filter the Celsius degree for the buffered AI can not support this function.
+        if (valueUnit == CelsiusUnit)
+        {
+            continue;
+        }
+
+        QString str = QString::fromWCharArray(vrgDescriptionAI);
+        ui.cmbValueRange_AI->addItem(str);
+    }
+    waveformAiCtrl->Dispose();
+
+    //Set the default value.
+    ui.cmbChannelStart->setCurrentIndex(0);
+    ui.cmbChannelCount->setCurrentIndex(1);
+    ui.cmbValueRange->setCurrentIndex(0);
 }
 
 void ConfigureDialog::ButtonOKClicked()
@@ -139,21 +224,30 @@ void ConfigureDialog::ButtonOKClicked()
 	configure.deviceName = ui.cmbDevice->currentText();
 	configure.channelStart = ui.cmbChannelStart->currentText().toInt();
 	configure.channelCount = ui.cmbChannelCount->currentText().toInt();
-	configure.valueRange = ValueRanges->getItem(ui.cmbValueRange->currentIndex());
-	configure.pointCountPerWave = ui.txtPointCount->text().toInt();
-	
+	configure.valueRange = ValueRanges->getItem(ui.cmbValueRange->currentIndex());	
 	instantAoCtrl->Dispose();
+
+    //*****************************AI************************************************\
+
+    WaveformAiCtrl * waveformAiCtrl = WaveformAiCtrl::Create();
+    errorCode = waveformAiCtrl->setSelectedDevice(selected);
+
+    ValueRanges = waveformAiCtrl->getFeatures()->getValueRanges();
+
+    configureAI.deviceName=ui.cmbDevice->currentText();
+    configureAI.channelStart=ui.cmbChannelStart_AI->currentText().toInt();
+    configureAI.channelCount=ui.cmbChannelCount_AI->currentText().toInt();
+    //qDebug()<<"the current index is :"<<ui.cmbValueRange_AI->currentIndex();
+    configureAI.valueRange=ValueRanges->getItem(ui.cmbValueRange_AI->currentIndex());
+    //qDebug()<<configureAI.valueRange;
+    configureAI.clockRatePerChan=ui.edtClockRatePerChan_AI->text().toInt();
+    configureAI.sectionLength=ui.edtSectionLength_AI->text().toInt();
 	this->accept();
 }
 
 void ConfigureDialog::ButtonCancelClicked()
 {
-	this->reject();
-}
+    //qDebug()<<"the window is :"<<configure.channelStart<<configure.channelCount<<configure.deviceName;
 
-void ConfigureDialog::ButtonBrowseClicked()
-{
-	QString str = QFileDialog::getOpenFileName(this, tr("Open Profile"), "../../profile", tr("Image Files(*.xml)")); 
-	ui.txtProfilePath->setText(str);
-    configure.profilePath = str.toStdWString().c_str();
+	this->reject();
 }
