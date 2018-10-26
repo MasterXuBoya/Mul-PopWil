@@ -26,6 +26,7 @@ INPUT(
 ./debug\mychartviewer.o
 ./debug\staticpositioncontroller.o
 ./debug\sinepositioncontroller.o
+./debug\AvgFilter.o
 ./debug\qrc_resource.o
 ./debug\moc_mainwindow.o
 ./debug\moc_qchartviewer.o

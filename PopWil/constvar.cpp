@@ -3,10 +3,6 @@
 #include <QString>
 #include "logger.h"
 
-#define AFILTERNUM 10
-double sBuf[11]={0};
-double vBuf[11]={0};
-
 TPIDInfo sPIDInfo,sinePIDInfo;//静态控制PID三个参数
 TSystemInfo systemInfo;//系统参数
 QDoubleBufferedQueue<DataPacket> buffer;//每组数据有三个
@@ -22,65 +18,6 @@ double ErrorPreArray[MAXDATACOUNT],ErrorArray[MAXDATACOUNT];
 //int ss=18;
 //QString str="Hello";
 //const int m=19;
-int sum(int a,int b)
-{
-    int c;
-    c=a+b;
-    return c;
-}
-
-double S_AVFilter(double ADValue)
-{
-    int i;
-    double sumS,minS,maxS,result;
-    sBuf[0]++;
-    sumS=0;
-    for (i=1;i<AFILTERNUM;i++)
-        sBuf[i]=sBuf[i+1];
-    sBuf[AFILTERNUM]=ADValue;
-    minS=sBuf[1];
-    maxS=sBuf[1];
-    for(i=1;i<=AFILTERNUM;i++)
-    {
-        sumS+=sBuf[i];
-        if (sBuf[i]>maxS)
-            maxS=sBuf[i];
-        if (sBuf[i]<minS)
-            minS=sBuf[i];
-    }
-    if (sBuf[0]<AFILTERNUM)
-        result=sumS/sBuf[0];
-    else
-        result=(sumS-minS-maxS)/(AFILTERNUM-2);
-    return result;
-}
-
-double V_AVFilter(double ADValue)
-{
-    int i;
-    double sumS,minS,maxS,result;
-    vBuf[0]++;
-    sumS=0;
-    for (i=1;i<AFILTERNUM;i++)
-        vBuf[i]=vBuf[i+1];
-    vBuf[AFILTERNUM]=ADValue;
-    minS=vBuf[1];
-    maxS=vBuf[1];
-    for(i=1;i<=AFILTERNUM;i++)
-    {
-        sumS+=vBuf[i];
-        if (vBuf[i]>maxS)
-            maxS=vBuf[i];
-        if (vBuf[i]<minS)
-            minS=vBuf[i];
-    }
-    if (vBuf[0]<AFILTERNUM)
-        result=sumS/vBuf[0];
-    else
-        result=(sumS-minS-maxS)/(AFILTERNUM-2);
-    return result;
-}
-
 Matrix matrixMultiply(Matrix a,Matrix b)
 {
     int i,j,k;

@@ -68,7 +68,8 @@ SOURCES += main.cpp\
     aistreaming.cpp \
     mychartviewer.cpp \
     staticpositioncontroller.cpp \
-    sinepositioncontroller.cpp
+    sinepositioncontroller.cpp \
+    AvgFilter.cpp
 
 HEADERS  += mainwindow.h \
     qchartviewer.h \
@@ -96,7 +97,8 @@ HEADERS  += mainwindow.h \
     aistreaming.h \
     mychartviewer.h \
     staticpositioncontroller.h \
-    sinepositioncontroller.h
+    sinepositioncontroller.h \
+    AvgFilter.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \

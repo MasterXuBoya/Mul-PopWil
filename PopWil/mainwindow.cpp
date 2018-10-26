@@ -166,6 +166,9 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     ui->tabWidget_pic->setCurrentIndex(0);
     ui->rbt_S->setChecked(true);
     m_ChartViewer=new QChartViewer(ui->tab_preview);
+    //-------------------------------滤波初始化------------------------------
+    sAvgFilter=new AvgFilter();
+    vAvgFilter=new AvgFilter();
 //**********************************开启多媒体定时器************************************************************
     timer=new PerformanceTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(slotFuction()));
@@ -184,6 +187,9 @@ MainWindow::~MainWindow()
     delete aiInstant;
     delete aoInstant;
     delete aiStreaming;
+
+    delete sAvgFilter;
+    delete vAvgFilter;
 
     delete sController;
     delete sineController;
@@ -206,13 +212,14 @@ void MainWindow::slotFuction(){
     }
     //*********************************Read Real Displacement*******************************************************
     sCurrent=getPosition(0);
+    sCurrent=sAvgFilter->filter(sCurrent);
     if (fabs(sCurrent)>systemInfo.maxAbsolutePosition) outUToPCI(0);//Protected Program
     //*********************************Filter Program************************************************
     //sCurrentTmp=sCurrent;
     //sCurrent=sCurrent_1*0.2+sCurrentTmp*0.8;
     //sCurrent_1=sCurrentTmp;
-    sCurrent=S_AVFilter(sCurrent);
-    //qDebug()<<"当前时间："<<msCount<<"   水平位置："<<sCurrent;
+    //sCurrent=S_AVFilter(sCurrent);
+    qDebug()<<"当前时间："<<msCount<<"   水平位置："<<sCurrent;
     //*********************************将数据放入缓冲区*****************************************************
     msCount+=PERFORMANCEINTERVAL;
     if (startFlag) msStartCount+=PERFORMANCEINTERVAL;
@@ -222,7 +229,9 @@ void MainWindow::slotFuction(){
     elapseStartTime=msStartCount/1000.0;
     //************************************差分计算速度******************************
     vCurrent=(sCurrent-sCurrent_1)/(PERFORMANCEINTERVAL/1000.0);
-    vCurrent=V_AVFilter(vCurrent);
+    qDebug()<<vCurrent;
+    vCurrent=vAvgFilter->filter(vCurrent);
+    qDebug()<<vCurrent;
     sCurrent_1=sCurrent;
     //************************************读取加速度*********************************
     aCurrent=aiInstant->getAcc();//获取单个加速度

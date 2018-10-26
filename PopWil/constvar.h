@@ -93,9 +93,6 @@ extern const int m;
 int sum(int a,int b);
 
 */
-//滤波数组
-extern double sBuf[11];
-extern double vBuf[11];
 
 //vector会在运行过程中复制数组，造成运算效率下降，还是使用原生态数组吧
 //extern std::vector<double> SRefArray[MAXDATACOUNT];
@@ -107,9 +104,6 @@ extern double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];
 extern double OutUPreArray[MAXDATACOUNT],OutUArray[MAXDATACOUNT];
 extern double ErrorPreArray[MAXDATACOUNT],ErrorArray[MAXDATACOUNT];
 
-
-double S_AVFilter(double ADValue);
-double V_AVFilter(double ADValue);
 QString CheckError(ErrorCode errorCode);
 
 Matrix matrixMultiply(Matrix a,Matrix b);

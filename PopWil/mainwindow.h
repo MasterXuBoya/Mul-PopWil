@@ -56,6 +56,7 @@
 #include "staticpositioncontroller.h"
 #include "sinepositioncontroller.h"
 #include <vector>
+#include "AVGFilter.h"
 
 using namespace Automation::BDaq;
 namespace Ui {
@@ -93,6 +94,9 @@ private:
 
     AiStreaming *aiStreaming;
     ConfigureParameterAI configureAI;//AI输入配置    
+    //-------------------------滤波器-------------------------------------
+    AvgFilter *sAvgFilter;
+    AvgFilter *vAvgFilter;
     //***********************控制器***********************************************
     long msCount;
     long msStartCount;
