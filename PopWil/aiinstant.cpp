@@ -31,9 +31,12 @@ void AiInstant::configure(){
 }
 
 double AiInstant::getAcc(){
+    double currentAcc;
     ErrorCode errorCode = Success;
     errorCode = instantAiCtrl->Read(instantAiPara.channelStart, instantAiPara.channelCount, scaledData);
     CheckError(errorCode);
-    if (errorCode != Success) return -100;
-    return scaledData[0];
+    if (errorCode != Success)
+        return 100;
+    currentAcc=(scaledData[0]-2.5)/0.4;
+    return currentAcc;
 }

@@ -225,8 +225,8 @@ void MainWindow::slotFuction(){
     vCurrent=V_AVFilter(vCurrent);
     sCurrent_1=sCurrent;
     //************************************读取加速度*********************************
-    //double aCurrent=aiInstant->getAcc();//获取单个加速度
-    aCurrent=aiStreaming->getAcc();//通过SteamingAi方式获取加速度
+    aCurrent=aiInstant->getAcc();//获取单个加速度
+    //aCurrent=aiStreaming->getAcc();//通过SteamingAi方式获取加速度
     //qDebug()<<"当前加速度是："<<aCurrent;
     //*******************************************************************
     if(msCount%100==0){//保留三位小数
