@@ -37,6 +37,6 @@ double AiInstant::getAcc(){
     CheckError(errorCode);
     if (errorCode != Success)
         return 100;
-    currentAcc=(scaledData[0]-2.5)/0.4;//灵敏度0.4V/g  基准电压2.5V
+    currentAcc=(scaledData[0]-2.507)/(20.38*9.8/1000);//灵敏度0.4V/g  基准电压2.5V
     return currentAcc;
 }

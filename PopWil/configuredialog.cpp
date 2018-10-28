@@ -32,7 +32,7 @@ void ConfigureDialog::SetConfigureParameterAO(ConfigureParameterAO tmpConfigure,
     ui.cmbChannelCount->setCurrentIndex(0);
     ui.cmbValueRange->setCurrentIndex(2);
 
-    //*****************************************
+    //---------------------------------------
     configureAI=tmpConfigureAI;
     ui.cmbChannelStart_AI->setCurrentIndex(0);
     ui.cmbChannelCount_AI->setCurrentIndex(0);
@@ -143,7 +143,7 @@ void ConfigureDialog::DeviceChanged(int index)
 	ui.cmbValueRange->setCurrentIndex(0);
 
 
-    //***********************************AO********************************************
+    //---------------------------------AO------------------------------------------
     ui.cmbChannelCount_AI->clear();
     ui.cmbChannelStart_AI->clear();
     ui.cmbValueRange_AI->clear();
@@ -227,7 +227,7 @@ void ConfigureDialog::ButtonOKClicked()
 	configure.valueRange = ValueRanges->getItem(ui.cmbValueRange->currentIndex());	
 	instantAoCtrl->Dispose();
 
-    //*****************************AI************************************************\
+    //---------------------------AI------------------------------------------------
 
     WaveformAiCtrl * waveformAiCtrl = WaveformAiCtrl::Create();
     errorCode = waveformAiCtrl->setSelectedDevice(selected);

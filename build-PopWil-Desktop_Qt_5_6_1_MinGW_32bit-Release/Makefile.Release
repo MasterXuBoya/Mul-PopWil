@@ -70,7 +70,8 @@ SOURCES       = ..\PopWil\main.cpp \
 		..\PopWil\mychartviewer.cpp \
 		..\PopWil\staticpositioncontroller.cpp \
 		..\PopWil\sinepositioncontroller.cpp \
-		..\PopWil\AvgFilter.cpp release\qrc_resource.cpp \
+		..\PopWil\AvgFilter.cpp \
+		..\PopWil\ButtorFilter.cpp release\qrc_resource.cpp \
 		release\moc_mainwindow.cpp \
 		release\moc_qchartviewer.cpp \
 		release\moc_performancetimer.cpp \
@@ -113,6 +114,7 @@ OBJECTS       = release/main.o \
 		release/staticpositioncontroller.o \
 		release/sinepositioncontroller.o \
 		release/AvgFilter.o \
+		release/ButtorFilter.o \
 		release/qrc_resource.o \
 		release/moc_mainwindow.o \
 		release/moc_qchartviewer.o \
@@ -156,7 +158,8 @@ DIST          =  ..\PopWil\mainwindow.h \
 		..\PopWil\mychartviewer.h \
 		..\PopWil\staticpositioncontroller.h \
 		..\PopWil\sinepositioncontroller.h \
-		..\PopWil\AvgFilter.h ..\PopWil\main.cpp \
+		..\PopWil\AvgFilter.h \
+		..\PopWil\ButtorFilter.h ..\PopWil\main.cpp \
 		..\PopWil\mainwindow.cpp \
 		..\PopWil\qchartviewer.cpp \
 		..\PopWil\performancetimer.cpp \
@@ -183,7 +186,8 @@ DIST          =  ..\PopWil\mainwindow.h \
 		..\PopWil\mychartviewer.cpp \
 		..\PopWil\staticpositioncontroller.cpp \
 		..\PopWil\sinepositioncontroller.cpp \
-		..\PopWil\AvgFilter.cpp
+		..\PopWil\AvgFilter.cpp \
+		..\PopWil\ButtorFilter.cpp
 QMAKE_TARGET  = PopWil
 DESTDIR        = release\ #avoid trailing-slash linebreak
 TARGET         = PopWil.exe
@@ -207,7 +211,7 @@ dist:
 	$(ZIP) PopWil.zip $(SOURCES) $(DIST) ..\PopWil\PopWil.pro ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\spec_pre.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\qdevice.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\device_config.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\common\angle.conf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\qconfig.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dcore.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dcore_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dinput.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dinput_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dlogic.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dlogic_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquick.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquick_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquickinput.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquickinput_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquickrender.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3dquickrender_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3drender.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_3drender_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axbase.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axbase_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axcontainer.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axcontainer_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axserver.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_axserver_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_bluetooth.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_bluetooth_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_bootstrap_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_clucene_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_concurrent.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_concurrent_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_core.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_core_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_dbus.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_dbus_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_designer.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_designer_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_designercomponents_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_gui.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_gui_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_help.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_help_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_labscontrols_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_labstemplates_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_location.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_location_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_multimedia.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_multimedia_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_multimediawidgets.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_multimediawidgets_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_network.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_network_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_nfc.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_nfc_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_opengl.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_opengl_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_openglextensions.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_openglextensions_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_platformsupport_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_positioning.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_positioning_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_printsupport.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_printsupport_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qml.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qml_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qmldevtools_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qmltest.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qmltest_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_quick.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_quick_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_quickparticles_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_quickwidgets.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_quickwidgets_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_script.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_script_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_scripttools.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_scripttools_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_sensors.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_sensors_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_serialbus.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_serialbus_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_serialport.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_serialport_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_sql.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_sql_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_svg.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_svg_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_testlib.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_testlib_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_uiplugin.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_uitools.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_uitools_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_webchannel.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_webchannel_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_websockets.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_websockets_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_widgets.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_widgets_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_winextras.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_winextras_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_xml.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_xml_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_xmlpatterns.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\modules\qt_lib_xmlpatterns_private.pri ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\qt_functions.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\qt_config.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\win32\qt_config.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\win32-g++\qmake.conf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\spec_post.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\exclusive_builds.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\default_pre.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\win32\default_pre.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\resolve_config.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\exclusive_builds_post.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\default_post.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\build_pass.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\win32\rtti.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\precompile_header.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\warn_on.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\qt.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\resources.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\moc.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\win32\opengl.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\uic.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\win32\windows.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\testcase_targets.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\exceptions.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\yacc.prf ..\..\Qt\Qt5.6.0\5.6\mingw49_32\mkspecs\features\lex.prf ..\PopWil\PopWil.pro ..\PopWil\resource.qrc ..\..\Qt\Qt5.6.0\5.6\mingw49_32\lib\qtmain.prl ..\..\Qt\Qt5.6.0\5.6\mingw49_32\lib\Qt5Widgets.prl ..\..\Qt\Qt5.6.0\5.6\mingw49_32\lib\Qt5Gui.prl ..\..\Qt\Qt5.6.0\5.6\mingw49_32\lib\Qt5Core.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\main.o release\mainwindow.o release\qchartviewer.o release\performancetimer.o release\constvar.o release\inihelper.o release\randomwalk.o release\testwindow.o release\aboutform.o release\configuredialog.o release\ctrldialog.o release\drawdialog.o release\rbf.o release\systemsettings.o release\mathtool.o release\signalprocess.o release\signalprocesswindow.o release\sinesweepmodule.o release\common.o release\logger.o release\aiinstant.o release\aoinstant.o release\doinstant.o release\aistreaming.o release\mychartviewer.o release\staticpositioncontroller.o release\sinepositioncontroller.o release\AvgFilter.o release\qrc_resource.o release\moc_mainwindow.o release\moc_qchartviewer.o release\moc_performancetimer.o release\moc_randomwalk.o release\moc_testwindow.o release\moc_aboutform.o release\moc_configuredialog.o release\moc_ctrldialog.o release\moc_drawdialog.o release\moc_rbf.o release\moc_systemsettings.o release\moc_signalprocesswindow.o release\moc_sinesweepmodule.o release\moc_mychartviewer.o
+	-$(DEL_FILE) release\main.o release\mainwindow.o release\qchartviewer.o release\performancetimer.o release\constvar.o release\inihelper.o release\randomwalk.o release\testwindow.o release\aboutform.o release\configuredialog.o release\ctrldialog.o release\drawdialog.o release\rbf.o release\systemsettings.o release\mathtool.o release\signalprocess.o release\signalprocesswindow.o release\sinesweepmodule.o release\common.o release\logger.o release\aiinstant.o release\aoinstant.o release\doinstant.o release\aistreaming.o release\mychartviewer.o release\staticpositioncontroller.o release\sinepositioncontroller.o release\AvgFilter.o release\ButtorFilter.o release\qrc_resource.o release\moc_mainwindow.o release\moc_qchartviewer.o release\moc_performancetimer.o release\moc_randomwalk.o release\moc_testwindow.o release\moc_aboutform.o release\moc_configuredialog.o release\moc_ctrldialog.o release\moc_drawdialog.o release\moc_rbf.o release\moc_systemsettings.o release\moc_signalprocesswindow.o release\moc_sinesweepmodule.o release\moc_mychartviewer.o
 
 distclean: clean 
 	-$(DEL_FILE) $(DESTDIR_TARGET)
@@ -480,6 +484,7 @@ release/moc_mainwindow.cpp: ../../Qt/Qt5.6.0/5.6/mingw49_32/include/QtCore/QObje
 		../PopWil/staticpositioncontroller.h \
 		../PopWil/sinepositioncontroller.h \
 		../PopWil/AVGFilter.h \
+		../PopWil/ButtorFilter.h \
 		../PopWil/mainwindow.h
 	D:\Qt\Qt5.6.0\5.6\mingw49_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -ID:/Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/win32-g++ -ID:/Popwil/PopWil -ID:/Popwil/include -ID:/Popwil/Inc -ID:/Qt/Qt5.6.0/5.6/mingw49_32/include -ID:/Qt/Qt5.6.0/5.6/mingw49_32/include/QtWidgets -ID:/Qt/Qt5.6.0/5.6/mingw49_32/include/QtGui -ID:/Qt/Qt5.6.0/5.6/mingw49_32/include/QtANGLE -ID:/Qt/Qt5.6.0/5.6/mingw49_32/include/QtCore -I. ..\PopWil\mainwindow.h -o release\moc_mainwindow.cpp
 
@@ -2155,6 +2160,7 @@ release/main.o: ../PopWil/main.cpp ../PopWil/mainwindow.h \
 		../PopWil/staticpositioncontroller.h \
 		../PopWil/sinepositioncontroller.h \
 		../PopWil/AVGFilter.h \
+		../PopWil/ButtorFilter.h \
 		../PopWil/testwindow.h \
 		../PopWil/sinesweepmodule.h \
 		../include/fftw3.h
@@ -2376,6 +2382,7 @@ release/mainwindow.o: ../PopWil/mainwindow.cpp ../PopWil/mainwindow.h \
 		../PopWil/staticpositioncontroller.h \
 		../PopWil/sinepositioncontroller.h \
 		../PopWil/AVGFilter.h \
+		../PopWil/ButtorFilter.h \
 		ui_mainwindow.h \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/include/QtWidgets/QFrame \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/include/QtWidgets/QGridLayout \
@@ -5258,6 +5265,9 @@ release/AvgFilter.o: ../PopWil/AvgFilter.cpp ../PopWil/AvgFilter.h \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/include/QtCore/qset.h \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/include/QtCore/qcontiguouscache.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\AvgFilter.o ..\PopWil\AvgFilter.cpp
+
+release/ButtorFilter.o: ../PopWil/ButtorFilter.cpp ../PopWil/ButtorFilter.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\ButtorFilter.o ..\PopWil\ButtorFilter.cpp
 
 release/qrc_resource.o: release/qrc_resource.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\qrc_resource.o release\qrc_resource.cpp

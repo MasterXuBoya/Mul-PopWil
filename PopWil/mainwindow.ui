@@ -326,7 +326,7 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <property name="styleSheet">
@@ -363,9 +363,9 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>10</x>
           <y>30</y>
-          <width>291</width>
+          <width>261</width>
           <height>25</height>
          </rect>
         </property>
@@ -419,9 +419,9 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
        <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>10</x>
           <y>30</y>
-          <width>281</width>
+          <width>261</width>
           <height>25</height>
          </rect>
         </property>

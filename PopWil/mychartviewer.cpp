@@ -4,10 +4,10 @@ using namespace std;
 
 MyChartViewer::MyChartViewer(QObject *parent) : QObject(parent){
 
-//*********************************************************************************************
+//---------------------------------------------------------------------------------------------
     //Save as Picture暂时不写
     //connect(ui->action_SaveAsPicture, SIGNAL(triggered(bool)), SLOT(onSave(bool)));
-//******************************实时曲线绘制UI----LeftFrame***************************************************************
+//------------------------------实时曲线绘制UI----LeftFrame---------------------------------------------------------------
     m_ChartViewer=new QChartViewer((QWidget *)parent);
     m_ChartViewer->setGeometry(10, 25, 640, 480);
     connect(m_ChartViewer, SIGNAL(viewPortChanged()), SLOT(onViewPortChanged()));
@@ -16,7 +16,7 @@ MyChartViewer::MyChartViewer(QObject *parent) : QObject(parent){
     m_ViewPortControl = new QViewPortControl((QWidget *)parent);//此处先不写
     m_ViewPortControl->setGeometry(10, 480, 640, 80);
     m_ViewPortControl->setViewer(m_ChartViewer);
-//*********************************参数初始化************************************************************
+//---------------------------------参数初始化------------------------------------------------------------
     // Initialize member variables
     m_currentIndex = 0;
     // Initially, auto-move the track line to make it follow the data series

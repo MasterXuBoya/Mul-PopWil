@@ -57,6 +57,7 @@
 #include "sinepositioncontroller.h"
 #include <vector>
 #include "AVGFilter.h"
+#include "ButtorFilter.h"
 
 using namespace Automation::BDaq;
 namespace Ui {
@@ -70,10 +71,10 @@ class MainWindow : public QMainWindow//当前窗体继承自系统自带QMainWin
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    //*************************PCI1716***********************************
+    //------------------------PCI1716---------------------------------
     void SetConfigureParameterAI(ConfigureParameterAI value){this->configureAI = value;}
     void SetConfigureParameterAO(ConfigureParameterAO value){this->configureAO = value;}
-    //************************文件操作********************************
+    //------------------------文件操作------------------------------
     void addItemToListView(QString str);
     void dataSaveToTxt();
     void closeEvent(QCloseEvent *event);
@@ -86,7 +87,7 @@ private:
     QString dataSaveBasePath;//试验数据保存位置
     QString log;//临时变量，需要保存的日志信息，在此处定义，主要是不需要再每个函数中分别定义
     Logger *logger;//日志
-    //**************************PCI1716************************************
+    //------------------------PCI1716------------------------------------
     DoInstant *doInstant;
     AoInstant *aoInstant;//输出电压控制柄
     AiInstant *aiInstant;
@@ -95,9 +96,9 @@ private:
     AiStreaming *aiStreaming;
     ConfigureParameterAI configureAI;//AI输入配置    
     //-------------------------滤波器-------------------------------------
-    AvgFilter *sAvgFilter;
-    AvgFilter *vAvgFilter;
-    //***********************控制器***********************************************
+    AvgFilter *sAvgFilter,*vAvgFilter,*aAvgFilter;
+    ButtorFilter *sButtorFilter,*vButtorFilter,*aButtorFilter;
+    //---------------------控制器---------------------------------------------
     long msCount;
     long msStartCount;
     StaticPositionController *sController;
@@ -106,10 +107,10 @@ private:
     double x0,x1;
     PerformanceTimer *timer;
     int PERFORMANCEINTERVAL;
-    //************************动态绘图**********************************************
+    //------------------------动态绘图---------------------------------------------
     MyChartViewer *dPlot;
     QChartViewer *m_ChartViewer;
-    //************************UI**********************************************
+    //------------------------UI---------------------------------------------
     QLabel *currentLabel;
     QStandardItemModel *model;
 

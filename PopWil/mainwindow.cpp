@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     sController=new StaticPositionController();
     sineController=new SinePositionController();
 
-    //*******************load UArray**************************
+    //------------------load UArray------------------------
     memZero(OutUPreArray);memZero(OutUArray);
     memZero(ErrorPreArray);memZero(ErrorArray);
     memZero(SRefArray);memZero(SArray);
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     memZero(ARefArray);memZero(AArray);
 
     testFunction();
-//*****************************将配置文件读入************************************
+//---------------------------将配置文件读入------------------------------------
     IniHelper *hh=new IniHelper;
     ConfigureParameterPCI iniSettingFile= hh->readFromPciIni("IniSetting/PCI1716.ini");
     configureAO=iniSettingFile.iniSettingAO;
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
         " drawInterval:"+QString::number(systemInfo.drawInterval);
     qDebug()<<log;logger->appendLogger(log);
     PERFORMANCEINTERVAL=systemInfo.contrlInterval;
-//******************************界面UI***************************************************************
+//------------------------------界面UI---------------------------------------------------------------
     setFixedSize(960, 900);
     setWindowIcon(QPixmap(":/Icon/Icon/dashboard.png"));
 
@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIcon.png)");
     ui->btnStop->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
     ui->btn_DO->setToolTip("开关");
-    //****************状态栏***********
+    //---------------状态栏---------
     currentLabel=new QLabel;
     currentLabel->setMinimumSize(200,25);
     //currentLabel->setFrameShadow(QFrame::Sunken);
@@ -85,7 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     ui->le_mag->setText("5");
     ui->le_fre->setText("1");
     ui->le_cnt->setText("20");
-    //**************地震波************************************
+    //------------地震波------------------------------------
     ////获取该路径下的所有文件
     QStringList earthquakeFiles= getFileNames("E:\\PopWilCacher\\EarthquakeWave");
     int earthquakeWaveCnt=earthquakeFiles.size();
@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
         ui->cmb_earth->addItem(wave.left(wave.size()-4));
     }
 
-    //********************************ENC7480****************************************************************
+    //------------------------------ENC7480-------------------------------------------------------------
     int d7480rtn= Enc7480_Init();
     log="雷塞采集卡数量"+QString::number(d7480rtn);
     qDebug()<<log;logger->appendLogger("[debug] "+log);
@@ -111,7 +111,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
         addItemToListView(log);logger->appendLogger(log);
     }
     Enc7480_Set_Encoder(0,0);
-//**********************************PCI1716初始化************************************************************
+//---------------------------------PCI1716初始化------------------------------------------------------------
     //DO 操作
     doInstant=new DoInstant();
     if (doInstant->getDeviceCount(configureAI.deviceName) == 0)
@@ -159,7 +159,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     aiStreaming->setStreamingAiPara(configureAI);
     aiStreaming->configure();
     //aiStreaming->start();
-//**********************************绘图ChartViewer************************************************************
+//---------------------------------绘图ChartViewer------------------------------------------------------------
     dPlot=new MyChartViewer(ui->drawFrame);
     dPlot->start();
     connect(ui->action_SaveAsPicture,SIGNAL(triggered(bool)),dPlot,SLOT(onSave(bool)));
@@ -169,7 +169,11 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     //-------------------------------滤波初始化------------------------------
     sAvgFilter=new AvgFilter();
     vAvgFilter=new AvgFilter();
-//**********************************开启多媒体定时器************************************************************
+    aAvgFilter=new AvgFilter();
+    sButtorFilter=new ButtorFilter();
+    vButtorFilter=new ButtorFilter();
+    aButtorFilter=new ButtorFilter();
+//---------------------------------开启多媒体定时器------------------------------------------------------------
     timer=new PerformanceTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(slotFuction()));
     timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
@@ -190,6 +194,10 @@ MainWindow::~MainWindow()
 
     delete sAvgFilter;
     delete vAvgFilter;
+    delete aAvgFilter;
+    delete sButtorFilter;
+    delete vButtorFilter;
+    delete aButtorFilter;
 
     delete sController;
     delete sineController;
@@ -197,60 +205,52 @@ MainWindow::~MainWindow()
     delete m_ChartViewer;
     delete ui;
 }
-//******************************************************************************************************************
+//------------------------------------------------------------------------------------------------------------------
 //10ms多媒体定时器 100ms绘图
 void MainWindow::slotFuction(){
     int i,startIndex;//开始之后第几次进入定时器
     static double sCurrent_1=0;//static修饰的静态局部变量只执行初始化一次
     double sCurrent,vCurrent,aCurrent,refPosition,uk;
     double series0,series1,elapsedTime,elapseStartTime;
-    //*************************************update time in StateBar*********************************************
+    //------------------------------------update time in StateBar---------------------------------------------
     if (msCount%1000==0){
         QDateTime time = QDateTime::currentDateTime();
         QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
         currentLabel->setText(str);
     }
-    //*********************************Read Real Displacement*******************************************************
+    //---------------------------------Read Real Displacement------------------------------------------------------
     sCurrent=getPosition(0);
+    sCurrent=sin(2*PI*msCount/1000)+sin(2*PI*50*msCount/1000);
+    //sCurrent=sin(2*PI*2*msCount/1000);
     sCurrent=sAvgFilter->filter(sCurrent);
     if (fabs(sCurrent)>systemInfo.maxAbsolutePosition) outUToPCI(0);//Protected Program
-    //*********************************Filter Program************************************************
-    //sCurrentTmp=sCurrent;
-    //sCurrent=sCurrent_1*0.2+sCurrentTmp*0.8;
-    //sCurrent_1=sCurrentTmp;
-    //sCurrent=S_AVFilter(sCurrent);
-    qDebug()<<"当前时间："<<msCount<<"   水平位置："<<sCurrent;
-    //*********************************将数据放入缓冲区*****************************************************
+    //---------------------------------将数据放入缓冲区---------------------------------------------------
     msCount+=PERFORMANCEINTERVAL;
     if (startFlag) msStartCount+=PERFORMANCEINTERVAL;
 
     startIndex=msStartCount/PERFORMANCEINTERVAL;
     elapsedTime=msCount / 1000.0;
     elapseStartTime=msStartCount/1000.0;
-    //************************************差分计算速度******************************
+    //------------------------------------差分计算速度------------------------------
     vCurrent=(sCurrent-sCurrent_1)/(PERFORMANCEINTERVAL/1000.0);
-    qDebug()<<vCurrent;
     vCurrent=vAvgFilter->filter(vCurrent);
-    qDebug()<<vCurrent;
+    vCurrent=vButtorFilter->filter(vCurrent);
     sCurrent_1=sCurrent;
-    //************************************读取加速度*********************************
+    //------------------------------------读取加速度---------------------------------
     aCurrent=aiInstant->getAcc();//获取单个加速度
     //aCurrent=aiStreaming->getAcc();//通过SteamingAi方式获取加速度
+    aCurrent=aAvgFilter->filter(aCurrent);
+    aCurrent=aButtorFilter->filter(aCurrent);
     //qDebug()<<"当前加速度是："<<aCurrent;
-    //*******************************************************************
-    if(msCount%100==0){//保留三位小数
-        ui->lcd_S->display(QString::number(sCurrent,'f',3));
-        ui->lcd_V->display(QString::number(vCurrent,'f',3));
-        ui->lcd_A->display(QString::number(aCurrent,'f',3));
-    }
+    //------------------------------------------------------------------
     if(msCount%10==0){
         SArray[++dataCnt]=sCurrent;//将位移数据存进数组，从1开始计数
         VArray[dataCnt]=vCurrent;
         AArray[dataCnt]=aCurrent;
     }
-    series0=sCurrent;series1=vCurrent;
+    series0=sCurrent;series1=sCurrent;
     if(!startFlag) return;
-    //*****************************AO输出*********************************************************
+    //---------------------------AO输出---------------------------------------------------------
     //Trajactory:static value 最佳参数：P=-0.25，I=-0，D=-0.1；
     //P=-0.25,I=0,D=-0.5 滤波，调零之后
     if(globalFlag==StaticPosionFlag){//PID静态位移控制——移动到指定位置
@@ -285,6 +285,11 @@ void MainWindow::slotFuction(){
 //       outUToPCI(OutUArray[startIndex]);
 //       qDebug()<<"uk="<<OutUArray[startIndex]<<"  ek="<<ErrorArray[startIndex];
 //   }
+    if(msCount%100==0){//保留三位小数
+        ui->lcd_S->display(QString::number(sCurrent,'f',3));
+        ui->lcd_V->display(QString::number(vCurrent,'f',3));
+        ui->lcd_A->display(QString::number(aCurrent,'f',3));
+    }
     //100ms将数据存入绘图缓冲区
     if(msCount%10==0)
         buffer.put(DataPacket(elapsedTime,series0,series1));
@@ -311,10 +316,10 @@ void MainWindow::on_btnStop_clicked()
     ui->btnStart->setStyleSheet("border-image:url(:Icon/Icon/startIcon.png)");
     ui->btnStart->setEnabled(true);
     ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIconClicked.png)");
-    //*********************AO******************************
+    //---------------------AO------------------------------
     outUToPCI(0);
     startFlag=false;
-    //*********************AI********************************
+    //---------------------AI------------------------------
     ui->le_uk->setText("0");
     //dataSaveToTxt();
 }
@@ -392,7 +397,7 @@ void MainWindow::on_action_ControlParameters_triggered()
 
 void MainWindow::on_action_SaveAsDefalut_triggered()
 {
-    //********************************PCI1716.ini****************************************
+    //------------------------------PCI1716.ini---------------------------------------
     ConfigureParameterPCI tmp;
     tmp.iniSettingAI=configureAI;
     tmp.iniSettingAO=configureAO;
@@ -408,7 +413,7 @@ void MainWindow::on_action_SaveAsDefalut_triggered()
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
     delete tmpHelper;
-    //********************************CtrlIni.ini****************************************
+    //------------------------------CtrlIni.ini---------------------------------------
     tmpHelper=new IniHelper;
     result=tmpHelper->writeToCtrlIni("IniSetting/CtrlIni.ini",sPIDInfo,sinePIDInfo);
     if (result)
@@ -420,7 +425,7 @@ void MainWindow::on_action_SaveAsDefalut_triggered()
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
     delete tmpHelper;
-    //********************************SystemInfo.ini****************************************
+    //------------------------------SystemInfo.ini---------------------------------------
     tmpHelper=new IniHelper;
     result=tmpHelper->writeToSystemInfoIni("IniSetting/SystemInfo.ini",systemInfo);
     if (result)
@@ -633,7 +638,7 @@ void MainWindow::dataSaveToTxt()
     message="[info]:文件"+path+"创建成功！";
     addItemToListView(message);logger->appendLogger(message);
 
-    //*****************data*****************
+    //---------------data---------------
     out<<QString("采样点数： ")<<dataCnt<<endl;
     out<<QString("i     输出/V     误差/mm     参考位移/mm      位移/mm     速度/mm/s     加速度/mm/ss")<<endl;
     for(int i=1;i<=dataCnt;i++)
@@ -712,7 +717,7 @@ void MainWindow::on_btn_preview_earth_clicked()
     QString earthFileName=ui->cmb_earth->currentText();
     QString earthFilePath="E:\\PopWilCacher\\EarthquakeWave\\"+earthFileName+".txt";
     getEarthquakeWave(earthFilePath);//将地震波数据载入到Ref数组中
-//*********************预览绘图**************************************
+//---------------------预览绘图-----------------------------------
     double index[10000];
     for(int i=0;i<dataRefCnt;i++)index[i]=i*1.0/100;
     m_ChartViewer->setGeometry(5, 25, 640, 500);

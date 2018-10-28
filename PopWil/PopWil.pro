@@ -69,7 +69,8 @@ SOURCES += main.cpp\
     mychartviewer.cpp \
     staticpositioncontroller.cpp \
     sinepositioncontroller.cpp \
-    AvgFilter.cpp
+    AvgFilter.cpp \
+    ButtorFilter.cpp
 
 HEADERS  += mainwindow.h \
     qchartviewer.h \
@@ -98,7 +99,8 @@ HEADERS  += mainwindow.h \
     mychartviewer.h \
     staticpositioncontroller.h \
     sinepositioncontroller.h \
-    AvgFilter.h
+    AvgFilter.h \
+    ButtorFilter.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \
