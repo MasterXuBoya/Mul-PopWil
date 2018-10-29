@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     msCount=0;msStartCount=0;refIndex=1;//此处一定要进行初始化，否则系统自动初始化一个值，导致出错！！
 
     model = new QStandardItemModel(ui->listView_eventInformation);
-
-
-
     //------------------load UArray------------------------
     memZero(OutUPreArray);memZero(OutUArray);
     memZero(ErrorPreArray);memZero(ErrorArray);
@@ -355,7 +352,7 @@ void MainWindow::on_btnStart_clicked()
 
     refIndex=1;
     startFlag=true;
-    sinePIDController->clear();//可能第一次结束，第二次试验
+    //sinePIDController->clear();//可能第一次结束，第二次试验
     //PID静态位移控制开始
     //timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
     msStartCount=0;

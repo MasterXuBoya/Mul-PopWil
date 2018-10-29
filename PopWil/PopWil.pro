@@ -11,6 +11,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 #the extern header file
 INCLUDEPATH += ../include
 INCLUDEPATH += ../Inc
+INCLUDEPATH += Controller\
+               Test\
+               UI\
+               Tool\
+               Communication\
+               Filter\
+               Draw
 
 #注：     1、-L 参数指定 .lib/.a 文件的位置
 #        2、-l  参数指定导入库文件名(不要加扩展名)
@@ -43,74 +50,71 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    qchartviewer.cpp \
-    performancetimer.cpp \
     constvar.cpp \
-    inihelper.cpp \
-    randomwalk.cpp \
-    aboutform.cpp \
-    configuredialog.cpp \
-    ctrldialog.cpp \
-    drawdialog.cpp \
-    rbf.cpp \
-    systemsettings.cpp \
-    mathtool.cpp \
-    signalprocess.cpp \
-    signalprocesswindow.cpp \
-    sinesweepmodule.cpp \
-    common.cpp \
-    logger.cpp \
-    aiinstant.cpp \
-    aoinstant.cpp \
-    doinstant.cpp \
-    aistreaming.cpp \
-    mychartviewer.cpp \
-    staticpositioncontroller.cpp \
-    AvgFilter.cpp \
-    ButtorFilter.cpp \
-    PIDController.cpp \
-    testwindow.cpp
+    Controller/PIDController.cpp \
+    Test/testwindow.cpp \
+    Controller/staticpositioncontroller.cpp \
+    Filter/AvgFilter.cpp \
+    Filter/ButtorFilter.cpp \
+    Communication/aiinstant.cpp \
+    Communication/aistreaming.cpp \
+    Communication/aoinstant.cpp \
+    Communication/doinstant.cpp \
+    Tool/common.cpp \
+    Tool/mathtool.cpp \
+    Tool/signalprocess.cpp \
+    UI/aboutform.cpp \
+    UI/configuredialog.cpp \
+    UI/ctrldialog.cpp \
+    UI/systemsettings.cpp \
+    Tool/performancetimer.cpp \
+    UI/mainwindow.cpp \
+    UI/rbf.cpp \
+    Draw/mychartviewer.cpp \
+    Draw/qchartviewer.cpp \
+    Tool/inihelper.cpp \
+    Tool/logger.cpp \
+    UI/sinesweepmodule.cpp
 
-HEADERS  += mainwindow.h \
-    qchartviewer.h \
-    qdoublebufferedqueue.h \
-    performancetimer.h \
+HEADERS  += \
     constvar.h \
-    inihelper.h \
-    randomwalk.h \
-    aboutform.h \
-    configuredialog.h \
-    ctrldialog.h \
-    drawdialog.h \
-    rbf.h \
-    systemsettings.h \
-    mathtool.h \
-    signalprocess.h \
-    signalprocesswindow.h \
-    sinesweepmodule.h \
-    common.h \
-    logger.h \
-    aiinstant.h \
-    aoinstant.h \
-    doinstant.h \
-    aistreaming.h \
-    mychartviewer.h \
-    staticpositioncontroller.h \
-    AvgFilter.h \
-    ButtorFilter.h \
-    PIDController.h \
-    testwindow.h
+    Controller/PIDController.h \
+    Test/testwindow.h \
+    Controller/staticpositioncontroller.h \
+    Filter/AVGFilter.h \
+    Filter/ButtorFilter.h \
+    Communication/aistreaming.h \
+    Communication/aoinstant.h \
+    Communication/aiinstant.h \
+    Tool/mathtool.h \
+    Communication/doinstant.h \
+    Tool/common.h \
+    Tool/signalprocess.h \
+    UI/aboutform.h \
+    UI/configuredialog.h \
+    UI/ctrldialog.h \
+    UI/systemsettings.h \
+    Tool/performancetimer.h \
+    UI/mainwindow.h \
+    UI/rbf.h \
+    Draw/bchartdir.h \
+    Draw/chartdir.h \
+    Draw/memblock.h \
+    Draw/mychartviewer.h \
+    Draw/qchartviewer.h \
+    Draw/qdoublebufferedqueue.h \
+    Tool/FinanceChart.h \
+    Tool/inihelper.h \
+    Tool/logger.h \
+    UI/sinesweepmodule.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \
     aboutform.ui \
     configuredialog.ui \
     ctrldialog.ui \
-    drawdialog.ui \
     rbf.ui \
     systemsettings.ui \
-    signalprocesswindow.ui \
     sinesweepmodule.ui
 
 
