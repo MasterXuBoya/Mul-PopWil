@@ -54,10 +54,10 @@
 #include "aistreaming.h"
 #include "mychartviewer.h"
 #include "staticpositioncontroller.h"
-#include "sinepositioncontroller.h"
 #include <vector>
 #include "AVGFilter.h"
 #include "ButtorFilter.h"
+#include "PIDController.h"
 
 using namespace Automation::BDaq;
 namespace Ui {
@@ -99,12 +99,14 @@ private:
     AvgFilter *sAvgFilter,*vAvgFilter,*aAvgFilter;
     ButtorFilter *sButtorFilter,*vButtorFilter,*aButtorFilter;
     //---------------------控制器---------------------------------------------
-    long msCount;
-    long msStartCount;
-    StaticPositionController *sController;
-    SinePositionController *sineController;
+    long msCount;//从打开程序开启的总时间   ms
+    long msStartCount;//点击开始后的时间   ms
+    int refIndex;//Reference中的索引
 
-    double x0,x1;
+    StaticPositionController *sController;
+    PIDController *sinePIDController;//正弦波PID控制器
+    PIDController *earthquakePIDController;//地震波PID控制器
+
     PerformanceTimer *timer;
     int PERFORMANCEINTERVAL;
     //------------------------动态绘图---------------------------------------------

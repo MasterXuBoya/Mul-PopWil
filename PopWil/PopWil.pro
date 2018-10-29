@@ -49,7 +49,6 @@ SOURCES += main.cpp\
     constvar.cpp \
     inihelper.cpp \
     randomwalk.cpp \
-    testwindow.cpp \
     aboutform.cpp \
     configuredialog.cpp \
     ctrldialog.cpp \
@@ -68,9 +67,10 @@ SOURCES += main.cpp\
     aistreaming.cpp \
     mychartviewer.cpp \
     staticpositioncontroller.cpp \
-    sinepositioncontroller.cpp \
     AvgFilter.cpp \
-    ButtorFilter.cpp
+    ButtorFilter.cpp \
+    PIDController.cpp \
+    testwindow.cpp
 
 HEADERS  += mainwindow.h \
     qchartviewer.h \
@@ -79,7 +79,6 @@ HEADERS  += mainwindow.h \
     constvar.h \
     inihelper.h \
     randomwalk.h \
-    testwindow.h \
     aboutform.h \
     configuredialog.h \
     ctrldialog.h \
@@ -98,9 +97,10 @@ HEADERS  += mainwindow.h \
     aistreaming.h \
     mychartviewer.h \
     staticpositioncontroller.h \
-    sinepositioncontroller.h \
     AvgFilter.h \
-    ButtorFilter.h
+    ButtorFilter.h \
+    PIDController.h \
+    testwindow.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \

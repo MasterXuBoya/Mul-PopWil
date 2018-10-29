@@ -63,7 +63,7 @@ public:
     {
         if (CtrlDialog->objectName().isEmpty())
             CtrlDialog->setObjectName(QStringLiteral("CtrlDialog"));
-        CtrlDialog->resize(502, 401);
+        CtrlDialog->resize(583, 490);
         label_4 = new QLabel(CtrlDialog);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(30, 20, 91, 21));

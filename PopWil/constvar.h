@@ -45,7 +45,7 @@ struct TPIDInfo
     double SI;
     double SD;
 };
-extern TPIDInfo sPIDInfo,sinePIDInfo;
+extern TPIDInfo sPIDInfo,sinePIDInfo;//全局变量，正弦波PID控制参数
 
 struct TSystemInfo
 {
@@ -71,13 +71,20 @@ struct DataPacket
     DataPacket(double elapsedTime_,double series0_,double series1_):elapsedTime(elapsedTime_),series0(series0_),series1(series1_){}
 };
 extern QDoubleBufferedQueue<DataPacket> buffer;//每组数据有三个
-enum TFlag{
+enum TWaveMode{
     DefaultFlag,//表示没有进入任何一个控制模式
     StaticPosionFlag,//静态位移控制
     SineWaveFlag,//正弦波位移控制
-    IterativeFlag
+    SineSweepFlag,//正弦扫描
+    EarthquakeFlag
 };
-extern TFlag globalFlag;
+extern TWaveMode waveMode;
+enum TControlMethod{
+    PIDMethod,
+    Para3Method,
+    IterativeMethod
+};
+extern TControlMethod controlMethod;
 //------------------------------------------------------------------
 //全局变量
 /*
@@ -97,7 +104,7 @@ int sum(int a,int b);
 //vector会在运行过程中复制数组，造成运算效率下降，还是使用原生态数组吧
 //extern std::vector<double> SRefArray[MAXDATACOUNT];
 
-extern int dataCnt,dataRefCnt;
+extern int dataCnt,dataRefCnt,dataRefSampleT;
 extern double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 extern double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];
 extern double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];

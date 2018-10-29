@@ -17,11 +17,11 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     logger=Logger::getInstance();
     startFlag=false;
     ui->btnStop->setEnabled(false);
-    msCount=0;msStartCount=0;//此处一定要进行初始化，否则系统自动初始化一个值，导致出错！！
+    msCount=0;msStartCount=0;refIndex=1;//此处一定要进行初始化，否则系统自动初始化一个值，导致出错！！
+
     model = new QStandardItemModel(ui->listView_eventInformation);
 
-    sController=new StaticPositionController();
-    sineController=new SinePositionController();
+
 
     //------------------load UArray------------------------
     memZero(OutUPreArray);memZero(OutUArray);
@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
 
     //sPIDInfo=hh->readFromCtrlIni("../IniSetting/CtrlIni.ini");
     hh->readFromCtrlIni("IniSetting/CtrlIni.ini",sPIDInfo,sinePIDInfo);
+
     log="[info]控制参数文件载入成功！";
     addItemToListView(log);logger->appendLogger(log);
 
@@ -56,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
         " drawInterval:"+QString::number(systemInfo.drawInterval);
     qDebug()<<log;logger->appendLogger(log);
     PERFORMANCEINTERVAL=systemInfo.contrlInterval;
+    dataRefSampleT=PERFORMANCEINTERVAL;//自己生成的参考波形的采样频率就是控制频率
 //------------------------------界面UI---------------------------------------------------------------
     setFixedSize(960, 900);
     setWindowIcon(QPixmap(":/Icon/Icon/dashboard.png"));
@@ -165,6 +167,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     connect(ui->action_SaveAsPicture,SIGNAL(triggered(bool)),dPlot,SLOT(onSave(bool)));
     ui->tabWidget_pic->setCurrentIndex(0);
     ui->rbt_S->setChecked(true);
+    ui->rbt_S_plot->setChecked(true);
     m_ChartViewer=new QChartViewer(ui->tab_preview);
     //-------------------------------滤波初始化------------------------------
     sAvgFilter=new AvgFilter();
@@ -173,6 +176,14 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     sButtorFilter=new ButtorFilter();
     vButtorFilter=new ButtorFilter();
     aButtorFilter=new ButtorFilter();
+
+    sController=new StaticPositionController();
+
+    sinePIDController=new PIDController();
+    sinePIDController->setPIDPara(sinePIDInfo);
+
+    earthquakePIDController=new PIDController();
+    earthquakePIDController->setPIDPara(sinePIDInfo);
 //---------------------------------开启多媒体定时器------------------------------------------------------------
     timer=new PerformanceTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(slotFuction()));
@@ -200,37 +211,34 @@ MainWindow::~MainWindow()
     delete aButtorFilter;
 
     delete sController;
-    delete sineController;
+    delete sinePIDController;
+    delete earthquakePIDController;
 
     delete m_ChartViewer;
     delete ui;
 }
 //------------------------------------------------------------------------------------------------------------------
-//10ms多媒体定时器 100ms绘图
+//2ms多媒体定时器 100ms绘图
 void MainWindow::slotFuction(){
-    int i,startIndex;//开始之后第几次进入定时器
-    static double sCurrent_1=0;//static修饰的静态局部变量只执行初始化一次
-    double sCurrent,vCurrent,aCurrent,refPosition,uk;
-    double series0,series1,elapsedTime,elapseStartTime;
-    //------------------------------------update time in StateBar---------------------------------------------
-    if (msCount%1000==0){
-        QDateTime time = QDateTime::currentDateTime();
-        QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
-        currentLabel->setText(str);
-    }
+    static double msCount_1000=0,msCount_100=0,msCount_10=0,elapsedTime=0,elapseStartTime=0,msStartCount_Ref=0;//static修饰的静态局部变量只执行初始化一次
+    static double sCurrent_1=0,refPosition_pre=0,refVel_pre=0,refAcc_pre=0;
+    double sCurrent,vCurrent,aCurrent,refPosition,refVel,refAcc;
+    double uk,series0,series1;
+
+    msCount      += PERFORMANCEINTERVAL;//记录程序运行总时间 ms
+    msCount_1000 += PERFORMANCEINTERVAL;//到1000ms清零
+    msCount_100  += PERFORMANCEINTERVAL;//到100ms清零
+    msCount_10   += PERFORMANCEINTERVAL;//到10ms清零
+    elapsedTime  += PERFORMANCEINTERVAL / 1000.0;//程序运行总时间，绘图使用 Unit: s
     //---------------------------------Read Real Displacement------------------------------------------------------
     sCurrent=getPosition(0);
-    sCurrent=sin(2*PI*msCount/1000)+sin(2*PI*50*msCount/1000);
-    //sCurrent=sin(2*PI*2*msCount/1000);
-    sCurrent=sAvgFilter->filter(sCurrent);
-    if (fabs(sCurrent)>systemInfo.maxAbsolutePosition) outUToPCI(0);//Protected Program
-    //---------------------------------将数据放入缓冲区---------------------------------------------------
-    msCount+=PERFORMANCEINTERVAL;
-    if (startFlag) msStartCount+=PERFORMANCEINTERVAL;
-
-    startIndex=msStartCount/PERFORMANCEINTERVAL;
-    elapsedTime=msCount / 1000.0;
-    elapseStartTime=msStartCount/1000.0;
+    sCurrent=sin(2*PI*msCount/1000)+sin(2*PI*50*msCount/1000);//for Test
+    sCurrent=sAvgFilter->filter(sCurrent);//均值滤波
+    //-----------------------位移过大保护-----------------------
+    if (fabs(sCurrent)>systemInfo.maxAbsolutePosition){ //Protected Program
+        outUToPCI(0);
+        return;//查看位移发现位移过大，直接跳出定时器，等待手动输出电压调节
+    }
     //------------------------------------差分计算速度------------------------------
     vCurrent=(sCurrent-sCurrent_1)/(PERFORMANCEINTERVAL/1000.0);
     vCurrent=vAvgFilter->filter(vCurrent);
@@ -241,35 +249,85 @@ void MainWindow::slotFuction(){
     //aCurrent=aiStreaming->getAcc();//通过SteamingAi方式获取加速度
     aCurrent=aAvgFilter->filter(aCurrent);
     aCurrent=aButtorFilter->filter(aCurrent);
-    //qDebug()<<"当前加速度是："<<aCurrent;
-    //------------------------------------------------------------------
-    if(msCount%10==0){
+
+    if(!startFlag) return;
+    //----------------------------------------------startFlag=True-------------------------------------------------------------
+    msStartCount     += PERFORMANCEINTERVAL;//点击“开始”按钮之后，运行的时间  ms
+    msStartCount_Ref += PERFORMANCEINTERVAL;
+    elapseStartTime  += PERFORMANCEINTERVAL/1000.0; //   Uint:s
+    //----------------实现开始，分成DefaultFlag、StaticPosionFlag、SineWaveFlag、SineSweepFlag、EarthquakeFlag----------
+
+    if(msStartCount_Ref>=dataRefSampleT){//参考波形的采样时间
+        if(refIndex<=dataRefCnt){
+            //----------refIndex---<=dataRefCnt--------
+            refPosition=SRefArray[refIndex];
+            refVel=VRefArray[refIndex];
+            refAcc=ARefArray[refIndex++];
+        }
+        else refPosition=refVel=refAcc=0;
+        refPosition_pre=refPosition;
+        refVel_pre=refVel;
+        refAcc_pre=refAcc;
+        msStartCount_Ref=0;
+    }else{
+        refPosition=refPosition_pre;
+        refVel=refVel_pre;
+        refAcc=refAcc_pre;
+    }
+    switch (waveMode){
+        //最佳参数：P=-0.25，I=-0，D=-0.1；
+        //P=-0.25,I=0,D=-0.5 滤波，调零之后
+        case StaticPosionFlag://静态位移控制
+            refPosition=0;uk=sController->getUk(sCurrent,refPosition);
+            outUToPCI(uk);
+            break;
+        //trajectory:sine wave   Parameter:P=-0.25,I=-0.001,D=-0.1
+        case SineWaveFlag://正弦波
+            uk=sinePIDController->getUk(refPosition,sCurrent);
+            //qDebug()<<"sinePreCnt"<<sinePreCnt<<"refPosition:"<<refPosition<<"sCurrent:"<<sCurrent<<" uk:"<<uk;
+            outUToPCI(uk);
+            break;
+        case SineSweepFlag://正弦扫频
+            break;
+        case EarthquakeFlag://外部读入地震波
+            uk=earthquakePIDController->getUk(refPosition,sCurrent);
+            outUToPCI(uk);
+            break;
+        default://Node
+            break;
+
+    }
+    //--------------10ms将数据存入绘图缓冲区----------------
+    if(msCount_10>=10){
         SArray[++dataCnt]=sCurrent;//将位移数据存进数组，从1开始计数
         VArray[dataCnt]=vCurrent;
         AArray[dataCnt]=aCurrent;
+
+        if(ui->rbt_S_plot->isChecked()){
+            series0=refPosition;series1=sCurrent;
+        }else if(ui->rbt_V_plot->isChecked()){
+            series0=refVel;series1=vCurrent;
+        }else{
+            series0=refAcc;series1=aCurrent;
+        }
+        buffer.put(DataPacket(elapsedTime,series0,series1));
+        msCount_10=0;
     }
-    series0=sCurrent;series1=sCurrent;
-    if(!startFlag) return;
-    //---------------------------AO输出---------------------------------------------------------
-    //Trajactory:static value 最佳参数：P=-0.25，I=-0，D=-0.1；
-    //P=-0.25,I=0,D=-0.5 滤波，调零之后
-    if(globalFlag==StaticPosionFlag){//PID静态位移控制——移动到指定位置
-        refPosition=0;uk=sController->getUk(sCurrent,refPosition);
-        //qDebug()<<"refPosition:"<<refPosition<<"sCurrent:"<<sCurrent<<" uk:"<<uk;
-        series0=refPosition;series1=sCurrent;
-        outUToPCI(uk);
+    //--------------------Display-----------------------------------------------
+    if(msCount_100>=100){//保留三位小数
+        ui->lcd_S->display(QString::number(sCurrent,'f',3));
+        ui->lcd_V->display(QString::number(vCurrent,'f',3));
+        ui->lcd_A->display(QString::number(aCurrent,'f',3));
+        msCount_100=0;
     }
-    //trajectory:sine wave   Parameter:P=-0.25,I=-0.001,D=-0.1
-    static int sinePreCnt=1;
-    if(globalFlag==SineWaveFlag){
-        if(sinePreCnt<=dataRefCnt)
-            refPosition=SRefArray[sinePreCnt++];
-        else refPosition=0;
-        uk=sineController->getUk(sCurrent,refPosition);
-        qDebug()<<"sinePreCnt"<<sinePreCnt<<"refPosition:"<<refPosition<<"sCurrent:"<<sCurrent<<" uk:"<<uk;
-        series0=refPosition;series1=sCurrent;
-        outUToPCI(uk);
+    //---------------update time in StateBar----------
+    if (msCount_1000>=1000){
+        QDateTime time = QDateTime::currentDateTime();
+        QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
+        currentLabel->setText(str);
+        msCount_1000=0;
     }
+}
 //   if(iterativeControl_Flag)
 //   {
 //       PosVref=10*sin(2*PI*(elapseStartTime));
@@ -285,15 +343,6 @@ void MainWindow::slotFuction(){
 //       outUToPCI(OutUArray[startIndex]);
 //       qDebug()<<"uk="<<OutUArray[startIndex]<<"  ek="<<ErrorArray[startIndex];
 //   }
-    if(msCount%100==0){//保留三位小数
-        ui->lcd_S->display(QString::number(sCurrent,'f',3));
-        ui->lcd_V->display(QString::number(vCurrent,'f',3));
-        ui->lcd_A->display(QString::number(aCurrent,'f',3));
-    }
-    //100ms将数据存入绘图缓冲区
-    if(msCount%10==0)
-        buffer.put(DataPacket(elapsedTime,series0,series1));
-}
 
 void MainWindow::on_btnStart_clicked()
 {
@@ -304,7 +353,9 @@ void MainWindow::on_btnStart_clicked()
     ui->btnStop->setEnabled(true);
     ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIcon.png)");
 
+    refIndex=1;
     startFlag=true;
+    sinePIDController->clear();//可能第一次结束，第二次试验
     //PID静态位移控制开始
     //timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
     msStartCount=0;
@@ -390,6 +441,8 @@ void MainWindow::on_action_ControlParameters_triggered()
         //exit(0);
     }
     else {
+        sinePIDController->setPIDPara(sinePIDInfo);//正弦波PID参数改变，重新载入控制器
+        earthquakePIDController->setPIDPara(sinePIDInfo);
         qDebug()<<"PID 参数是:"<<sPIDInfo.SP<<"  "<<sPIDInfo.SI<<"  "<<sPIDInfo.SD;
         qDebug()<<"sinePID 参数是:"<<sinePIDInfo.SP<<"  "<<sinePIDInfo.SI<<"  "<<sinePIDInfo.SD;
     }
@@ -497,6 +550,7 @@ void MainWindow::outUToPCI(double value)
 
 void MainWindow::on_btn_clearZero_clicked()
 {
+    waveMode=DefaultFlag;//否则进入slotFunction会进入静态控制模式
      Enc7480_Set_Encoder(0,0);
      ui->lcd_S->display(QString::number(0,'f',3));
 }
@@ -570,7 +624,7 @@ void MainWindow::on_btn_static_comfirm_clicked()
     double sCurrent=getPosition(0);//这个就是当前的基准电压
     double desPosition=ui->lineEdit_desPosition->text().toDouble();
     sController->configure(desPosition,sCurrent);
-    globalFlag=StaticPosionFlag;
+    waveMode=StaticPosionFlag;
 }
 
 void MainWindow::on_btn_DO_clicked()
@@ -708,7 +762,7 @@ void MainWindow::on_btn_sine_load_clicked()
         elapseStartTime += systemInfo.contrlInterval*1.0/1000;
     }
     Enc7480_Set_Encoder(0,0);
-    globalFlag=SineWaveFlag;
+    waveMode=SineWaveFlag;
 }
 
 void MainWindow::on_btn_preview_earth_clicked()

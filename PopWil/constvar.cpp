@@ -6,9 +6,10 @@
 TPIDInfo sPIDInfo,sinePIDInfo;//静态控制PID三个参数
 TSystemInfo systemInfo;//系统参数
 QDoubleBufferedQueue<DataPacket> buffer;//每组数据有三个
-TFlag globalFlag=DefaultFlag;//控制模式标志位
+TWaveMode waveMode;//要控制的波形
+TControlMethod controlMethod;//控制方法，对于一个波形存在多种控制方法
 
-int dataCnt=0,dataRefCnt=0;
+int dataCnt=0,dataRefCnt=0,dataRefSampleT=0;
 double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];
 double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];

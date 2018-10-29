@@ -124,16 +124,30 @@ public:
     QPushButton *btn_sine_load;
     QWidget *tab_3;
     QGroupBox *groupBox;
+    QComboBox *cmb_earth;
+    QPushButton *btn_preview_earth;
+    QWidget *layoutWidget4;
+    QHBoxLayout *horizontalLayout_6;
     QRadioButton *rbt_S;
     QRadioButton *rbt_V;
     QRadioButton *rbt_A;
-    QComboBox *cmb_earth;
-    QPushButton *btn_preview_earth;
+    QLabel *label_10;
+    QLabel *label_11;
+    QLabel *lab_earth_sample_T;
+    QLabel *label_14;
+    QLabel *lab_earth_sample_Cnt;
     QFrame *picFrame;
     QTabWidget *tabWidget_pic;
     QWidget *tab_draw;
     QFrame *drawFrame;
     QWidget *tab_preview;
+    QFrame *frame;
+    QLabel *labeStatusl_3;
+    QWidget *layoutWidget5;
+    QHBoxLayout *horizontalLayout_7;
+    QRadioButton *rbt_S_plot;
+    QRadioButton *rbt_V_plot;
+    QRadioButton *rbt_A_plot;
     QMenuBar *menuBar;
     QMenu *menu_File;
     QMenu *menu;
@@ -363,12 +377,12 @@ public:
         listView_eventInformation->setGeometry(QRect(0, 30, 660, 190));
         controlFrame = new QFrame(centralWidget);
         controlFrame->setObjectName(QStringLiteral("controlFrame"));
-        controlFrame->setGeometry(QRect(660, 380, 300, 441));
+        controlFrame->setGeometry(QRect(660, 380, 300, 331));
         controlFrame->setFrameShape(QFrame::StyledPanel);
         controlFrame->setFrameShadow(QFrame::Plain);
         tabWidget_controller = new QTabWidget(controlFrame);
         tabWidget_controller->setObjectName(QStringLiteral("tabWidget_controller"));
-        tabWidget_controller->setGeometry(QRect(1, 0, 300, 391));
+        tabWidget_controller->setGeometry(QRect(1, 0, 300, 331));
         tabWidget_controller->setStyleSheet(QLatin1String("QTabBar::tab{background:transparent;font:bold;color:#000000;min-width:30ex;min-height:10ex;}\n"
 "QTabBar::tab:hover{background:#CCFFFF;}\n"
 "QTabBar::tab:selected{background:#99CCFF;border-color: green;}"));
@@ -386,7 +400,7 @@ public:
         groupBox_2->setGeometry(QRect(10, 10, 281, 80));
         layoutWidget1 = new QWidget(groupBox_2);
         layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(0, 30, 291, 25));
+        layoutWidget1->setGeometry(QRect(10, 30, 261, 25));
         horizontalLayout_4 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -423,7 +437,7 @@ public:
         groupBox_3->setGeometry(QRect(10, 140, 281, 71));
         layoutWidget2 = new QWidget(groupBox_3);
         layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(0, 30, 281, 25));
+        layoutWidget2->setGeometry(QRect(10, 30, 261, 25));
         horizontalLayout_5 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_5->setSpacing(6);
         horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
@@ -554,22 +568,53 @@ public:
         tab_3->setObjectName(QStringLiteral("tab_3"));
         groupBox = new QGroupBox(tab_3);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(10, 40, 281, 171));
-        rbt_S = new QRadioButton(groupBox);
-        rbt_S->setObjectName(QStringLiteral("rbt_S"));
-        rbt_S->setGeometry(QRect(30, 80, 89, 16));
-        rbt_V = new QRadioButton(groupBox);
-        rbt_V->setObjectName(QStringLiteral("rbt_V"));
-        rbt_V->setGeometry(QRect(30, 110, 89, 16));
-        rbt_A = new QRadioButton(groupBox);
-        rbt_A->setObjectName(QStringLiteral("rbt_A"));
-        rbt_A->setGeometry(QRect(30, 140, 89, 16));
+        groupBox->setGeometry(QRect(10, 10, 281, 221));
         cmb_earth = new QComboBox(groupBox);
         cmb_earth->setObjectName(QStringLiteral("cmb_earth"));
         cmb_earth->setGeometry(QRect(31, 35, 181, 20));
         btn_preview_earth = new QPushButton(groupBox);
         btn_preview_earth->setObjectName(QStringLiteral("btn_preview_earth"));
-        btn_preview_earth->setGeometry(QRect(140, 100, 75, 23));
+        btn_preview_earth->setGeometry(QRect(100, 190, 75, 23));
+        layoutWidget4 = new QWidget(groupBox);
+        layoutWidget4->setObjectName(QStringLiteral("layoutWidget4"));
+        layoutWidget4->setGeometry(QRect(30, 80, 221, 21));
+        horizontalLayout_6 = new QHBoxLayout(layoutWidget4);
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
+        rbt_S = new QRadioButton(layoutWidget4);
+        rbt_S->setObjectName(QStringLiteral("rbt_S"));
+
+        horizontalLayout_6->addWidget(rbt_S);
+
+        rbt_V = new QRadioButton(layoutWidget4);
+        rbt_V->setObjectName(QStringLiteral("rbt_V"));
+
+        horizontalLayout_6->addWidget(rbt_V);
+
+        rbt_A = new QRadioButton(layoutWidget4);
+        rbt_A->setObjectName(QStringLiteral("rbt_A"));
+
+        horizontalLayout_6->addWidget(rbt_A);
+
+        label_10 = new QLabel(groupBox);
+        label_10->setObjectName(QStringLiteral("label_10"));
+        label_10->setGeometry(QRect(30, 120, 61, 16));
+        label_11 = new QLabel(groupBox);
+        label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setGeometry(QRect(30, 150, 61, 21));
+        lab_earth_sample_T = new QLabel(groupBox);
+        lab_earth_sample_T->setObjectName(QStringLiteral("lab_earth_sample_T"));
+        lab_earth_sample_T->setGeometry(QRect(110, 120, 61, 21));
+        lab_earth_sample_T->setStyleSheet(QStringLiteral("background-color: rgb(147, 127, 137);"));
+        label_14 = new QLabel(groupBox);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setGeometry(QRect(190, 120, 54, 12));
+        lab_earth_sample_Cnt = new QLabel(groupBox);
+        lab_earth_sample_Cnt->setObjectName(QStringLiteral("lab_earth_sample_Cnt"));
+        lab_earth_sample_Cnt->setGeometry(QRect(110, 150, 61, 21));
+        lab_earth_sample_Cnt->setStyleSheet(QStringLiteral("background-color: rgb(243, 255, 225);"));
         tabWidget_controller->addTab(tab_3, QString());
         picFrame = new QFrame(centralWidget);
         picFrame->setObjectName(QStringLiteral("picFrame"));
@@ -592,6 +637,40 @@ public:
         tab_preview = new QWidget();
         tab_preview->setObjectName(QStringLiteral("tab_preview"));
         tabWidget_pic->addTab(tab_preview, QString());
+        frame = new QFrame(centralWidget);
+        frame->setObjectName(QStringLiteral("frame"));
+        frame->setGeometry(QRect(660, 710, 311, 111));
+        frame->setFrameShape(QFrame::StyledPanel);
+        frame->setFrameShadow(QFrame::Plain);
+        labeStatusl_3 = new QLabel(frame);
+        labeStatusl_3->setObjectName(QStringLiteral("labeStatusl_3"));
+        labeStatusl_3->setGeometry(QRect(0, 0, 301, 30));
+        labeStatusl_3->setStyleSheet(QLatin1String("font: 75 12pt \"Agency FB\";\n"
+"background-color: rgb(153, 204, 255);"));
+        labeStatusl_3->setTextFormat(Qt::PlainText);
+        layoutWidget5 = new QWidget(frame);
+        layoutWidget5->setObjectName(QStringLiteral("layoutWidget5"));
+        layoutWidget5->setGeometry(QRect(40, 50, 211, 41));
+        horizontalLayout_7 = new QHBoxLayout(layoutWidget5);
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
+        rbt_S_plot = new QRadioButton(layoutWidget5);
+        rbt_S_plot->setObjectName(QStringLiteral("rbt_S_plot"));
+
+        horizontalLayout_7->addWidget(rbt_S_plot);
+
+        rbt_V_plot = new QRadioButton(layoutWidget5);
+        rbt_V_plot->setObjectName(QStringLiteral("rbt_V_plot"));
+
+        horizontalLayout_7->addWidget(rbt_V_plot);
+
+        rbt_A_plot = new QRadioButton(layoutWidget5);
+        rbt_A_plot->setObjectName(QStringLiteral("rbt_A_plot"));
+
+        horizontalLayout_7->addWidget(rbt_A_plot);
+
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -673,8 +752,8 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget_controller->setCurrentIndex(2);
-        tabWidget_pic->setCurrentIndex(1);
+        tabWidget_controller->setCurrentIndex(0);
+        tabWidget_pic->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -742,13 +821,22 @@ public:
         btn_sine_load->setText(QApplication::translate("MainWindow", "\350\275\275\345\205\245\345\217\202\346\225\260", 0));
         tabWidget_controller->setTabText(tabWidget_controller->indexOf(tab_2), QApplication::translate("MainWindow", "\346\255\243\345\274\246\346\263\242", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "\345\234\260\351\234\207\346\263\242", 0));
+        btn_preview_earth->setText(QApplication::translate("MainWindow", "\351\242\204\350\247\210", 0));
         rbt_S->setText(QApplication::translate("MainWindow", "\344\275\215\347\247\273", 0));
         rbt_V->setText(QApplication::translate("MainWindow", "\351\200\237\345\272\246", 0));
         rbt_A->setText(QApplication::translate("MainWindow", "\345\212\240\351\200\237\345\272\246", 0));
-        btn_preview_earth->setText(QApplication::translate("MainWindow", "\351\242\204\350\247\210", 0));
+        label_10->setText(QApplication::translate("MainWindow", "\351\207\207\346\240\267\345\221\250\346\234\237\357\274\232", 0));
+        label_11->setText(QApplication::translate("MainWindow", "\351\207\207\346\240\267\347\202\271\346\225\260\357\274\232", 0));
+        lab_earth_sample_T->setText(QString());
+        label_14->setText(QApplication::translate("MainWindow", "ms", 0));
+        lab_earth_sample_Cnt->setText(QString());
         tabWidget_controller->setTabText(tabWidget_controller->indexOf(tab_3), QApplication::translate("MainWindow", "\345\234\260\351\234\207\346\263\242", 0));
         tabWidget_pic->setTabText(tabWidget_pic->indexOf(tab_draw), QApplication::translate("MainWindow", "\345\212\250\346\200\201\346\233\262\347\272\277", 0));
         tabWidget_pic->setTabText(tabWidget_pic->indexOf(tab_preview), QApplication::translate("MainWindow", "\351\242\204\350\247\210", 0));
+        labeStatusl_3->setText(QApplication::translate("MainWindow", "\345\256\236\346\227\266\346\233\262\347\272\277\345\217\202\346\225\260", 0));
+        rbt_S_plot->setText(QApplication::translate("MainWindow", "\344\275\215\347\247\273", 0));
+        rbt_V_plot->setText(QApplication::translate("MainWindow", "\351\200\237\345\272\246", 0));
+        rbt_A_plot->setText(QApplication::translate("MainWindow", "\345\212\240\351\200\237\345\272\246", 0));
         menu_File->setTitle(QApplication::translate("MainWindow", "\346\226\207\344\273\266(&F)", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\346\226\260\345\273\272\350\257\225\351\252\214", 0));
         menu_View->setTitle(QApplication::translate("MainWindow", "\350\247\206\345\233\276(&V)", 0));

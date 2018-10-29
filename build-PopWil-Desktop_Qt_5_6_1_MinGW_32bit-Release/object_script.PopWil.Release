@@ -25,9 +25,9 @@ INPUT(
 ./release\aistreaming.o
 ./release\mychartviewer.o
 ./release\staticpositioncontroller.o
-./release\sinepositioncontroller.o
 ./release\AvgFilter.o
 ./release\ButtorFilter.o
+./release\PIDController.o
 ./release\qrc_resource.o
 ./release\moc_mainwindow.o
 ./release\moc_qchartviewer.o
