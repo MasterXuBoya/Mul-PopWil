@@ -40,10 +40,18 @@
        <layout class="QHBoxLayout" name="horizontalLayout"/>
       </item>
       <item row="1" column="2">
-       <widget class="QLineEdit" name="Edit_end"/>
+       <widget class="QLineEdit" name="Edit_end">
+        <property name="text">
+         <string>10</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLineEdit" name="Edit_start"/>
+       <widget class="QLineEdit" name="Edit_start">
+        <property name="text">
+         <string>1</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
@@ -53,7 +61,11 @@
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QLineEdit" name="Edit_sweepTime"/>
+       <widget class="QLineEdit" name="Edit_sweepTime">
+        <property name="text">
+         <string>10</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
@@ -84,7 +96,7 @@
       <item row="1" column="2">
        <widget class="QLineEdit" name="Edit_sample">
         <property name="text">
-         <string>100</string>
+         <string>200</string>
         </property>
        </widget>
       </item>
@@ -105,7 +117,7 @@
       <item row="0" column="2">
        <widget class="QLineEdit" name="Edit_peak">
         <property name="text">
-         <string>1</string>
+         <string>10</string>
         </property>
        </widget>
       </item>

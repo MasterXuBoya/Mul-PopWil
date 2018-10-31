@@ -56,10 +56,10 @@ public:
         SystemSettings->resize(716, 499);
         btnSaveOnce = new QPushButton(SystemSettings);
         btnSaveOnce->setObjectName(QStringLiteral("btnSaveOnce"));
-        btnSaveOnce->setGeometry(QRect(110, 400, 121, 41));
+        btnSaveOnce->setGeometry(QRect(130, 420, 121, 41));
         btnClose = new QPushButton(SystemSettings);
         btnClose->setObjectName(QStringLiteral("btnClose"));
-        btnClose->setGeometry(QRect(350, 400, 141, 41));
+        btnClose->setGeometry(QRect(390, 420, 141, 41));
         groupBox = new QGroupBox(SystemSettings);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(360, 0, 331, 181));

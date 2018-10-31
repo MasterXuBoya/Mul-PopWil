@@ -74,7 +74,12 @@ SOURCES += main.cpp\
     Draw/qchartviewer.cpp \
     Tool/inihelper.cpp \
     Tool/logger.cpp \
-    UI/sinesweepmodule.cpp
+    UI/sinesweepmodule.cpp \
+    Controller/TVController.cpp \
+    Controller/PID3Controller.cpp \
+    Tool/Oscilator.cpp \
+    Draw/DisplayBuffer.cpp \
+    UI/DisplayBufferForm.cpp
 
 HEADERS  += \
     constvar.h \
@@ -106,7 +111,13 @@ HEADERS  += \
     Tool/FinanceChart.h \
     Tool/inihelper.h \
     Tool/logger.h \
-    UI/sinesweepmodule.h
+    UI/sinesweepmodule.h \
+    Controller/TVController.h \
+    Controller/PID3Controller.h \
+    UI/popwilheader.h \
+    Tool/Oscilator.h \
+    Draw/DisplayBuffer.h \
+    UI/DisplayBufferForm.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \
@@ -115,7 +126,8 @@ FORMS    += mainwindow.ui \
     ctrldialog.ui \
     rbf.ui \
     systemsettings.ui \
-    sinesweepmodule.ui
+    sinesweepmodule.ui \
+    DisplayBufferForm.ui
 
 
 QMAKE_CXXFLAGS += -Wno-unused-variable

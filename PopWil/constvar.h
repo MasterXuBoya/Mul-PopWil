@@ -10,7 +10,7 @@
 #define PI  3.1415926535898
 
 using namespace Automation::BDaq;
-#define MAXDATACOUNT 120000//每秒200个数据，100分钟
+#define MAXDATACOUNT 300000//每秒500个数据，10分钟
 //------------------------------------------------------------------
 //定义结构型变量
 struct ConfigureParameterAO
@@ -47,6 +47,26 @@ struct TPIDInfo
 };
 extern TPIDInfo sPIDInfo,sinePIDInfo;//全局变量，正弦波PID控制参数
 
+struct TPID3Info{
+    TPIDInfo dis;
+    TPIDInfo vel;
+    TPIDInfo acc;
+};
+extern TPID3Info pid3Info;
+
+struct TTVCInfo//三参量参数类型
+{
+    double fs,fv,fa;//前馈
+    double bs,bv,ba;//反馈
+};
+extern TTVCInfo tvcInfo;
+
+struct TStateInfo{
+    double S,V,A;
+    TStateInfo(){}
+    TStateInfo(double S_,double V_,double A_):S(S_),V(V_),A(A_){}//构造函数
+};
+
 struct TSystemInfo
 {
     int contrlInterval;
@@ -76,15 +96,32 @@ enum TWaveMode{
     StaticPosionFlag,//静态位移控制
     SineWaveFlag,//正弦波位移控制
     SineSweepFlag,//正弦扫描
+    RandomFlag,//随机波
+    TriangleFlag,//三角波
     EarthquakeFlag
 };
-extern TWaveMode waveMode;
+extern TWaveMode waveMode,waveModeTmp;
 enum TControlMethod{
     PIDMethod,
     Para3Method,
+    PID3Method,
     IterativeMethod
 };
 extern TControlMethod controlMethod;
+
+struct TSineWaveInfo{
+    double mid ;//中心坐标
+    double mag ;//幅值
+    double fs  ;//频率
+    double sineCnt;//重复次数
+    TSineWaveInfo(double mid_,double mag_,double fs_,double sineCnt_):
+    mid(mid_),mag(mag_),fs(fs_),sineCnt(sineCnt_){}
+};
+struct TDisplayDelay{//位移、速度、加速度延迟绘图参数
+    int sDelay,vDelay,aDelay;
+};
+extern TDisplayDelay displayDelay;
+
 //------------------------------------------------------------------
 //全局变量
 /*
@@ -100,16 +137,24 @@ extern const int m;
 int sum(int a,int b);
 
 */
-
 //vector会在运行过程中复制数组，造成运算效率下降，还是使用原生态数组吧
 //extern std::vector<double> SRefArray[MAXDATACOUNT];
 
-extern int dataCnt,dataRefCnt,dataRefSampleT;
+extern int dataCnt,dataRefCnt;
 extern double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 extern double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];
 extern double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];
 extern double OutUPreArray[MAXDATACOUNT],OutUArray[MAXDATACOUNT];
 extern double ErrorPreArray[MAXDATACOUNT],ErrorArray[MAXDATACOUNT];
+
+struct TRefData{
+    int refCnt;//采样点数
+    int dataRefSampleT;//采样时间 unit ms
+    double SRef[MAXDATACOUNT];
+    double VRef[MAXDATACOUNT];
+    double ARef[MAXDATACOUNT];
+};
+extern TRefData refData;//自己生成，或者载入外部的参考波形
 
 QString CheckError(ErrorCode errorCode);
 

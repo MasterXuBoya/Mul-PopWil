@@ -14,9 +14,7 @@ SineSweepModule::SineSweepModule(QWidget *parent) :
     ui->setupUi(this);
 
     this->ui->Edit_start->setFocus();
-    this->ui->Edit_peak->setText("1");
     this->ui->Edit_peak->setEnabled(false);
-    this->ui->Edit_sample->setText("100");
     this->ui->Edit_sample->setEnabled(false);
     this->ui->radio_linear->setChecked(true);
 }
@@ -96,7 +94,7 @@ void SineSweepModule::sweep_generator(int type, int f0, int f1, int sample, doub
     //vector<int> q;
     //vector<sineSweepNode> data;
 
-    f=fopen("E://SingalGenerator//SineSweepData.txt","wt");
+    f=fopen("E://PopWilCacher//SingalGenerator//SineSweepData.txt","wt");
     if(f==NULL)
     {
        qDebug()<<"文件打开失败";
@@ -105,6 +103,7 @@ void SineSweepModule::sweep_generator(int type, int f0, int f1, int sample, doub
     else
     {
        qDebug()<<"文件打开成功";
+       fprintf(f,"采样时间        %d\n",1000/sample);
        fprintf(f,"时间[s]      幅值       频率[Hz]\n");
     }
     if(type==1)//线性扫频
@@ -138,7 +137,7 @@ void SineSweepModule::sweep_generator(int type, int f0, int f1, int sample, doub
         }
 
     }
-    QString successMessage="扫频数据保存成功，位置在E:/SingalGenerator/SineSweepData.txt";
+    QString successMessage="扫频数据保存成功，位置在E:/PopWilCacher/SingalGenerator/SineSweepData.txt";
     qDebug()<<successMessage;
     QMessageBox::information(NULL, "提示",successMessage, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
     fclose(f);

@@ -4,8 +4,8 @@
 #include <cstring>
 ButtorFilter::ButtorFilter()
 {
-    memset(xv,0,sizeof(xv));
-    memset(yv,0,sizeof(yv));
+    for(int i=0;i<=NZEROS;i++)
+        xv[i]=yv[i]=0;
 }
 
 ButtorFilter::~ButtorFilter(){

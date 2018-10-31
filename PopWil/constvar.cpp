@@ -4,17 +4,22 @@
 #include "logger.h"
 
 TPIDInfo sPIDInfo,sinePIDInfo;//静态控制PID三个参数
+TPID3Info pid3Info;//位移、速度、加速度PID控制
+TTVCInfo tvcInfo;//三参量控制的六个参数，前馈三个，反馈三个
 TSystemInfo systemInfo;//系统参数
 QDoubleBufferedQueue<DataPacket> buffer;//每组数据有三个
-TWaveMode waveMode;//要控制的波形
+
+TWaveMode waveMode,waveModeTmp;//要控制的波形
 TControlMethod controlMethod;//控制方法，对于一个波形存在多种控制方法
 
-int dataCnt=0,dataRefCnt=0,dataRefSampleT=0;
+TDisplayDelay displayDelay={2,25,2};
+int dataCnt=0,dataRefCnt=0;
 double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];
 double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];
 double OutUPreArray[MAXDATACOUNT],OutUArray[MAXDATACOUNT];
 double ErrorPreArray[MAXDATACOUNT],ErrorArray[MAXDATACOUNT];
+TRefData refData;
 
 //int ss=18;
 //QString str="Hello";
@@ -69,7 +74,7 @@ void getEarthquakeWave(const QString &path){
         return;
     }
     qDebug()<<"地震波文件"+path+"打开成功！";
-    int cnt=0,interval;
+    int cnt=0;
     QTextStream in(&file);
     while (!in.atEnd()) {
         cnt++;
@@ -78,17 +83,16 @@ void getEarthquakeWave(const QString &path){
         line=line.simplified();//将连续的空格转化成一个
         QStringList lines=line.split(" ");//分割
         if(cnt==1){
-            //qDebug()<<lines[1];
-            interval=lines[1].toInt();
+            refData.dataRefSampleT=lines[1].toInt();
             continue;
         }
         if(cnt==2) continue;
         int i=lines[0].toInt();
-        SRefArray[i]=lines[1].toDouble();
-        VRefArray[i]=lines[2].toDouble();
-        ARefArray[i]=lines[3].toDouble();
+        refData.SRef[i]=lines[1].toDouble();
+        refData.VRef[i]=lines[2].toDouble();
+        refData.ARef[i]=lines[3].toDouble();
     }
-    dataRefCnt=cnt-2;
+    refData.refCnt=cnt-2;
     //qDebug()<<dataRefCnt<<"       "<<interval;
 }
 

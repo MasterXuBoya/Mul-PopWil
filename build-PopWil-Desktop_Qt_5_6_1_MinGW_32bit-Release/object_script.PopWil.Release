@@ -25,6 +25,11 @@ INPUT(
 ./release\inihelper.o
 ./release\logger.o
 ./release\sinesweepmodule.o
+./release\TVController.o
+./release\PID3Controller.o
+./release\Oscilator.o
+./release\DisplayBuffer.o
+./release\DisplayBufferForm.o
 ./release\qrc_resource.o
 ./release\moc_testwindow.o
 ./release\moc_aboutform.o
@@ -37,4 +42,5 @@ INPUT(
 ./release\moc_mychartviewer.o
 ./release\moc_qchartviewer.o
 ./release\moc_sinesweepmodule.o
+./release\moc_DisplayBufferForm.o
 );

@@ -96,6 +96,45 @@ TSystemInfo IniHelper::readFromSystemInfoIni(QString fileName)
     return tmp;
 }
 
+void IniHelper::readFromTVCIno(QString fileName){
+    if (fileName==NULL||fileName==""){
+        QMessageBox::information(NULL,"提示","文件名为空，请重新输入",QMessageBox::Ok|QMessageBox::Cancel);
+        qDebug()<<"Warning：Ini文件名为空！";
+    }
+    configIniRead = new QSettings(fileName, QSettings::IniFormat);
+    //全局变量tvcInfo,记录系统三参量的六个参数
+    tvcInfo.fs=configIniRead->value("/TvcInfo/fs").toString().toDouble();
+    tvcInfo.fv=configIniRead->value("/TvcInfo/fv").toString().toDouble();
+    tvcInfo.fa=configIniRead->value("/TvcInfo/fa").toString().toDouble();
+    tvcInfo.bs=configIniRead->value("/TvcInfo/bs").toString().toDouble();
+    tvcInfo.bv=configIniRead->value("/TvcInfo/bv").toString().toDouble();
+    tvcInfo.ba=configIniRead->value("/TvcInfo/ba").toString().toDouble();
+
+    pid3Info.dis.SP=configIniRead->value("/PID3Info/dis/SP").toString().toDouble();
+    pid3Info.dis.SI=configIniRead->value("/PID3Info/dis/SI").toString().toDouble();
+    pid3Info.dis.SD=configIniRead->value("/PID3Info/dis/SD").toString().toDouble();
+
+    pid3Info.vel.SP=configIniRead->value("/PID3Info/vel/SP").toString().toDouble();
+    pid3Info.vel.SI=configIniRead->value("/PID3Info/vel/SI").toString().toDouble();
+    pid3Info.vel.SD=configIniRead->value("/PID3Info/vel/SD").toString().toDouble();
+
+    pid3Info.acc.SP=configIniRead->value("/PID3Info/acc/SP").toString().toDouble();
+    pid3Info.acc.SI=configIniRead->value("/PID3Info/acc/SI").toString().toDouble();
+    pid3Info.acc.SD=configIniRead->value("/PID3Info/acc/SD").toString().toDouble();
+
+//    qDebug()<<pid3Info.dis.SP;
+//    qDebug()<<pid3Info.dis.SI;
+//    qDebug()<<pid3Info.dis.SD;
+//    qDebug()<<pid3Info.vel.SP;
+//    qDebug()<<pid3Info.vel.SI;
+//    qDebug()<<pid3Info.vel.SD;
+//    qDebug()<<pid3Info.acc.SP;
+//    qDebug()<<pid3Info.acc.SI;
+//    qDebug()<<pid3Info.acc.SD;
+
+    delete configIniRead;
+}
+//--------------------------------------------------------------------------------------------------------
 bool IniHelper::writeToPCIIni(QString fileName,ConfigureParameterPCI tmp)
 {
     if (fileName==NULL||fileName=="")
@@ -169,6 +208,43 @@ bool IniHelper::writeToSystemInfoIni(QString fileName,TSystemInfo tmp)
     configIniWrite->setValue("DrawInterval", tmp.drawInterval);
     configIniWrite->setValue("MaxAbsolutePosition", tmp.maxAbsolutePosition);
     configIniWrite->setValue("MaxOutU", tmp.maxOutU);
+    configIniWrite->endGroup();
+
+    delete configIniWrite;
+    return true;
+}
+
+bool IniHelper::writeToTvcInfo(QString fileName){
+    if (fileName==NULL||fileName=="")
+    {
+        QMessageBox::information(NULL,"提示","文件名为空，请重新输入",QMessageBox::Ok|QMessageBox::Cancel);
+        qDebug()<<"Warning：Ini文件名为空！";
+        return false;
+    }
+    configIniWrite = new QSettings(fileName, QSettings::IniFormat);//此处支持绝对路径
+
+    configIniWrite->beginGroup(QString("TvcInfo"));
+    configIniWrite->setValue("fs", tvcInfo.fs);
+    configIniWrite->setValue("fv", tvcInfo.fv);
+    configIniWrite->setValue("fa", tvcInfo.fa);
+    configIniWrite->setValue("bs", tvcInfo.bs);
+    configIniWrite->setValue("bv", tvcInfo.bv);
+    configIniWrite->setValue("ba", tvcInfo.ba);
+    configIniWrite->endGroup();
+
+    configIniWrite->beginGroup(QString("PID3Info"));
+    configIniWrite->setValue("dis/SP",pid3Info.dis.SP);
+    configIniWrite->setValue("dis/SI",pid3Info.dis.SI);
+    configIniWrite->setValue("dis/SD",pid3Info.dis.SD);
+
+    configIniWrite->setValue("vel/SP",pid3Info.vel.SP);
+    configIniWrite->setValue("vel/SI",pid3Info.vel.SI);
+    configIniWrite->setValue("vel/SD",pid3Info.vel.SD);
+
+    configIniWrite->setValue("acc/SP",pid3Info.acc.SP);
+    configIniWrite->setValue("acc/SI",pid3Info.acc.SI);
+    configIniWrite->setValue("acc/SD",pid3Info.acc.SD);
+
     configIniWrite->endGroup();
 
     delete configIniWrite;

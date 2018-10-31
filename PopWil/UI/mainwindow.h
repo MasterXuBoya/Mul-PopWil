@@ -1,63 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "stdio.h"
-#include <QObject>
-#include <string>
-#include <QMainWindow>
-#include <QDialog>
-#include <QDateTime>
-#include <QTimer>
-#include <QLabel>
-#include <QScrollbar>
-#include "qchartviewer.h"
-#include "qdoublebufferedqueue.h"
-#include "bdaqctrl.h"
-#include "configuredialog.h"
-#include "performancetimer.h"
-#include "QStandardItemModel"
-#include "qstring.h"
-#include "logger.h"
-#include "aiinstant.h"
-#include "aoinstant.h"
-#include <QCloseEvent>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QIcon>
-#include <QPushButton>
-#include <QComboBox>
-#include <QFileDialog>
-#include "chartdir.h"
-#include <math.h>
-#include <vector>
-#include <sstream>
-#include "qdebug.h"
-#include "QTime"
-#include "qmessagebox.h"
-#include "aboutform.h"
-#include "qdesktopservices.h"
-#include <QProcess>
-#include "Enc7480.h"
-#include "qmath.h"
-#include "inihelper.h"
-#include "ctrldialog.h"
-#include "rbf.h"
-#include "systemsettings.h"
-#include "QStandardItem"
-#include "mathtool.h"
-//#include "QtXlsx"
-#include "signalprocess.h"
-#include "constvar.h"
-#include <QTextCodec>
-#include <QTextStream>
-#include "doinstant.h"
-#include "aistreaming.h"
-#include "mychartviewer.h"
-#include "staticpositioncontroller.h"
-#include <vector>
-#include "AVGFilter.h"
-#include "ButtorFilter.h"
-#include "PIDController.h"
+#include "popwilheader.h"
 
 using namespace Automation::BDaq;
 namespace Ui {
@@ -79,6 +23,7 @@ public:
     void dataSaveToTxt();
     void closeEvent(QCloseEvent *event);
     double getPosition(int direct);
+    void wavePreview(QString title);
 
 private:
     Ui::MainWindow *ui;
@@ -95,23 +40,34 @@ private:
 
     AiStreaming *aiStreaming;
     ConfigureParameterAI configureAI;//AI输入配置    
+    //---------------------信号发生器---------------------------
+    Oscilator oscilator;
+    SineSweepModule sineSweepForm;
     //-------------------------滤波器-------------------------------------
     AvgFilter *sAvgFilter,*vAvgFilter,*aAvgFilter;
     ButtorFilter *sButtorFilter,*vButtorFilter,*aButtorFilter;
+    AvgFilter v2AvgFilter;
+    ButtorFilter v2ButtorFilter;
     //---------------------控制器---------------------------------------------
     long msCount;//从打开程序开启的总时间   ms
-    long msStartCount;//点击开始后的时间   ms
+    //-------试验开始之后变量----------------
+    long msStartCount,msStartCount_Ref;//点击开始后的时间   ms
+    double elapseStartTime;
     int refIndex;//Reference中的索引
 
     StaticPositionController *sController;
     PIDController *sinePIDController;//正弦波PID控制器
-    PIDController *earthquakePIDController;//地震波PID控制器
+    //PIDController *earthquakePIDController;//地震波PID控制器
+    TVController tvcController;
+    PID3Controller pid3Controller;
 
     PerformanceTimer *timer;
     int PERFORMANCEINTERVAL;
     //------------------------动态绘图---------------------------------------------
     MyChartViewer *dPlot;
     QChartViewer *m_ChartViewer;
+
+    DisplayBuffer sDisplayBuffer,vDisplayBuffer,aDisplayBuffer;
     //------------------------UI---------------------------------------------
     QLabel *currentLabel;
     QStandardItemModel *model;
@@ -141,7 +97,14 @@ private slots:
     void on_action_ZoomOut_triggered();
     void on_btn_out_uk_clicked();
     void on_btn_sine_load_clicked();
-    void on_btn_preview_earth_clicked();
+    void on_cmb_contr_method_currentIndexChanged(int index);
+    void on_tabWidget_controller_currentChanged(int index);
+    void on_btn_load_clicked();
+    void on_listWidget_waveMode_currentRowChanged(int currentRow);
+    void on_btn_preview_clicked();
+    void on_btn_sineswep_config_clicked();
+    void on_btn_sineSweep_open_clicked();
+    void on_actionAction_drawDelay_triggered();
 };
 #endif // MAINWINDOW_H
 

@@ -196,13 +196,16 @@ public:
         actionOpen->setText(QApplication::translate("SineSweepModule", "\346\211\223\345\274\200", 0));
         actionSave->setText(QApplication::translate("SineSweepModule", "\344\277\235\345\255\230", 0));
         groupBox->setTitle(QApplication::translate("SineSweepModule", "\345\237\272\346\234\254\350\256\276\347\275\256", 0));
+        Edit_end->setText(QApplication::translate("SineSweepModule", "10", 0));
+        Edit_start->setText(QApplication::translate("SineSweepModule", "1", 0));
         label_2->setText(QApplication::translate("SineSweepModule", "\347\273\223\346\235\237\351\242\221\347\216\207 [Hz]", 0));
+        Edit_sweepTime->setText(QApplication::translate("SineSweepModule", "10", 0));
         label->setText(QApplication::translate("SineSweepModule", "\345\274\200\345\247\213\351\242\221\347\216\207 [Hz]", 0));
         label_3->setText(QApplication::translate("SineSweepModule", "\346\211\253\351\242\221\346\227\266\351\227\264 [s]", 0));
-        Edit_sample->setText(QApplication::translate("SineSweepModule", "100", 0));
+        Edit_sample->setText(QApplication::translate("SineSweepModule", "200", 0));
         checkBox_2->setText(QApplication::translate("SineSweepModule", "\350\246\206\347\233\226\351\273\230\350\256\244\345\271\205\345\200\274", 0));
         checkBox->setText(QApplication::translate("SineSweepModule", "\350\246\206\347\233\226\351\273\230\350\256\244\351\207\207\346\240\267\351\242\221\347\216\207 [Hz]", 0));
-        Edit_peak->setText(QApplication::translate("SineSweepModule", "1", 0));
+        Edit_peak->setText(QApplication::translate("SineSweepModule", "10", 0));
         groupBox_2->setTitle(QApplication::translate("SineSweepModule", "\346\211\253\351\242\221\346\226\271\345\274\217", 0));
         radio_linear->setText(QApplication::translate("SineSweepModule", "\347\272\277\346\200\247\346\211\253\351\242\221", 0));
         radio_log->setText(QApplication::translate("SineSweepModule", "\345\257\271\346\225\260\346\211\253\351\242\221", 0));

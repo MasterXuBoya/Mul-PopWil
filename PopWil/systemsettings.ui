@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="btnSaveOnce">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>400</y>
+     <x>130</x>
+     <y>420</y>
      <width>121</width>
      <height>41</height>
     </rect>
@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="btnClose">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>400</y>
+     <x>390</x>
+     <y>420</y>
      <width>141</width>
      <height>41</height>
     </rect>

@@ -8,6 +8,7 @@ class PerformanceTimer : public QObject
 public:
     explicit PerformanceTimer(QObject *parent = 0);
     ~PerformanceTimer();
+    bool isStart();
 signals:
     void timeout();
 public slots:
@@ -15,6 +16,7 @@ public slots:
     void stop();
     friend WINAPI void  CALLBACK PeriodCycle(uint,uint,DWORD_PTR,DWORD_PTR,DWORD_PTR);
 private:
+    bool startFlag;
     int m_interval;
     int m_id;
 };
