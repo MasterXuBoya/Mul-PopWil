@@ -20,6 +20,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QWidget>
 
@@ -40,11 +41,11 @@ public:
     QLineEdit *lineEdit_MaxOutU;
     QLabel *label_4;
     QGroupBox *groupBox_2;
-    QWidget *layoutWidget1;
-    QGridLayout *gridLayout;
+    QSlider *horizontalSlider_control;
+    QSlider *horizontalSlider_draw;
     QLabel *lab_ctrl_interval;
-    QSpinBox *spinBoxCtrlInterval;
     QLabel *label;
+    QSpinBox *spinBoxCtrlInterval;
     QLabel *lab_draw_interval;
     QSpinBox *spinBoxDrawInterval;
     QLabel *label_2;
@@ -57,15 +58,49 @@ public:
         btnSaveOnce = new QPushButton(SystemSettings);
         btnSaveOnce->setObjectName(QStringLiteral("btnSaveOnce"));
         btnSaveOnce->setGeometry(QRect(130, 420, 121, 41));
+        btnSaveOnce->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         btnClose = new QPushButton(SystemSettings);
         btnClose->setObjectName(QStringLiteral("btnClose"));
         btnClose->setGeometry(QRect(390, 420, 141, 41));
+        btnClose->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         groupBox = new QGroupBox(SystemSettings);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(360, 0, 331, 181));
+        groupBox->setGeometry(QRect(370, 0, 331, 241));
         layoutWidget = new QWidget(groupBox);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(10, 10, 311, 161));
+        layoutWidget->setGeometry(QRect(10, 10, 311, 211));
         gridLayout_2 = new QGridLayout(layoutWidget);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         gridLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -115,50 +150,37 @@ public:
         gridLayout_2->setColumnStretch(2, 1);
         groupBox_2 = new QGroupBox(SystemSettings);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox_2->setGeometry(QRect(0, 0, 351, 181));
-        layoutWidget1 = new QWidget(groupBox_2);
-        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(20, 10, 311, 161));
-        gridLayout = new QGridLayout(layoutWidget1);
-        gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        lab_ctrl_interval = new QLabel(layoutWidget1);
+        groupBox_2->setGeometry(QRect(10, 0, 351, 241));
+        horizontalSlider_control = new QSlider(groupBox_2);
+        horizontalSlider_control->setObjectName(QStringLiteral("horizontalSlider_control"));
+        horizontalSlider_control->setGeometry(QRect(50, 70, 160, 22));
+        horizontalSlider_control->setOrientation(Qt::Horizontal);
+        horizontalSlider_draw = new QSlider(groupBox_2);
+        horizontalSlider_draw->setObjectName(QStringLiteral("horizontalSlider_draw"));
+        horizontalSlider_draw->setGeometry(QRect(50, 170, 160, 22));
+        horizontalSlider_draw->setOrientation(Qt::Horizontal);
+        lab_ctrl_interval = new QLabel(groupBox_2);
         lab_ctrl_interval->setObjectName(QStringLiteral("lab_ctrl_interval"));
+        lab_ctrl_interval->setGeometry(QRect(20, 30, 100, 20));
         lab_ctrl_interval->setFont(font);
-
-        gridLayout->addWidget(lab_ctrl_interval, 0, 0, 1, 1);
-
-        spinBoxCtrlInterval = new QSpinBox(layoutWidget1);
-        spinBoxCtrlInterval->setObjectName(QStringLiteral("spinBoxCtrlInterval"));
-
-        gridLayout->addWidget(spinBoxCtrlInterval, 0, 1, 1, 1);
-
-        label = new QLabel(layoutWidget1);
+        label = new QLabel(groupBox_2);
         label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(310, 70, 20, 20));
         label->setFont(font1);
-
-        gridLayout->addWidget(label, 0, 2, 1, 1);
-
-        lab_draw_interval = new QLabel(layoutWidget1);
+        spinBoxCtrlInterval = new QSpinBox(groupBox_2);
+        spinBoxCtrlInterval->setObjectName(QStringLiteral("spinBoxCtrlInterval"));
+        spinBoxCtrlInterval->setGeometry(QRect(230, 70, 61, 20));
+        lab_draw_interval = new QLabel(groupBox_2);
         lab_draw_interval->setObjectName(QStringLiteral("lab_draw_interval"));
+        lab_draw_interval->setGeometry(QRect(20, 120, 100, 23));
         lab_draw_interval->setFont(font);
-
-        gridLayout->addWidget(lab_draw_interval, 1, 0, 1, 1);
-
-        spinBoxDrawInterval = new QSpinBox(layoutWidget1);
+        spinBoxDrawInterval = new QSpinBox(groupBox_2);
         spinBoxDrawInterval->setObjectName(QStringLiteral("spinBoxDrawInterval"));
-
-        gridLayout->addWidget(spinBoxDrawInterval, 1, 1, 1, 1);
-
-        label_2 = new QLabel(layoutWidget1);
+        spinBoxDrawInterval->setGeometry(QRect(230, 170, 61, 20));
+        label_2 = new QLabel(groupBox_2);
         label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setGeometry(QRect(310, 170, 20, 20));
         label_2->setFont(font1);
-
-        gridLayout->addWidget(label_2, 1, 2, 1, 1);
-
-        gridLayout->setColumnStretch(0, 2);
-        gridLayout->setColumnStretch(1, 2);
-        gridLayout->setColumnStretch(2, 1);
 
         retranslateUi(SystemSettings);
 

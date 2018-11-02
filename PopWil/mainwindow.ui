@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
-    <height>900</height>
+    <width>959</width>
+    <height>919</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>单自由度模拟振动台控制系统</string>
@@ -317,11 +323,6 @@ background-color: rgb(153, 204, 255);</string>
        <height>301</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QTabBar::tab{background:transparent;font:bold;color:#000000;min-width:30ex;min-height:10ex;}
-QTabBar::tab:hover{background:#CCFFFF;}
-QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
-     </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
      </property>
@@ -329,7 +330,7 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <property name="styleSheet">
@@ -363,48 +364,88 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
        <property name="title">
         <string>Debug</string>
        </property>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QLabel" name="label_S_6">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>261</width>
-          <height>25</height>
+          <x>20</x>
+          <y>40</y>
+          <width>41</width>
+          <height>16</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,4,1,1">
-         <item>
-          <widget class="QLabel" name="label_S_6">
-           <property name="text">
-            <string>电压:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="le_uk">
-           <property name="echoMode">
-            <enum>QLineEdit::Normal</enum>
-           </property>
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>V</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_out_uk">
-           <property name="text">
-            <string>输出</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="text">
+         <string>电压:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_uk">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>40</y>
+          <width>85</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Normal</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>40</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>V</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_out_uk">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>40</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+        </property>
+        <property name="text">
+         <string>输出</string>
+        </property>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_3">
@@ -419,51 +460,85 @@ QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
        <property name="title">
         <string>静态控制</string>
        </property>
-       <widget class="QWidget" name="layoutWidget">
+       <widget class="QLabel" name="label_desPosition">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>261</width>
-          <height>25</height>
+          <x>11</x>
+          <y>31</y>
+          <width>60</width>
+          <height>16</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="2,4,1,1">
-         <item>
-          <widget class="QLabel" name="label_desPosition">
-           <property name="text">
-            <string>目标位置：</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_desPosition">
-           <property name="clearButtonEnabled">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>mm</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="btn_static_comfirm">
-           <property name="text">
-            <string>确定</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="text">
+         <string>目标位置：</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="lineEdit_desPosition">
+        <property name="geometry">
+         <rect>
+          <x>77</x>
+          <y>31</y>
+          <width>85</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>168</x>
+          <y>31</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>mm</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_static_comfirm">
+        <property name="geometry">
+         <rect>
+          <x>195</x>
+          <y>31</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+        </property>
+        <property name="text">
+         <string>确定</string>
+        </property>
        </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>正弦波</string>
+       <string>标准波</string>
       </attribute>
       <widget class="QFrame" name="waveGenerateframe">
        <property name="geometry">
@@ -589,7 +664,10 @@ QListWidget::item:selected{
              <string>1</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -599,7 +677,10 @@ QListWidget::item:selected{
              <string>5</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -654,7 +735,10 @@ QListWidget::item:selected{
              <string>20</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -690,7 +774,10 @@ QListWidget::item:selected{
              <string>0</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -781,7 +868,7 @@ font:bold;</string>
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>10</y>
+         <y>20</y>
          <width>281</width>
          <height>221</height>
         </rect>
@@ -959,6 +1046,25 @@ background-color: rgb(238, 255, 246);</string>
        <height>31</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+     </property>
      <property name="text">
       <string>载入</string>
      </property>
@@ -971,6 +1077,25 @@ background-color: rgb(238, 255, 246);</string>
        <width>61</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
      </property>
      <property name="text">
       <string>预览</string>
@@ -1000,10 +1125,6 @@ background-color: rgb(238, 255, 246);</string>
        <width>660</width>
        <height>600</height>
       </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QTabBar::tab{background:transparent;font:bold;color:#000000;min-width:30ex;min-height:10ex;}QTabBar::tab:hover{background:#CCFFFF;}
-QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
      </property>
      <property name="currentIndex">
       <number>1</number>
@@ -1279,7 +1400,7 @@ font:bold;</string>
          <string>10</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
        <widget class="QLabel" name="label_18">
@@ -1431,7 +1552,10 @@ font:bold;</string>
             <string>1</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1441,7 +1565,10 @@ font:bold;</string>
             <string>10</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1496,7 +1623,10 @@ font:bold;</string>
             <string>10</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1532,7 +1662,10 @@ font:bold;</string>
             <string>0</string>
            </property>
            <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -1558,13 +1691,32 @@ font:bold;</string>
      </widget>
     </widget>
    </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>820</y>
+      <width>271</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="value">
+     <number>24</number>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>960</width>
+     <width>959</width>
      <height>23</height>
     </rect>
    </property>
@@ -1647,17 +1799,9 @@ font:bold;</string>
    <addaction name="menu_Help"/>
    <addaction name="menu_Control"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="styleSheet">
-    <string notr="true">background-color:#CCFFFF</string>
+    <string notr="true"/>
    </property>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -1665,7 +1809,7 @@ font:bold;</string>
     <string>toolBar</string>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:#C0C0C0</string>
+    <string notr="true"/>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>

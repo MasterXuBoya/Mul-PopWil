@@ -13,6 +13,8 @@ TWaveMode waveMode,waveModeTmp;//要控制的波形
 TControlMethod controlMethod;//控制方法，对于一个波形存在多种控制方法
 
 TDisplayDelay displayDelay={2,25,2};
+TDrawType drawType=DisType;//判断动态绘图的是位移、速度还是加速度，以便于改变标题和单位
+
 int dataCnt=0,dataRefCnt=0;
 double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];

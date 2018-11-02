@@ -27,7 +27,7 @@ class Ui_DisplayBufferForm
 {
 public:
     QPushButton *pushButton;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QGridLayout *gridLayout;
     QLabel *label;
     QSpinBox *spinBox_S;
@@ -44,38 +44,55 @@ public:
         pushButton = new QPushButton(DisplayBufferForm);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(80, 170, 75, 23));
-        widget = new QWidget(DisplayBufferForm);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(20, 40, 181, 101));
-        gridLayout = new QGridLayout(widget);
+        pushButton->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
+        layoutWidget = new QWidget(DisplayBufferForm);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(20, 40, 181, 101));
+        gridLayout = new QGridLayout(layoutWidget);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
 
         gridLayout->addWidget(label, 0, 0, 1, 1);
 
-        spinBox_S = new QSpinBox(widget);
+        spinBox_S = new QSpinBox(layoutWidget);
         spinBox_S->setObjectName(QStringLiteral("spinBox_S"));
 
         gridLayout->addWidget(spinBox_S, 0, 1, 1, 1);
 
-        label_2 = new QLabel(widget);
+        label_2 = new QLabel(layoutWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
 
         gridLayout->addWidget(label_2, 1, 0, 1, 1);
 
-        spinBox_V = new QSpinBox(widget);
+        spinBox_V = new QSpinBox(layoutWidget);
         spinBox_V->setObjectName(QStringLiteral("spinBox_V"));
 
         gridLayout->addWidget(spinBox_V, 1, 1, 1, 1);
 
-        label_3 = new QLabel(widget);
+        label_3 = new QLabel(layoutWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
 
         gridLayout->addWidget(label_3, 2, 0, 1, 1);
 
-        spinBox_A = new QSpinBox(widget);
+        spinBox_A = new QSpinBox(layoutWidget);
         spinBox_A->setObjectName(QStringLiteral("spinBox_A"));
 
         gridLayout->addWidget(spinBox_A, 2, 1, 1, 1);

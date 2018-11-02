@@ -11,6 +11,12 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
 {
     ui->setupUi(this);
 
+    QFile file(":/qss/stylesheet.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    qApp->setStyleSheet(styleSheet);
+    file.close();
+
     //试验状态信息
     logger=Logger::getInstance();
     startFlag=false;
@@ -63,18 +69,23 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     setWindowIcon(QPixmap(":/Icon/Icon/dashboard.png"));
 
     ui->btnStart->setToolTip("开始");
-    ui->btnStart->setStyleSheet("border-image:url(:Icon/Icon/startIcon.png)");
     ui->btnStart->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
     ui->btnStop->setToolTip("停止");
-    ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIcon.png)");
     ui->btnStop->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
     ui->btn_DO->setToolTip("开关");
+    ui->btn_load->setToolTip("载入数据");
     //---------------状态栏---------
     currentLabel=new QLabel;
-    currentLabel->setMinimumSize(200,25);
+    currentLabel->setMinimumSize(150,20);
+    currentLabel->setAlignment(Qt::AlignCenter);
     //currentLabel->setFrameShadow(QFrame::Sunken);
     currentLabel->setFrameShape(QFrame::WinPanel);
     ui->statusBar->addWidget(currentLabel);
+
+    ui->statusBar->addWidget(ui->progressBar);
+    ui->progressBar->setGeometry(150,0,200,20);
+    ui->progressBar->setRange(1,100);
+    ui->progressBar->setValue(1);
 
     connect(ui->le_uk,SIGNAL(returnPressed()),ui->btn_out_uk,SLOT(click()));
     //connect(ui->le_uk,SIGNAL(returnPressed()),this,SLOT(on_btn_out_uk_clicked()));
@@ -126,12 +137,12 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     log="DO read data is:"+QString::number(portStates);
     qDebug()<<log;logger->appendLogger("[debug] "+log);
     if(portStates){
-        ui->btn_DO->setStyleSheet("border-image:url(:Icon/Icon/switch_on.png)");
+        ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_on.png)}");
         log="[info]驱动已连接！";
         addItemToListView(log);logger->appendLogger(log);
     }
     else{
-        ui->btn_DO->setStyleSheet("border-image:url(:Icon/Icon/switch_off.png)");
+        ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_off.png)}");
         log="[warning]驱动断开，请重新连接驱动！";
         addItemToListView(log);logger->appendLogger(log);
     }
@@ -162,6 +173,9 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     sDisplayBuffer.setDelayCnt(displayDelay.sDelay);
     vDisplayBuffer.setDelayCnt(displayDelay.vDelay);
     aDisplayBuffer.setDelayCnt(displayDelay.aDelay);//此时都是2
+    connect(ui->rbt_S,SIGNAL(clicked(bool)),this,SLOT(on_btn_preview_clicked()));
+    connect(ui->rbt_V,SIGNAL(clicked(bool)),this,SLOT(on_btn_preview_clicked()));
+    connect(ui->rbt_A,SIGNAL(clicked(bool)),this,SLOT(on_btn_preview_clicked()));
     //-------------------------------滤波初始化------------------------------
     sAvgFilter=new AvgFilter();
     vAvgFilter=new AvgFilter();
@@ -314,9 +328,9 @@ void MainWindow::slotFuction(){
         refVel=vDisplayBuffer.delay(refVel);
         refAcc=aDisplayBuffer.delay(refAcc);
 
-        if(ui->rbt_S_plot->isChecked()){
+        if(drawType==DisType){//显示实时位移
             series0=refPosition;series1=sCurrent;
-        }else if(ui->rbt_V_plot->isChecked()){
+        }else if(drawType==VelType){//显示实时速度
             series0=refVel;series1=vCurrent;
         }else{
             series0=refAcc;series1=aCurrent;
@@ -330,11 +344,12 @@ void MainWindow::slotFuction(){
         ui->lcd_V->display(QString::number(vCurrent,'f',3));
         ui->lcd_A->display(QString::number(aCurrent,'f',3));
         msCount_100=0;
+        if(startFlag) ui->progressBar->setValue(min(refIndex,refData.refCnt));//更新进度条
     }
     //---------------update time in StateBar----------
     if (msCount_1000>=1000){
         QDateTime time = QDateTime::currentDateTime();
-        QString str = "系统时间："+time.toString("yyyy-MM-dd hh:mm:ss");
+        QString str =time.toString("yyyy-MM-dd hh:mm:ss");
         currentLabel->setText(str);
         msCount_1000=0;
     }
@@ -365,20 +380,26 @@ void MainWindow::on_btnStart_clicked(){
     }
     ui->tabWidget_pic ->setCurrentIndex(0);//展示绘图页面，而不是预览界面
     //Icon以及Enable变化
-    ui->btnStart->setStyleSheet("border-image:url(:Icon/Icon/startIconClicked.png)");
+    ui->btnStart->setStyleSheet("QPushButton#btnStart{border-image:url(:Icon/Icon/startIconClicked.png)}");
     ui->btnStart->setEnabled(false);
     ui->btnStop->setEnabled(true);
-    ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIcon.png)");
+    ui->btnStop->setStyleSheet("QPushButton#btnStop{border-image:url(:Icon/Icon/stopIcon.png)}");
 
     //sinePIDController->clear();//可能第一次结束，第二次试验
     msStartCount=msStartCount_Ref=elapseStartTime=0;refIndex=1;
     waveMode=waveModeTmp;
+    ui->progressBar->setRange(1,refData.refCnt);//设置进度条
+    ui->progressBar->setValue(1);
     startFlag=true;
     //if(!timer->isStart()) timer->start(PERFORMANCEINTERVAL);//定时器已经被关上了
 }
 
 void MainWindow::on_btnStop_clicked(){
-    if(!startFlag) return;
+    if(!startFlag) {
+        QString mess="试验尚未开始";
+        QMessageBox::warning(this,"警告",mess,QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+        return;
+    }
     //timer->stop();//停止定时器就不会向buffer中写入数据，进而绘图就停止了
     startFlag=false;
     //此时继续让振动台位置固定
@@ -388,9 +409,9 @@ void MainWindow::on_btnStop_clicked(){
 
     outUToPCI(0);
     //-----------------StyleSheet-----------------------
-    ui->btnStart->setStyleSheet("border-image:url(:Icon/Icon/startIcon.png)");
+    ui->btnStart->setStyleSheet("QPushButton#btnStart{border-image:url(:Icon/Icon/startIcon.png)}");
     ui->btnStart->setEnabled(true);
-    ui->btnStop->setStyleSheet("border-image:url(:Icon/Icon/stopIconClicked.png)");
+    ui->btnStop->setStyleSheet("QPushButton#btnStop{border-image:url(:Icon/Icon/stopIconClicked.png)}");
 }
 
 void MainWindow::on_action_Quit_triggered(){
@@ -637,13 +658,13 @@ void MainWindow::on_btn_static_comfirm_clicked(){
 void MainWindow::on_btn_DO_clicked(){
     quint8 status;
     if(doInstant->getDoState()){
-        ui->btn_DO->setStyleSheet("border-image:url(:Icon/Icon/switch_off.png)");
+        ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_off.png)}");
         status = 0;
         log="[warning]驱动已经断开！";
         addItemToListView(log);logger->appendLogger(log);
     }
     else{
-        ui->btn_DO->setStyleSheet("border-image:url(:Icon/Icon/switch_on.png)");
+        ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_on.png)}");
         status=1;
         log="[info]驱动已连接！";
         addItemToListView(log);logger->appendLogger(log);
@@ -828,8 +849,11 @@ void MainWindow::wavePreview(QString title){
     m_ChartViewer->show();
 }
 
-void MainWindow::on_btn_load_clicked()
-{
+void MainWindow::on_btn_load_clicked(){
+//首先将数组中的所有数据清零
+    for(int i=0;i<MAXDATACOUNT;i++){//此处不适用memset，容易出错
+        refData.SRef[i]=refData.VRef[i]=refData.ARef[i]=0;
+    }
     if(ui->tabWidget_controller->currentIndex()==2){//地震波
         QString earthFileName=ui->cmb_earth->currentText();
         QString earthFilePath="E:\\PopWilCacher\\EarthquakeWave\\"+earthFileName+".txt";
@@ -932,4 +956,16 @@ void MainWindow::on_actionAction_drawDelay_triggered(){
     sDisplayBuffer.setDelayCnt(displayDelay.sDelay);
     vDisplayBuffer.setDelayCnt(displayDelay.vDelay);
     aDisplayBuffer.setDelayCnt(displayDelay.aDelay);
+}
+
+void MainWindow::on_rbt_S_plot_clicked(){
+    drawType=DisType;
+}
+
+void MainWindow::on_rbt_V_plot_clicked(){
+    drawType=VelType;
+}
+
+void MainWindow::on_rbt_A_plot_clicked(){
+    drawType=AccType;
 }

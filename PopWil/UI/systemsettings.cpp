@@ -9,8 +9,17 @@ SystemSettings::SystemSettings(QWidget *parent) :
     ui->setupUi(this);
     ui->spinBoxCtrlInterval->setRange(1,20);
     ui->spinBoxCtrlInterval->setSingleStep(1);
+    ui->horizontalSlider_control->setRange(1,20);
+    ui->horizontalSlider_control->setSingleStep(1);
+    connect(ui->spinBoxCtrlInterval,SIGNAL(valueChanged(int)),ui->horizontalSlider_control,SLOT(setValue(int)));
+    connect(ui->horizontalSlider_control,SIGNAL(valueChanged(int)),ui->spinBoxCtrlInterval,SLOT(setValue(int)));
+
     ui->spinBoxDrawInterval->setRange(100,1000);
     ui->spinBoxDrawInterval->setSingleStep(100);
+    ui->horizontalSlider_draw->setRange(100,1000);
+    ui->horizontalSlider_draw->setSingleStep(100);
+    connect(ui->spinBoxDrawInterval,SIGNAL(valueChanged(int)),ui->horizontalSlider_draw,SLOT(setValue(int)));
+    connect(ui->horizontalSlider_draw,SIGNAL(valueChanged(int)),ui->spinBoxDrawInterval,SLOT(setValue(int)));
 
     setTabOrder(ui->spinBoxCtrlInterval,ui->spinBoxDrawInterval);
     setTabOrder(ui->spinBoxDrawInterval,ui->lineEdit_MaxAbsolutePosition);

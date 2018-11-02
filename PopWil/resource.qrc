@@ -36,6 +36,12 @@
         <file>Icon/stopIconClicked.png</file>
         <file>Icon/switch_off.png</file>
         <file>Icon/switch_on.png</file>
+        <file>Icon/downarrow.png</file>
+        <file>Icon/ver_scroll_bottom_arrow.png</file>
+        <file>Icon/ver_scroll_top_arrow.png</file>
     </qresource>
-    <qresource prefix="/qss"/>
+    <qresource prefix="/qss">
+        <file>stylesheet2.qss</file>
+        <file>stylesheet.qss</file>
+    </qresource>
 </RCC>

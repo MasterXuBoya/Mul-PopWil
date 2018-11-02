@@ -76,9 +76,43 @@ public:
         btnOK = new QPushButton(ConfigureDialog);
         btnOK->setObjectName(QStringLiteral("btnOK"));
         btnOK->setGeometry(QRect(170, 300, 75, 23));
+        btnOK->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         btnCancel = new QPushButton(ConfigureDialog);
         btnCancel->setObjectName(QStringLiteral("btnCancel"));
         btnCancel->setGeometry(QRect(390, 300, 75, 23));
+        btnCancel->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         btnCancel->setAutoDefault(false);
         groupBox = new QGroupBox(ConfigureDialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));

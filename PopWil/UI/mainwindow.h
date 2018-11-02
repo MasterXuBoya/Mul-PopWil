@@ -105,6 +105,9 @@ private slots:
     void on_btn_sineswep_config_clicked();
     void on_btn_sineSweep_open_clicked();
     void on_actionAction_drawDelay_triggered();
+    void on_rbt_S_plot_clicked();
+    void on_rbt_V_plot_clicked();
+    void on_rbt_A_plot_clicked();
 };
 #endif // MAINWINDOW_H
 

@@ -1,0 +1,358 @@
+QWidget#centralWidget,QDialog {
+        background: rgb(230, 240, 250);
+    }
+
+
+/*------------------------QPushButton------------------------------*/
+
+/*-----------------特殊-------------------------*/
+QPushButton#btnStart{
+    border-image:url(:Icon/Icon/startIcon.png);
+    }
+QPushButton#btnStop{
+    border-image:url(:Icon/Icon/stopIcon.png);
+    }
+/*------------------------QLineEdit------------------------------*/
+QLineEdit {
+        border-radius: 6px;
+        height: 20px;
+        border: 1px solid rgb(111, 156, 207);
+        background: white;
+}
+QLineEdit:enabled {
+        color: rgb(84, 84, 84);
+}
+QLineEdit:enabled:hover, QLineEdit:enabled:focus {
+        color: rgb(51, 51, 51);
+}
+QLineEdit:!enabled {
+    color: rgb(230, 240, 250);
+    border-color: rgb(230, 240, 250);
+}
+
+/*----------------------QToolTip--------------------------------*/
+QToolTip
+{
+    border-image:none;
+    border: 1px solid #aaaaaa;
+    padding: 1px;
+    border-radius: 0px;
+    background:#fafafa;
+    opacity: 240;
+}
+
+/*------------------------QTableWidget------------------------------*/
+QTabWidget::pane {
+        border-top: 3px solid rgb(0, 78, 161);
+        background: rgb(230, 240, 250);
+}
+QTabBar::tab{
+    background:transparent;
+    font:bold;
+    color:#000000;
+    min-width:30ex;
+    min-height:10ex;
+    }
+QTabBar::tab:hover{
+    background:#CCFFFF;
+    }
+QTabBar::tab:selected{
+    background:#99CCFF;
+    border-color: green;
+    }
+/*------------------------QComboBox------------------------------*/
+QComboBox
+{
+        border: 1px solid #aaaaaa;/*边框*/
+        padding:2px 18px 2px 3px;/*内边距，有偏移18px为drop-down按钮留出空间，所以subcontrol-origin属性须设为padding*/
+        min-width:36px;/*最小宽度为6em em和px一样为长度单位。em表示对应字体M的宽度。M为大写字母的最大宽度*/
+}
+
+/*QLineEdit获得焦点时的属性设置，设置边框为光晕边框*/
+QComboBox:focus1
+{
+        padding:1px 17px 1px 2px;/*padding，这里边框为2px为了不引起content尺寸变化padding均减1*/
+    border-width:2px;
+        border-style:solid;
+        border-color:qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #64bff0, stop:1 #bae3f7)/*上边框渐变色*/
+          qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #64bff0, stop:1 #bae3f7)/*右边框渐变色*/
+          qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #64bff0, stop:1 #bae3f7)/*下边框渐变色*/
+          qlineargradient(x1:1, y1:0, x2:0, y2:0, stop:0 #64bff0, stop:1 #bae3f7);/*左边框渐变色*/
+}
+
+/*设置drop-down按钮上的箭头图片*/
+QComboBox::down-arrow
+{
+    image:url(:/Icon/Icon/downarrow.png);
+}
+
+/*设置drop-down按钮属性，自定义combox的重头戏。必须设置*/
+QComboBox::drop-down {
+    width:15px;/*drop-down按钮宽度*/
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:0.8 #eeeeee);/*drop-down按钮渐变背景色*/
+        subcontrol-origin: padding;/*drop-down按钮绘制位置依据父控件设置的padding决定*/
+    subcontrol-position: right top;/*drop-down按钮相对父控件位置*/
+    border-left:1px solid #aaaaaa;/*drop-down左边框*/
+}
+
+/*设置QComboBox的：下拉时的视图属性。注意这不是设置的视图项，而是视图项主城的视图
+子孙窗口部件，用空格隔开。*/
+QComboBox QAbstractItemView
+{
+     border: 1px solid #aaaaaa;/*边框*/
+     selection-background-color: #73c5f1;/*选中背景*/
+     outline:none;/*去掉选中时的虚线框*/
+}
+/*-----------------------QSlider-------------------------------*/
+
+QSlider::groove:horizontal {
+border: 1px solid #4A708B;
+background: #orange;
+height: 5px;
+border-radius: 1px;
+padding-left:-1px;
+padding-right:-1px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+    stop:0 #B1B1B1, stop:1 #c4c4c4);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #5DCCFF, stop: 1 #1874CD);
+border: 1px solid #4A708B;
+height: 10px;
+border-radius: 2px;
+}
+
+QSlider::add-page:horizontal {
+background: #575757;
+border: 0px solid #777;
+height: 10px;
+border-radius: 2px;
+}
+
+QSlider::handle:horizontal
+{
+    background: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5,
+    stop:0.6 #45ADED, stop:0.778409 rgba(255, 255, 255, 255));
+
+    width: 11px;
+    margin-top: -3px;
+    margin-bottom: -3px;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0.6 #2A8BDA,
+    stop:0.778409 rgba(255, 255, 255, 255));
+
+    width: 11px;
+    margin-top: -3px;
+    margin-bottom: -3px;
+    border-radius: 5px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #00009C;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}
+
+/*------------------------QMenu------------------------------*/
+QMenuBar {
+        background: rgb(187, 212, 238);
+        border: 1px solid rgb(111, 156, 207);
+        border-left: none;
+        border-right: none;
+}
+QMenuBar::item {
+        border: 1px solid transparent;
+        padding: 5px 10px 5px 10px;
+        background: transparent;
+}
+QMenuBar::item:enabled {
+        color: rgb(2, 65, 132);
+}
+QMenuBar::item:!enabled {
+        color: rgb(155, 155, 155);
+}
+QMenuBar::item:enabled:selected {
+        border-top-color: rgb(111, 156, 207);
+        border-bottom-color: rgb(111, 156, 207);
+        background: rgb(198, 224, 252);
+}
+/**********菜单**********/
+QMenu {
+        border: 1px solid rgb(111, 156, 207);
+        background: rgb(232, 241, 250);
+}
+QMenu::item {
+        height: 22px;
+        padding: 0px 25px 0px 20px;
+}
+QMenu::item:enabled {
+        color: rgb(84, 84, 84);
+}
+QMenu::item:!enabled {
+        color: rgb(155, 155, 155);
+}
+QMenu::item:enabled:selected {
+        color: rgb(2, 65, 132);
+        background: rgba(255, 255, 255, 200);
+}
+QMenu::separator {
+        height: 1px;
+        background: rgb(111, 156, 207);
+}
+QMenu::indicator {
+        width: 13px;
+        height: 13px;
+}
+QMenu::icon {
+        padding-left: 2px;
+        padding-right: 2px;
+}
+/*------------------------QStatusBar------------------------------*/
+QStatusBar {
+        background-color:#CCFFFF
+}
+/*------------------------QSpinBox------------------------------*/
+QSpinBox
+{
+        min-height:20px;
+    padding-right: 15px;
+    border: 1px solid #aaaaaa;/*边框*/
+        min-width:1em;/*最小宽度为6em em和px一样为长度单位。em表示对应字体M的宽度。M为大写字母的最大宽度*/
+     background:white;
+}
+
+QSpinBox::up-button
+{
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+        background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:0.8 #eeeeee);/*渐变背景色*/
+    width: 15px;
+    border-left: 1px solid #aaaaaa;
+    border-bottom: 0px solid #aaaaaa;
+}
+
+QSpinBox::up-button:hover
+{
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #eeeeee, stop:0.8 #ffffff);/*渐变背景色*/
+}
+
+QSpinBox::up-button:pressed
+{
+        background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:0.8 #dddddd);/*渐变背景色*/
+}
+
+QSpinBox::up-arrow
+{
+    image:url(:/Icon/Icon/ver_scroll_top_arrow.png);
+    width: 9px;
+    height: 9px;
+}
+
+QSpinBox::up-arrow:disabled, QSpinBox::up-arrow:off
+{
+        background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ffffff, stop:0.6 #eeeeee);/*渐变背景色*/
+        border: 0px solid #dddddd;/*边框*/
+}
+
+QSpinBox::down-button
+{
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+        background: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #ffffff, stop:0.8 #eeeeee);/*渐变背景色*/
+    width: 15px;
+    border-left: 1px solid #aaaaaa;
+    border-top: 0px solid #aaaaaa;
+}
+
+QSpinBox::down-button:hover
+{
+    background: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #eeeeee, stop:0.8 #ffffff);/*渐变背景色*/
+}
+
+QSpinBox::down-button:pressed
+{
+        background: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #ffffff, stop:0.8 #dddddd);/*渐变背景色*/
+}
+
+QSpinBox::down-arrow
+{
+    image:url(:/Icon/Icon/ver_scroll_bottom_arrow.png);
+    width: 9px;
+    height: 9px;
+}
+
+QSpinBox::down-arrow:disabled,
+QSpinBox::down-arrow:off
+{
+        background: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 #ffffff, stop:0.6 #eeeeee);/*渐变背景色*/
+        border: 0px solid #dddddd;/*边框*/
+}
+/*------------------------QGroupBox------------------------------*/
+QGroupBox {
+    font-size: 15px;
+    border: 1px solid rgb(111, 156, 207);
+    border-radius: 4px;
+    margin-top: 10px;
+} QGroupBox::title {
+    color: rgb(56, 99, 154);
+    top: -10px;
+    left: 10px;
+}
+
+/*------------------------QListWidget------------------------------*/
+QListWidget{
+    font: 75 12pt "Agency FB";
+    font:bold;
+    background: rgb(230, 240, 250);
+}
+QListWidget::item{
+
+}
+QListWidget::item:hover{
+        background:rgb(233, 255, 251)
+        border-color: green;
+}
+QListWidget::item:selected{
+        background:#99CCFF;
+        border-color: green;
+}
+/*------------------------QProgressBar------------------------------*/
+QProgressBar{
+      background:#696969;
+      border-radius:5px;
+      text-align:center;
+}
+
+QProgressBar::chunk {
+      background-color:rgb(58, 154, 255);
+      border-radius:4px;
+}
+/*------------------------QListView------------------------------*/
+QListView
+{
+        border:1px solid #aaaaaa;/*边框*/
+        selection-background-color: #73c5f1;/*选中背景*/
+        alternate-background-color:#e9e9e9;/*交替行背景色，代码中设置了交替行背景设有效时生效*/
+    outline:none;/*去掉选中时的虚线框*/
+}
+
+QListView::item
+{
+    min-height:24px;/*调整项高度*/
+    margin-left:40px;
+}

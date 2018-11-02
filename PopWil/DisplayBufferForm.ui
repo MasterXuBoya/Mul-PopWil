@@ -22,11 +22,30 @@
      <height>23</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+   </property>
    <property name="text">
     <string>确定</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>

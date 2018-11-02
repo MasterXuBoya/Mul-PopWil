@@ -229,7 +229,8 @@ void MyChartViewer::drawChart(QChartViewer *viewer)
 
     // Add a title to the chart using 18pt Arial font
     //c->addTitle("   Multithreading Real-Time Chart", "arial.ttf", 18);
-    c->addTitle("实时曲线", "simsun.ttc", 18);
+
+    //c->addTitle(title, "simsun.ttc", 18);
 
     // Add a legend box at (55, 25) using horizontal layout. Use 10pt Arial Bold as font. Set the
     // background and border color to transparent and use line style legend key.
@@ -247,7 +248,20 @@ void MyChartViewer::drawChart(QChartViewer *viewer)
     c->yAxis()->setTickLength(0);
 
     // Add axis title using 10pt Arial Bold Italic font
-    c->yAxis()->setTitle("S/mm", "arialbd.ttf", 10);
+    //c->yAxis()->setTitle(unit, "arialbd.ttf", 10);
+    switch (drawType){
+    case DisType:
+        c->addTitle("实时位移", "simsun.ttc", 18);
+        c->yAxis()->setTitle("S/mm", "arialbd.ttf", 10);
+        break;
+    case VelType:
+        c->addTitle("实时速度", "simsun.ttc", 18);
+        c->yAxis()->setTitle("V/mm/s", "arialbd.ttf", 10);
+        break;
+    default:
+        c->addTitle("实时加速度", "simsun.ttc", 18);
+        c->yAxis()->setTitle("A/g", "arialbd.ttf", 10);
+    }
 
     // Configure the y-axis label to be inside the plot area and above the horizontal grid lines
     c->yAxis()->setLabelGap(-1);

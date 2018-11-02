@@ -185,6 +185,25 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+    </property>
     <property name="text">
      <string>关闭</string>
     </property>
@@ -198,6 +217,25 @@
       <height>41</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+    </property>
     <property name="text">
      <string>全部清空</string>
     </property>
@@ -210,6 +248,25 @@
       <width>91</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
     </property>
     <property name="text">
      <string>生成扫频信号</string>

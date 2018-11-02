@@ -122,6 +122,12 @@ struct TDisplayDelay{//位移、速度、加速度延迟绘图参数
 };
 extern TDisplayDelay displayDelay;
 
+enum TDrawType{
+    DisType,
+    VelType,
+    AccType,
+};
+extern TDrawType drawType;//判断动态绘图的是位移、速度还是加速度，以便于改变标题和单位
 //------------------------------------------------------------------
 //全局变量
 /*
