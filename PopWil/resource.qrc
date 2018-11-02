@@ -37,4 +37,5 @@
         <file>Icon/switch_off.png</file>
         <file>Icon/switch_on.png</file>
     </qresource>
+    <qresource prefix="/qss"/>
 </RCC>

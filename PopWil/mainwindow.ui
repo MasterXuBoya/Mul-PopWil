@@ -322,11 +322,14 @@ background-color: rgb(153, 204, 255);</string>
 QTabBar::tab:hover{background:#CCFFFF;}
 QTabBar::tab:selected{background:#99CCFF;border-color: green;}</string>
      </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::North</enum>
+     </property>
      <property name="tabShape">
       <enum>QTabWidget::Rounded</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <property name="styleSheet">
