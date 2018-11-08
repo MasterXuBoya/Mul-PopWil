@@ -90,8 +90,8 @@ void getEarthquakeWave(const QString &path){
         }
         if(cnt==2) continue;
         int i=lines[0].toInt();
-        refData.SRef[i]=lines[1].toDouble();
-        refData.VRef[i]=lines[2].toDouble();
+        //refData.SRef[i]=lines[1].toDouble();
+        //refData.VRef[i]=lines[2].toDouble();
         refData.ARef[i]=lines[3].toDouble();
     }
     refData.refCnt=cnt-2;

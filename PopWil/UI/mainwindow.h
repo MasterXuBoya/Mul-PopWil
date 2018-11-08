@@ -24,6 +24,7 @@ public:
     void closeEvent(QCloseEvent *event);
     double getPosition(int direct);
     void wavePreview(QString title);
+    void drawTmp(QString title,int n,double xlabel[],double data[]);
 
 private:
     Ui::MainWindow *ui;
@@ -48,6 +49,7 @@ private:
     ButtorFilter *sButtorFilter,*vButtorFilter,*aButtorFilter;
     AvgFilter v2AvgFilter;
     ButtorFilter v2ButtorFilter;
+    SignalProcess signalHandler;//fft,频域积分
     //---------------------控制器---------------------------------------------
     long msCount;//从打开程序开启的总时间   ms
     //-------试验开始之后变量----------------

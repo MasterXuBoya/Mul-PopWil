@@ -201,10 +201,12 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     double scur=getPosition(0);//进入程序即进行静态位移控制
     sController->configure(0,scur);
     waveMode=StaticPosionFlag;
+
+
 //---------------------------------开启多媒体定时器------------------------------------------------------------
     timer=new PerformanceTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(slotFuction()));
-    timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
+    //timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
 }
 
 MainWindow::~MainWindow()
@@ -586,6 +588,17 @@ void MainWindow::on_btn_clearZero_clicked(){
 }
 
 void MainWindow::testFunction(){
+
+//    double fft_test[10]={1,3,67,12,2,34,3,1,0,4},out[10][2],out_[10];
+//    SignalProcess handler;
+//    handler.fft(10,fft_test,out);
+//    for(int i=0;i<10;i++)
+//        qDebug()<<out[i][0]<<"  "<<out[i][1];
+
+//    handler.ifft(10,out,out_);
+//    for(int i=0;i<10;i++)
+//        qDebug()<<out_[i];
+
     /*for (int i=0;i<100;i++)
     {
         OutUArray[i]=sin(0.05*PI*i);
@@ -849,6 +862,27 @@ void MainWindow::wavePreview(QString title){
     m_ChartViewer->show();
 }
 
+void MainWindow::drawTmp(QString title, int n, double xlabel[], double data[]){
+    m_ChartViewer->setGeometry(5, 25, 640, 500);
+    XYChart *c = new XYChart(650, 480);//画布大小，包括图标和标题等
+    c->setPlotArea(30, 30, c->getWidth() - 41, c->getHeight() - 60, c->linearGradientColor(0, 30, 0,
+       c->getHeight() - 50, 0xf0f6ff, 0xa0c0ff), -1, 0xffffff, 0xffffff);
+    c->addTitle(title.toLatin1(), "simsun.ttc", 18);
+    c->setBackground(0xccccff,0x000000);
+
+
+    c->addLineLayer(DoubleArray(data,n));//添加y轴数据
+    c->addText(5, 5, "A/g", "timesbi.ttf", 11, 0xff0000);
+
+    c->xAxis()->setLabels(DoubleArray(xlabel,n));//添加x轴数据，有点类似C里的指针操作
+    c->addText(630, 450, "t/s", "timesbi.ttf", 11, 0xff0000);
+    c->xAxis()->setLabelStep(500);//x轴绘图间隔
+
+    m_ChartViewer->setChart(c);
+    delete c;
+    m_ChartViewer->show();
+}
+
 void MainWindow::on_btn_load_clicked(){
 //首先将数组中的所有数据清零
     for(int i=0;i<MAXDATACOUNT;i++){//此处不适用memset，容易出错
@@ -861,6 +895,18 @@ void MainWindow::on_btn_load_clicked(){
         ui->lab_earth_sample_Cnt->setText(QString::number(refData.refCnt));
         ui->lab_earth_sample_T->setText(QString::number(refData.dataRefSampleT));
         waveModeTmp=EarthquakeFlag;
+
+        double t[10000],x[1000],out[1000][2];
+        for(int i=0;i<1000;i++)
+            x[i]=sin(2*PI*i/100);
+        signalHandler.fft(10,x,out);
+        signalHandler.inteFD_All(refData.refCnt,(int)(1000/refData.dataRefSampleT),refData.ARef,&refData);
+        qDebug()<<refData.SRef[0];
+        qDebug()<<refData.SRef[1];
+        qDebug()<<refData.SRef[2];
+        qDebug()<<refData.SRef[3];
+        qDebug()<<refData.SRef[4];
+
         return;
     }
     double mid,mag,fs,sineCnt;
