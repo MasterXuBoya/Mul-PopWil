@@ -2,16 +2,19 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <logger.h>
+#include "constvar.h"
+
+//double *g_Acc;
+double g_Acc;
 
 AiStreaming::AiStreaming(){
+    //g_Acc=new double[ACCSENSORCOUNT];
+    //fill(g_Acc,g_Acc+ACCSENSORCOUNT,0);
     waveformAiCtrl=WaveformAiCtrl::Create();
     waveformAiCtrl->addDataReadyHandler(OnDataReadyEvent, this);
     waveformAiCtrl->addOverrunHandler(OnOverRunEvent, this);
     waveformAiCtrl->addCacheOverflowHandler(OnCacheOverflowEvent, this);
     waveformAiCtrl->addStoppedHandler(OnStoppedEvent, this);
-
-    bufferAiCount=0;
-    preAcc=0;
 }
 
 AiStreaming::~AiStreaming(){
@@ -22,9 +25,6 @@ void AiStreaming::setStreamingAiPara(ConfigureParameterAI t){
     para=t;
 }
 
-void AiStreaming::clearBufferAiCount(){
-    bufferAiCount=0;
-}
 void AiStreaming::start(){
     waveformAiCtrl->Start();
 }
@@ -79,12 +79,17 @@ void AiStreaming::OnDataReadyEvent(void * sender, BfdAiEventArgs * args, void * 
         return;
     }
     qDebug()<<"available data count is:"<<args->Count<<"getDataCout is:"<<getDataCount;
+//    int sectionLen=getDataCount/uParam->para.channelCount;
+//    for(int i=0;i<ACCSENSORCOUNT;i++){
+//        double s=0;
+//        for(int j=i*sectionLen;j<(i+1)*sectionLen;j++)
+//            s+=uParam->scaledData[j];
+//        g_Acc[i]=s/sectionLen;
+//    }
     double s=0;
     for(int i=0;i<getDataCount;i++)
         s+=uParam->scaledData[i];
-    double avgAcc=s/getDataCount;
-
-    uParam->bufferAi[uParam->bufferAiCount++]=avgAcc;
+    g_Acc=s/getDataCount;
 }
 
 void AiStreaming::OnOverRunEvent(void * sender, BfdAiEventArgs * args, void * userParam){
@@ -108,18 +113,15 @@ void AiStreaming::OnStoppedEvent(void * sender, BfdAiEventArgs * args, void * us
    QMessageBox::information(uParam, "Warning Information", message);
    */
 }
+int AiStreaming::getAcc(double *&currentAcc){
+//    for(int i=0;i<ACCSENSORCOUNT;i++)
+//        currentAcc[i]=g_Acc[i]*g_acc_k+g_acc_bias;
+//    return 1;
+}
 
 double AiStreaming::getAcc(){
-    double currentAcc;
-    if(bufferAiCount==0){
-        currentAcc=preAcc;
-    }else{
-        double s=0;
-        for(int i=0;i<bufferAiCount;i++)
-            s+=scaledData[i];
-        currentAcc=s/bufferAiCount;
-        preAcc=currentAcc;
-    }
-    return currentAcc;
+    //return g_Acc;
+    return g_Acc*g_acc_k+g_acc_bias;
+    //return (g_Acc+0.22)/2;
 }
 

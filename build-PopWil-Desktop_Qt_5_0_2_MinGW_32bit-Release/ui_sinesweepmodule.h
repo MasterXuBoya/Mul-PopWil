@@ -164,12 +164,63 @@ public:
         btn_close = new QPushButton(centralwidget);
         btn_close->setObjectName(QStringLiteral("btn_close"));
         btn_close->setGeometry(QRect(40, 370, 61, 41));
+        btn_close->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         btn_clear = new QPushButton(centralwidget);
         btn_clear->setObjectName(QStringLiteral("btn_clear"));
         btn_clear->setGeometry(QRect(210, 370, 81, 41));
+        btn_clear->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         btn_generate = new QPushButton(centralwidget);
         btn_generate->setObjectName(QStringLiteral("btn_generate"));
         btn_generate->setGeometry(QRect(320, 370, 91, 41));
+        btn_generate->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
         SineSweepModule->setCentralWidget(centralwidget);
         menubar = new QMenuBar(SineSweepModule);
         menubar->setObjectName(QStringLiteral("menubar"));

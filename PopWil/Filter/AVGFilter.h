@@ -5,12 +5,14 @@
 class AvgFilter
 {
 public:
-    AvgFilter();
+    AvgFilter();//一定要存在默认构造函数
+    AvgFilter(int lag);
     virtual ~AvgFilter();
+    void setLag(int lag);
     double filter(double value);//将value滤波后输出的结果
 private:
     int avgFilterIndex,dataCnt;
-    static const int MAXFILTERCNT=10;
+    int MAXFILTERCNT;
     double *buffer;
     double sum;
 };

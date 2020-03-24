@@ -543,7 +543,7 @@ typedef enum TriggerAction {
    ActionNone = 0,   /* No action to take even if the trigger condition is satisfied */
    DelayToStart,     /* Begin to start after the specified time is elapsed if the trigger condition is satisfied */
    DelayToStop,      /* Stop execution after the specified time is elapsed if the trigger condition is satisfied */
-   Mark,             /* Generate a mark data*/
+   //Mark,             /* Generate a mark data*/
 
    /*----------------------------------------------------------------------*/
    /*Dummy ID, to ensure the type is compiled as 'int' by various compiler */

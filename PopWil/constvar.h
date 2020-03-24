@@ -6,12 +6,23 @@
 #include "qdoublebufferedqueue.h"
 #include "QDir"
 #include "qstringlist.h"
+#include "ToolFromMatlab.h"
+#include "vector"
 
 #define PI  3.1415926535898
+#define ACCSENSORCOUNT 2//加速度传感器数量
+#define DISSENSORCOUNT 3//位移传感器数量
 
 using namespace Automation::BDaq;
-#define MAXDATACOUNT 300000//每秒500个数据，10分钟
+using namespace std;
+#define MAXDATACOUNT 300000//每秒100个数据，50分钟
 //------------------------------------------------------------------
+//传感器校准
+extern double g_acc_k,g_acc_bias;
+extern double g_dis_k,g_dis_bias;
+extern bool ssiEnable;
+
+extern ToolFromMatlab matlabHandler;
 //定义结构型变量
 struct ConfigureParameterAO
 {
@@ -44,8 +55,14 @@ struct TPIDInfo
     double SP;
     double SI;
     double SD;
+    TPIDInfo(){
+
+    }
+    TPIDInfo(double p,double i,double d){
+        SP=p;SI=i;SD=d;
+    }
 };
-extern TPIDInfo sPIDInfo,sinePIDInfo;//全局变量，正弦波PID控制参数
+extern TPIDInfo sPIDInfo,sinePIDInfo,accPIDInfo;//全局变量，位移PID控制参数
 
 struct TPID3Info{
     TPIDInfo dis;
@@ -53,6 +70,16 @@ struct TPID3Info{
     TPIDInfo acc;
 };
 extern TPID3Info pid3Info;
+
+struct TPID3Weight{
+    double ws;
+    double wv;
+    double wa;
+    void setDate(double ws_,double wv_,double wa_){
+        ws=ws_;wv=wv_;wa=wa_;
+    }
+};
+extern TPID3Weight pid3Weight;
 
 struct TTVCInfo//三参量参数类型
 {
@@ -69,10 +96,16 @@ struct TStateInfo{
 
 struct TSystemInfo
 {
-    int contrlInterval;
-    int drawInterval;
-    double maxAbsolutePosition;
-    double maxOutU;
+    int contrlInterval;//控制周期
+    int drawInterval;//绘图周期
+    double maxOutUDebug;//Debug输出限幅
+    double maxOutU;//最大输出限幅
+    double maxAbsoluteForce;//最大推力
+    double maxAbsolutePosition;//最大位移
+    double maxAbsoluteVel;//最大速度
+    double maxAbsoluteAcc;//最大加速度
+    double maxLoadWeight;//最大负载质量
+
 };
 extern TSystemInfo systemInfo;
 struct Matrix
@@ -103,6 +136,7 @@ enum TWaveMode{
 extern TWaveMode waveMode,waveModeTmp;
 enum TControlMethod{
     PIDMethod,
+    ACCPIDMethod,
     Para3Method,
     PID3Method,
     IterativeMethod
@@ -128,6 +162,14 @@ enum TDrawType{
     AccType,
 };
 extern TDrawType drawType;//判断动态绘图的是位移、速度还是加速度，以便于改变标题和单位
+struct TModel{//系统辨识模型
+    int Nfft;//数据长度为Nfft/2+1
+    int Fs;
+    double Txy_real[2048];
+    double Txy_imag[2048];
+    double F[2048];
+};
+extern TModel systemModel;
 //------------------------------------------------------------------
 //全局变量
 /*
@@ -147,6 +189,7 @@ int sum(int a,int b);
 //extern std::vector<double> SRefArray[MAXDATACOUNT];
 
 extern int dataCnt,dataRefCnt;
+extern int iterationIndex;
 extern double SRefArray[MAXDATACOUNT],SArray[MAXDATACOUNT];
 extern double VRefArray[MAXDATACOUNT],VArray[MAXDATACOUNT];
 extern double ARefArray[MAXDATACOUNT],AArray[MAXDATACOUNT];
@@ -160,7 +203,16 @@ struct TRefData{
     double VRef[MAXDATACOUNT];
     double ARef[MAXDATACOUNT];
 };
+//内环系统参考信号
+extern TRefData ydData;//真正的参考信号yd，一般只有加速度信号
 extern TRefData refData;//自己生成，或者载入外部的参考波形
+extern TRefData segData;//每一段实际采集到的波形，与refSegData对应
+//当ydData采样频率为100Hz时，refData和refSegData一样
+//当ydData采样频率为1000Hz时，refData为1000Hz，refSegData为100Hz
+extern TRefData refSegData;
+extern int segCnt;
+extern TRefData segsData[10];
+extern TRefData refsData[10];
 
 QString CheckError(ErrorCode errorCode);
 

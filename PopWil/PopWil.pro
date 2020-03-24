@@ -5,8 +5,9 @@
 #-------------------------------------------------
 
 QT       += core gui
-#QT += xlsx
+QT += xlsx
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 #the extern header file
 INCLUDEPATH += ../include
@@ -17,7 +18,8 @@ INCLUDEPATH += Controller\
                Tool\
                Communication\
                Filter\
-               Draw
+               Draw\
+               MatlabDLL
 
 #注：     1、-L 参数指定 .lib/.a 文件的位置
 #        2、-l  参数指定导入库文件名(不要加扩展名)
@@ -44,6 +46,46 @@ win32:contains(QMAKE_HOST.arch, x86_64) {
   QMAKE_POST_LINK += copy /Y ..\\lib32\\libfftw3f-3.dll $(DESTDIR) &
   QMAKE_POST_LINK += copy /Y ..\\lib32\\libfftw3l-3.dll $(DESTDIR)
 }
+#---------------------lib for Matlab--------------------------------------------------
+#----------general-----------
+DEFINES += __MW_STDINT_H__
+
+INCLUDEPATH += ../includeForMatlab
+INCLUDEPATH += ../includeForMatlab/win32
+
+LIBS+= -L../libForMatlab -llibeng
+LIBS+= -L../libForMatlab -llibmat
+LIBS+= -L../libForMatlab -llibmex
+LIBS+= -L../libForMatlab -llibmx
+LIBS+= -L../libForMatlab -lmclmcr
+LIBS+= -L../libForMatlab -lmclmcrrt
+#-----------every--------------
+LIBS += ../lib32/fftForMatlab.lib
+LIBS += ../lib32/tfeFun.lib
+LIBS += ../lib32/dotMul.lib
+LIBS += ../lib32/addMul.lib
+LIBS += ../lib32/plotTest.lib
+LIBS += ../lib32/EarthPreprocess.lib
+LIBS += ../lib32/WaveResample.lib
+LIBS += ../lib32/transformFunction.lib
+LIBS += ../lib32/generateFirstDrive.lib
+LIBS += ../lib32/IterativeMode.lib
+LIBS += ../lib32/pcidll.lib
+
+
+
+QMAKE_POST_LINK += copy /Y ..\\lib32\\dotMul.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\fftForMatlab.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\tfeFun.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\addMul.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\plotTest.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\EarthPreprocess.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\WaveResample.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\transformFunction.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\generateFirstDrive.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\IterativeMode.dll $(DESTDIR)&
+QMAKE_POST_LINK += copy /Y ..\\lib32\\pcidll.dll $(DESTDIR)
+#-----------------------------------------------------------------------
 
 TARGET = PopWil
 TEMPLATE = app
@@ -69,7 +111,6 @@ SOURCES += main.cpp\
     UI/systemsettings.cpp \
     Tool/performancetimer.cpp \
     UI/mainwindow.cpp \
-    UI/rbf.cpp \
     Draw/mychartviewer.cpp \
     Draw/qchartviewer.cpp \
     Tool/inihelper.cpp \
@@ -79,7 +120,13 @@ SOURCES += main.cpp\
     Controller/PID3Controller.cpp \
     Tool/Oscilator.cpp \
     Draw/DisplayBuffer.cpp \
-    UI/DisplayBufferForm.cpp
+    UI/DisplayBufferForm.cpp \
+    Filter/HMAFilter.cpp \
+    Test/testfornothing.cpp \
+    Communication/ssitool.cpp \
+    MatlabDLL/ToolFromMatlab.cpp \
+    UI/calibration.cpp \
+    UI/IterativeControlMainWindow.cpp
 
 HEADERS  += \
     constvar.h \
@@ -101,7 +148,6 @@ HEADERS  += \
     UI/systemsettings.h \
     Tool/performancetimer.h \
     UI/mainwindow.h \
-    UI/rbf.h \
     Draw/bchartdir.h \
     Draw/chartdir.h \
     Draw/memblock.h \
@@ -117,25 +163,48 @@ HEADERS  += \
     UI/popwilheader.h \
     Tool/Oscilator.h \
     Draw/DisplayBuffer.h \
-    UI/DisplayBufferForm.h
+    UI/DisplayBufferForm.h \
+    Filter/HMAFilter.h \
+    Test/testfornothing.h \
+    Communication/ssitool.h \
+    MatlabDLL/ToolFromMatlab.h \
+    UI/calibration.h \
+    UI/IterativeControlMainWindow.h \
+    MatlabDLL/addMul.h \
+    MatlabDLL/dotMul.h \
+    MatlabDLL/EarthPreprocess.h \
+    MatlabDLL/fftForMatlab.h \
+    MatlabDLL/generateFirstDrive.h \
+    MatlabDLL/IterativeMode.h \
+    MatlabDLL/plotTest.h \
+    MatlabDLL/tfeFun.h \
+    MatlabDLL/transformFunction.h \
+    MatlabDLL/WaveResample.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui \
     aboutform.ui \
     configuredialog.ui \
     ctrldialog.ui \
-    rbf.ui \
     systemsettings.ui \
     sinesweepmodule.ui \
-    DisplayBufferForm.ui
+    DisplayBufferForm.ui \
+    IterativeControlMainWindow.ui \
+    calibration.ui
 
 
 QMAKE_CXXFLAGS += -Wno-unused-variable
-QMAKE_CXXFLAGS += -Wno-unused-parameter
+QMAKE_CXXFLAGS +=  -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wcomment
 
 
 RESOURCES += \
     resource.qrc
 
+DISTFILES += \
+    mainicon.rc
+
+RC_FILE += mainicon.rc
+
+TRANSLATIONS += lang_English.ts
 

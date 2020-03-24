@@ -40,6 +40,12 @@ void CtrlDialog::setPIDParameter()
     ui->le_sine_I->setText(QString::number(sinePIDInfo.SI));
     ui->le_sine_D->setText(QString::number(sinePIDInfo.SD));
 
+
+    ui->le_acc_P->setText(QString::number(accPIDInfo.SP));
+    ui->le_acc_I->setText(QString::number(accPIDInfo.SI));
+    ui->le_acc_D->setText(QString::number(accPIDInfo.SD));
+
+
     ui->le_fs->setText(QString::number(tvcInfo.fs));
     ui->le_fv->setText(QString::number(tvcInfo.fv));
     ui->le_fa->setText(QString::number(tvcInfo.fa));
@@ -56,6 +62,10 @@ void CtrlDialog::setPIDParameter()
     ui->le_pid3_ap->setText(QString::number(pid3Info.acc.SP));
     ui->le_pid3_ai->setText(QString::number(pid3Info.acc.SI));
     ui->le_pid3_ad->setText(QString::number(pid3Info.acc.SD));
+
+    ui->le_ws->setText(QString::number(pid3Weight.ws,'f',2));
+    ui->le_wv->setText(QString::number(pid3Weight.wv,'f',2));
+    ui->le_wa->setText(QString::number(pid3Weight.wa,'f',2));
 }
 
 void CtrlDialog::on_btnOk_clicked()
@@ -67,6 +77,10 @@ void CtrlDialog::on_btnOk_clicked()
     sinePIDInfo.SP=ui->le_sine_P->text().toDouble();
     sinePIDInfo.SI=ui->le_sine_I->text().toDouble();
     sinePIDInfo.SD=ui->le_sine_D->text().toDouble();
+
+    accPIDInfo.SP=ui->le_acc_P->text().toDouble();
+    accPIDInfo.SI=ui->le_acc_I->text().toDouble();
+    accPIDInfo.SD=ui->le_acc_D->text().toDouble();
 
     tvcInfo.fs=ui->le_fs->text().toDouble();
     tvcInfo.fv=ui->le_fv->text().toDouble();
@@ -87,6 +101,9 @@ void CtrlDialog::on_btnOk_clicked()
     pid3Info.acc.SI=ui->le_pid3_ai->text().toDouble();
     pid3Info.acc.SD=ui->le_pid3_ad->text().toDouble();
 
+    pid3Weight.ws=ui->le_ws->text().toDouble();
+    pid3Weight.wv=ui->le_wv->text().toDouble();
+    pid3Weight.wa=ui->le_wa->text().toDouble();
 
     this->accept();
 }

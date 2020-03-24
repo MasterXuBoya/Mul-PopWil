@@ -20,6 +20,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 
 QT_BEGIN_NAMESPACE
 
@@ -49,6 +50,9 @@ public:
     QComboBox *cmbChannelCount_AI;
     QLabel *lblSectionLength;
     QLineEdit *edtSectionLength_AI;
+    QGroupBox *groupBox_2;
+    QRadioButton *radioButton_ENC;
+    QRadioButton *radioButton_SSI;
 
     void setupUi(QDialog *ConfigureDialog)
     {
@@ -116,7 +120,7 @@ public:
         btnCancel->setAutoDefault(false);
         groupBox = new QGroupBox(ConfigureDialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(30, 80, 241, 201));
+        groupBox->setGeometry(QRect(30, 80, 241, 121));
         cmbChannelStart = new QComboBox(groupBox);
         cmbChannelStart->setObjectName(QStringLiteral("cmbChannelStart"));
         cmbChannelStart->setGeometry(QRect(98, 20, 131, 21));
@@ -207,6 +211,15 @@ public:
         edtSectionLength_AI = new QLineEdit(groupBox_3);
         edtSectionLength_AI->setObjectName(QStringLiteral("edtSectionLength_AI"));
         edtSectionLength_AI->setGeometry(QRect(110, 150, 161, 21));
+        groupBox_2 = new QGroupBox(ConfigureDialog);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        groupBox_2->setGeometry(QRect(30, 210, 241, 61));
+        radioButton_ENC = new QRadioButton(groupBox_2);
+        radioButton_ENC->setObjectName(QStringLiteral("radioButton_ENC"));
+        radioButton_ENC->setGeometry(QRect(10, 20, 89, 16));
+        radioButton_SSI = new QRadioButton(groupBox_2);
+        radioButton_SSI->setObjectName(QStringLiteral("radioButton_SSI"));
+        radioButton_SSI->setGeometry(QRect(140, 20, 89, 16));
 #ifndef QT_NO_SHORTCUT
         lblDevice->setBuddy(cmbDevice);
         lblValueRange->setBuddy(cmbValueRange);
@@ -249,6 +262,9 @@ public:
         lblRateUnit->setText(QApplication::translate("ConfigureDialog", "Hz", 0));
         lblSectionLength->setText(QApplication::translate("ConfigureDialog", "\347\274\223\345\206\262\345\214\272\351\225\277\345\272\246\357\274\232", 0));
         edtSectionLength_AI->setText(QString());
+        groupBox_2->setTitle(QApplication::translate("ConfigureDialog", "\344\275\215\347\247\273\351\207\207\351\233\206", 0));
+        radioButton_ENC->setText(QApplication::translate("ConfigureDialog", "ENC_7480", 0));
+        radioButton_SSI->setText(QApplication::translate("ConfigureDialog", "SSI\351\207\207\351\233\206\345\215\241", 0));
     } // retranslateUi
 
 };

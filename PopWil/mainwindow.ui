@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>单自由度模拟振动台控制系统</string>
+   <string>地震模拟振动台控制系统</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QFrame" name="displayFrame">
@@ -244,7 +244,7 @@ background-color: rgb(238, 255, 246);</string>
 </string>
           </property>
           <property name="text">
-           <string>mm/ss</string>
+           <string>g</string>
           </property>
          </widget>
         </item>
@@ -343,9 +343,9 @@ background-color: rgb(153, 204, 255);</string>
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>110</y>
+         <y>120</y>
          <width>291</width>
-         <height>16</height>
+         <height>101</height>
         </rect>
        </property>
        <property name="orientation">
@@ -358,7 +358,7 @@ background-color: rgb(153, 204, 255);</string>
          <x>10</x>
          <y>10</y>
          <width>281</width>
-         <height>80</height>
+         <height>141</height>
         </rect>
        </property>
        <property name="title">
@@ -368,20 +368,20 @@ background-color: rgb(153, 204, 255);</string>
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>40</y>
+          <y>20</y>
           <width>41</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>电压:</string>
+         <string>X:</string>
         </property>
        </widget>
        <widget class="QLineEdit" name="le_uk">
         <property name="geometry">
          <rect>
           <x>80</x>
-          <y>40</y>
+          <y>20</y>
           <width>85</width>
           <height>20</height>
          </rect>
@@ -400,7 +400,7 @@ background-color: rgb(153, 204, 255);</string>
         <property name="geometry">
          <rect>
           <x>170</x>
-          <y>40</y>
+          <y>20</y>
           <width>16</width>
           <height>16</height>
          </rect>
@@ -413,7 +413,7 @@ background-color: rgb(153, 204, 255);</string>
         <property name="geometry">
          <rect>
           <x>200</x>
-          <y>40</y>
+          <y>20</y>
           <width>75</width>
           <height>23</height>
          </rect>
@@ -447,12 +447,178 @@ QPushButton:pressed{
          <string>输出</string>
         </property>
        </widget>
+       <widget class="QLabel" name="label_30">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>50</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>V</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_S_7">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>41</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Y1:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_out_uk_2">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>50</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+        </property>
+        <property name="text">
+         <string>输出</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_uk_2">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>50</y>
+          <width>85</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Normal</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_31">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>80</y>
+          <width>16</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>V</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_S_8">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>41</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Y2:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_out_uk_3">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>80</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+    background-color:rgb(230, 240, 250);
+    border-radius: 10px;
+    border: 2px groove gray;
+    border-style: outset;
+
+    font:bold;
+}
+
+QPushButton:hover{
+    background-color:white;
+    color: black;
+    }
+QPushButton:pressed{
+    background-color:rgb(85, 170, 255);
+    border-style: inset;
+    }</string>
+        </property>
+        <property name="text">
+         <string>输出</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_uk_3">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>80</y>
+          <width>85</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="echoMode">
+         <enum>QLineEdit::Normal</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_3">
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>140</y>
+         <y>190</y>
          <width>281</width>
          <height>71</height>
         </rect>
@@ -732,7 +898,7 @@ QListWidget::item:selected{
           <item row="3" column="1">
            <widget class="QLineEdit" name="le_cnt">
             <property name="text">
-             <string>20</string>
+             <string>200</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -820,7 +986,7 @@ QListWidget::item:selected{
           <rect>
            <x>20</x>
            <y>10</y>
-           <width>51</width>
+           <width>150</width>
            <height>21</height>
           </rect>
          </property>
@@ -1024,6 +1190,11 @@ background-color: rgb(238, 255, 246);</string>
      <item>
       <property name="text">
        <string>PID控制</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>加速度PID控制</string>
       </property>
      </item>
      <item>
@@ -1256,7 +1427,7 @@ QPushButton:pressed{
          <rect>
           <x>20</x>
           <y>10</y>
-          <width>71</width>
+          <width>150</width>
           <height>21</height>
          </rect>
         </property>
@@ -1437,7 +1608,7 @@ font:bold;</string>
          <rect>
           <x>20</x>
           <y>10</y>
-          <width>61</width>
+          <width>150</width>
           <height>21</height>
          </rect>
         </property>
@@ -1473,7 +1644,7 @@ font:bold;</string>
          <rect>
           <x>20</x>
           <y>10</y>
-          <width>61</width>
+          <width>150</width>
           <height>21</height>
          </rect>
         </property>
@@ -1752,11 +1923,21 @@ font:bold;</string>
     <property name="title">
      <string>设置(&amp;S)</string>
     </property>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>语言</string>
+     </property>
+     <addaction name="action_Chinese"/>
+     <addaction name="action_English"/>
+    </widget>
+    <addaction name="action_Calibration"/>
     <addaction name="action_ChannelParameters"/>
     <addaction name="action_ControlParameters"/>
     <addaction name="action_LimitedParameters"/>
-    <addaction name="actionAction_SystemSettings"/>
-    <addaction name="actionAction_drawDelay"/>
+    <addaction name="separator"/>
+    <addaction name="action_SystemSettings"/>
+    <addaction name="action_DrawDelay"/>
+    <addaction name="menu_2"/>
    </widget>
    <widget class="QMenu" name="menu_Command">
     <property name="title">
@@ -1769,7 +1950,7 @@ font:bold;</string>
    </widget>
    <widget class="QMenu" name="menu_Data">
     <property name="title">
-     <string>数据(&amp;D)</string>
+     <string>显示(&amp;D)</string>
     </property>
     <addaction name="action_Pointer"/>
     <addaction name="action_ZoomIn"/>
@@ -1789,7 +1970,7 @@ font:bold;</string>
     <property name="title">
      <string>控制(&amp;C)</string>
     </property>
-    <addaction name="action_Identity"/>
+    <addaction name="action_IterativeControl"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -1824,9 +2005,13 @@ font:bold;</string>
    <addaction name="action_ZoomIn"/>
    <addaction name="action_ZoomOut"/>
    <addaction name="separator"/>
+   <addaction name="action_Calibration"/>
    <addaction name="action_ChannelParameters"/>
    <addaction name="action_ControlParameters"/>
-   <addaction name="actionAction_SystemSettings"/>
+   <addaction name="action_SystemSettings"/>
+   <addaction name="separator"/>
+   <addaction name="action_SaveAsPicture"/>
+   <addaction name="action_IterativeControl"/>
   </widget>
   <action name="action_Open">
    <property name="icon">
@@ -1925,6 +2110,10 @@ font:bold;</string>
    </property>
   </action>
   <action name="action_SaveAsPicture">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/Icon/Icon/snapshot.png</normaloff>:/Icon/Icon/snapshot.png</iconset>
+   </property>
    <property name="text">
     <string>保存为图片</string>
    </property>
@@ -1932,7 +2121,7 @@ font:bold;</string>
   <action name="action_ChannelParameters">
    <property name="icon">
     <iconset resource="resource.qrc">
-     <normaloff>:/Icon/Icon/channel.png</normaloff>:/Icon/Icon/channel.png</iconset>
+     <normaloff>:/Icon/Icon/channel_blue.png</normaloff>:/Icon/Icon/channel_blue.png</iconset>
    </property>
    <property name="text">
     <string>通道参数</string>
@@ -1941,7 +2130,7 @@ font:bold;</string>
   <action name="action_ControlParameters">
    <property name="icon">
     <iconset resource="resource.qrc">
-     <normaloff>:/Icon/Icon/ctrlSetting.png</normaloff>:/Icon/Icon/ctrlSetting.png</iconset>
+     <normaloff>:/Icon/Icon/CtrlPara.png</normaloff>:/Icon/Icon/CtrlPara.png</iconset>
    </property>
    <property name="text">
     <string>控制参数</string>
@@ -1984,23 +2173,46 @@ font:bold;</string>
     <string>保存为默认设置</string>
    </property>
   </action>
-  <action name="action_Identity">
-   <property name="text">
-    <string>RBF辨识</string>
-   </property>
-  </action>
-  <action name="actionAction_SystemSettings">
+  <action name="action_SystemSettings">
    <property name="icon">
     <iconset resource="resource.qrc">
-     <normaloff>:/Icon/Icon/settings2.png</normaloff>:/Icon/Icon/settings2.png</iconset>
+     <normaloff>:/Icon/Icon/setting_bule.png</normaloff>:/Icon/Icon/setting_bule.png</iconset>
    </property>
    <property name="text">
     <string>系统设置</string>
    </property>
   </action>
-  <action name="actionAction_drawDelay">
+  <action name="action_DrawDelay">
    <property name="text">
     <string>绘图延迟补偿</string>
+   </property>
+  </action>
+  <action name="action_IterativeControl">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/Icon/Icon/main.ico</normaloff>:/Icon/Icon/main.ico</iconset>
+   </property>
+   <property name="text">
+    <string>迭代控制台</string>
+   </property>
+  </action>
+  <action name="action_Calibration">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/Icon/Icon/calibration.png</normaloff>:/Icon/Icon/calibration.png</iconset>
+   </property>
+   <property name="text">
+    <string>传感器校准</string>
+   </property>
+  </action>
+  <action name="action_Chinese">
+   <property name="text">
+    <string>中文</string>
+   </property>
+  </action>
+  <action name="action_English">
+   <property name="text">
+    <string>英语</string>
    </property>
   </action>
  </widget>

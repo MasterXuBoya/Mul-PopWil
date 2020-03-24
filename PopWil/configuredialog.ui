@@ -133,7 +133,7 @@ QPushButton:pressed{
      <x>30</x>
      <y>80</y>
      <width>241</width>
-     <height>201</height>
+     <height>121</height>
     </rect>
    </property>
    <property name="title">
@@ -497,6 +497,45 @@ QPushButton:pressed{
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>210</y>
+     <width>241</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>位移采集</string>
+   </property>
+   <widget class="QRadioButton" name="radioButton_ENC">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>89</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ENC_7480</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_SSI">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>20</y>
+      <width>89</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SSI采集卡</string>
     </property>
    </widget>
   </widget>

@@ -1,5 +1,8 @@
 #include "mychartviewer.h"
 #include "math.h"
+#include "QDateTime"
+#include "logger.h"
+
 using namespace std;
 
 MyChartViewer::MyChartViewer(QObject *parent) : QObject(parent){
@@ -55,8 +58,16 @@ void MyChartViewer::onMouseUsageChanged(int mouseUsage)
 // The Save button is pressed
 void MyChartViewer::onSave(bool)
 {
-    QString fileName = QFileDialog::getSaveFileName(m_ChartViewer, "Save", "chartdirector_demo",
-        "PNG (*.png);;JPG (*.jpg);;GIF (*.gif);;BMP (*.bmp);;SVG (*.svg);;PDF (*.pdf)");
+//    QString fileName = QFileDialog::getSaveFileName(m_ChartViewer, "Save", "chartdirector_demo",
+//        "PNG (*.png);;JPG (*.jpg);;GIF (*.gif);;BMP (*.bmp);;SVG (*.svg);;PDF (*.pdf)");
+
+    QDateTime currentTime = QDateTime::currentDateTime();
+    QString current = currentTime.toString("yyyyMMdd_hhmmss");
+    QString fileName="E://PopWilCacher//Snapshot//snapshot_"+current+".png";
+
+    Logger *logger=Logger::getInstance();
+    QString mess="[info] "+QString("截图")+fileName+QString("保存成功");
+    logger->appendLogger(mess);
 
     if (!fileName.isEmpty())
     {

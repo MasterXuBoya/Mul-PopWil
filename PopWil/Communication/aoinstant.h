@@ -12,6 +12,7 @@ public:
     void setInstantAoPara(ConfigureParameterAO para);
     void configure();
     bool outU(double value);
+    bool outU(double value[DISSENSORCOUNT]);
 private:
     double scaledData[16];
     InstantAoCtrl * instantAoCtrl;

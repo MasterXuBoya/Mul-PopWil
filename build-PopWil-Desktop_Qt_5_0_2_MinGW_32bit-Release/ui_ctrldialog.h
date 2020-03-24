@@ -90,13 +90,10 @@ public:
     QLabel *label_17;
     QLabel *label_12;
     QLabel *label_18;
-    QWidget *layoutWidget9;
-    QHBoxLayout *horizontalLayout_2;
-    QPushButton *btnOk;
-    QSpacerItem *horizontalSpacer;
-    QPushButton *btnQuit;
     QLabel *label_4;
     QComboBox *cmbCtrlMode;
+    QPushButton *btnOk;
+    QPushButton *btnQuit;
 
     void setupUi(QDialog *CtrlDialog)
     {
@@ -435,26 +432,6 @@ public:
         horizontalLayout_10->setStretch(2, 1);
         horizontalLayout_10->setStretch(3, 1);
         tabWidget->addTab(tab_3, QString());
-        layoutWidget9 = new QWidget(CtrlDialog);
-        layoutWidget9->setObjectName(QStringLiteral("layoutWidget9"));
-        layoutWidget9->setGeometry(QRect(50, 420, 411, 61));
-        horizontalLayout_2 = new QHBoxLayout(layoutWidget9);
-        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        btnOk = new QPushButton(layoutWidget9);
-        btnOk->setObjectName(QStringLiteral("btnOk"));
-
-        horizontalLayout_2->addWidget(btnOk);
-
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer);
-
-        btnQuit = new QPushButton(layoutWidget9);
-        btnQuit->setObjectName(QStringLiteral("btnQuit"));
-
-        horizontalLayout_2->addWidget(btnQuit);
-
         label_4 = new QLabel(CtrlDialog);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setGeometry(QRect(21, 21, 85, 18));
@@ -471,10 +448,50 @@ public:
 "background-color: rgb(240, 254, 255);"));
         cmbCtrlMode->setIconSize(QSize(16, 20));
         cmbCtrlMode->setFrame(true);
+        btnOk = new QPushButton(CtrlDialog);
+        btnOk->setObjectName(QStringLiteral("btnOk"));
+        btnOk->setGeometry(QRect(51, 442, 81, 31));
+        btnOk->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
+        btnQuit = new QPushButton(CtrlDialog);
+        btnQuit->setObjectName(QStringLiteral("btnQuit"));
+        btnQuit->setGeometry(QRect(430, 442, 81, 31));
+        btnQuit->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
 
         retranslateUi(CtrlDialog);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(CtrlDialog);
@@ -502,9 +519,9 @@ public:
         label_12->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">I</span></p></body></html>", 0));
         label_18->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">D</span></p></body></html>", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("CtrlDialog", "PID3\345\217\202\346\225\260", 0));
+        label_4->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">\346\216\247\345\210\266\346\226\271\345\274\217\357\274\232</span></p></body></html>", 0));
         btnOk->setText(QApplication::translate("CtrlDialog", "\347\241\256\345\256\232", 0));
         btnQuit->setText(QApplication::translate("CtrlDialog", "\351\200\200\345\207\272", 0));
-        label_4->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">\346\216\247\345\210\266\346\226\271\345\274\217\357\274\232</span></p></body></html>", 0));
     } // retranslateUi
 
 };

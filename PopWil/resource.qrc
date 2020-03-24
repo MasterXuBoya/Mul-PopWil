@@ -39,9 +39,27 @@
         <file>Icon/downarrow.png</file>
         <file>Icon/ver_scroll_bottom_arrow.png</file>
         <file>Icon/ver_scroll_top_arrow.png</file>
+        <file>Icon/identify.png</file>
+        <file>Icon/leftarrow.png</file>
+        <file>Icon/rightarrow.png</file>
+        <file>Icon/borderleftarrow.png</file>
+        <file>Icon/borderrightarrow.png</file>
+        <file>Icon/borderdownarrow.png</file>
+        <file>Icon/borderuparrow.png</file>
+        <file>Icon/main.ico</file>
+        <file>Icon/start.png</file>
+        <file>Icon/calibration.png</file>
+        <file>Icon/snapshot.png</file>
+        <file>Icon/CtrlPara.png</file>
+        <file>Icon/setting_bule.png</file>
+        <file>Icon/channel_blue.png</file>
     </qresource>
     <qresource prefix="/qss">
         <file>stylesheet2.qss</file>
         <file>stylesheet.qss</file>
+    </qresource>
+    <qresource prefix="/translators">
+        <file>lang_English.qm</file>
+        <file>lang_English.ts</file>
     </qresource>
 </RCC>

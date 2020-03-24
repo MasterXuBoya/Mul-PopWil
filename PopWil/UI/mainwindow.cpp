@@ -1,15 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ToolFromMatlab.h"
+#include "ssitool.h"
 
 using namespace std;
 using namespace Automation::BDaq;
-#define IterativeP -0.3
-#define IterativeD -0.1
 
 MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝父类构造函数，然后进行自己类的构造函数
         ui(new Ui::MainWindow),dataSaveBasePath("E:/PopWilCacher/data/")
 {
     ui->setupUi(this);
+
+    englishTranslator=new QTranslator(this);
+    bool b = englishTranslator->load(":/translators/lang_English.qm");
+    if(b) qDebug()<<"lang_English load sucess";
+    else qDebug()<<"lang_English load failed";
+
 
     QFile file(":/qss/stylesheet.qss");
     file.open(QFile::ReadOnly);
@@ -27,53 +33,65 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     model = new QStandardItemModel(ui->listView_eventInformation);
 
     //------------------load UArray------------------------
+    dataCnt=0;refData.refCnt=ydData.refCnt=segData.refCnt=refSegData.refCnt=0;
+    segCnt=0;//seg个数，全局变量
     for(int i=0;i<MAXDATACOUNT;i++){//此处不适用memset，容易出错
+        //下面三组数组以dataCnt作为index
         OutUPreArray[i]=OutUArray[i]=ErrorPreArray[i]=ErrorArray[i]=0;
         SRefArray[i]=VRefArray[i]=ARefArray[i]=0;
         SArray[i]=VArray[i]=AArray[i]=0;
+
         refData.SRef[i]=refData.VRef[i]=refData.ARef[i]=0;
+        ydData.SRef[i]=ydData.VRef[i]=ydData.ARef[i]=0;
+        segData.SRef[i]=segData.VRef[i]=segData.ARef[i]=0;
+        refSegData.SRef[i]=refSegData.VRef[i]=refSegData.ARef[i]=0;
+
     }
+    //系统传递函数变量systemModel初始化
+    systemModel.Nfft=systemModel.Fs=0;
+    for(int i=0;i<2048;i++)
+        systemModel.Txy_real[i]=systemModel.Txy_imag[i]=systemModel.F[i]=0;
     //testFunction();
 //---------------------------将配置文件读入------------------------------------
     IniHelper *hh=new IniHelper;
-    ConfigureParameterPCI iniSettingFile= hh->readFromPciIni("IniSetting/PCI1716.ini");
+    ConfigureParameterPCI iniSettingFile= hh->readFromPciIni("E://PopWilCacher//IniSetting//PCI1716.ini");
     configureAO=iniSettingFile.iniSettingAO;
     configureAI=iniSettingFile.iniSettingAI;
     log="from the iniFile AO is "+configureAO.deviceName+","+QString::number(configureAO.channelStart)+
             ","+QString::number(configureAO.channelCount)+","+QString::number(configureAO.valueRange);
     qDebug()<<log;logger->appendLogger("[debug] "+log);
-    log="[info]通道参数文件载入成功！";
+    log=tr("[info] 通道参数文件载入成功！");
     addItemToListView(log);logger->appendLogger(log);
 
     //sPIDInfo=hh->readFromCtrlIni("../IniSetting/CtrlIni.ini");
-    hh->readFromCtrlIni("IniSetting/CtrlIni.ini",sPIDInfo,sinePIDInfo);
-    log="[info]PID控制参数文件载入成功！";
+    hh->readFromCtrlIni("E://PopWilCacher//IniSetting//CtrlIni.ini");
+    log=tr("[info] PID控制参数文件载入成功！");
     addItemToListView(log);logger->appendLogger(log);
 
-    hh->readFromTVCIno("IniSetting/TvcInfo.ini");
-    log="[info]三参量控制参数文件载入成功！";
+    hh->readFromTVCIno("E://PopWilCacher//IniSetting//TvcInfo.ini");
+    log=tr("[info] 三参量控制参数文件载入成功！");
     addItemToListView(log);logger->appendLogger(log);
 
-    systemInfo=hh->readFromSystemInfoIni("IniSetting/SystemInfo.ini");
-    log="[info]系统参数文件载入成功 ";
+    systemInfo=hh->readFromSystemInfoIni("E://PopWilCacher//IniSetting//SystemInfo.ini");
+    log=tr("[info] 系统参数文件载入成功 ");
     addItemToListView(log);logger->appendLogger(log);
     delete hh;
 
     log="system controlInterval:"+QString::number(systemInfo.contrlInterval)+
         " drawInterval:"+QString::number(systemInfo.drawInterval);
-    qDebug()<<log;logger->appendLogger(log);
+    qDebug()<<log;
     PERFORMANCEINTERVAL=systemInfo.contrlInterval;
     refData.refCnt=0;refData.dataRefSampleT=PERFORMANCEINTERVAL;//自己生成的参考波形的采样频率就是控制频率
 //------------------------------界面UI---------------------------------------------------------------
     setFixedSize(960, 900);
-    setWindowIcon(QPixmap(":/Icon/Icon/dashboard.png"));
+    setWindowIcon(QPixmap(":/Icon/Icon/main.ico"));
 
-    ui->btnStart->setToolTip("开始");
+    ui->btnStart->setToolTip(tr("开始"));
     ui->btnStart->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
-    ui->btnStop->setToolTip("停止");
+    ui->btnStop->setToolTip(tr("停止"));
     ui->btnStop->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
-    ui->btn_DO->setToolTip("开关");
-    ui->btn_load->setToolTip("载入数据");
+    ui->btn_DO->setToolTip(tr("开关"));
+    ui->btn_load->setToolTip(tr("载入数据"));
     //---------------状态栏---------
     currentLabel=new QLabel;
     currentLabel->setMinimumSize(150,20);
@@ -93,6 +111,9 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     setTabOrder(ui->le_mid,ui->le_mag);
     setTabOrder(ui->le_mag,ui->le_fre);
     setTabOrder(ui->le_fre,ui->le_cnt);
+    //迭代控制台
+    iterativeControlUI=new IterativeControlMainWindow();
+    calibrationDialog=new calibration();
     //------------地震波------------------------------------
     ////获取该路径下的所有文件
     QStringList earthquakeFiles= getFileNames("E:\\PopWilCacher\\EarthquakeWave");
@@ -102,6 +123,7 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
         ui->cmb_earth->addItem(wave.left(wave.size()-4));
     }
 
+
     //------------------------------ENC7480-------------------------------------------------------------
     int d7480rtn= Enc7480_Init();
     log="雷塞采集卡数量"+QString::number(d7480rtn);
@@ -110,24 +132,36 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     {
         qDebug()<<"初始化ENC7480计数卡失败!";
         QMessageBox::information(NULL,"提示","初始化ENC7480计数卡失败",QMessageBox::Ok|QMessageBox::Cancel);
-        log="[error]初始化ENC7480计数卡失败！";
+        log=tr("[error] 初始化ENC7480计数卡失败！");
         addItemToListView(log);logger->appendLogger(log);
         //this->close();
     }
     else{
-        log="[info]初始化ENC7480计数卡成功！";
+        log=tr("[info] 初始化ENC7480计数卡成功！");
+        QMessageBox::information(NULL,"提示","初始化ENC7480计数卡成功",QMessageBox::Ok|QMessageBox::Cancel);
         addItemToListView(log);logger->appendLogger(log);
     }
     Enc7480_Set_Encoder(0,0);
+
+    //SSI位移采集卡
+    bool ssiRet=ImportDLL_ConnectToDev();
+    if(ssiRet){
+//        writeData( 16, 25);
+//        writeData( 17, 25);
+//        writeData( 18, 25);
+//        writeData( 19, 25);
+    }else{
+        QMessageBox::information(NULL,"提示","NO SSI Device Found!",QMessageBox::Ok|QMessageBox::Cancel);
+    }
 //---------------------------------PCI1716初始化------------------------------------------------------------
     //DO 操作
     doInstant=new DoInstant();
     if (doInstant->getDeviceCount(configureAI.deviceName) == 0){
         QMessageBox::information(this, tr("Warning Information"),tr("No device to support the currently demonstrated function!"));
         QCoreApplication::quit();
-        log="[error]无法找到PCI设备！";
+        log=tr("[error] 无法找到PCI设备！");
     }
-    else log="[info]初始化PCI-1716设备成功！";
+    else log=tr("[info] 初始化PCI-1716设备成功！");
     qDebug()<<log;addItemToListView(log);logger->appendLogger(log);
 
     doInstant->setInstantDoPara(configureAO);
@@ -138,19 +172,19 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     qDebug()<<log;logger->appendLogger("[debug] "+log);
     if(portStates){
         ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_on.png)}");
-        log="[info]驱动已连接！";
+        log=tr("[info] 驱动已连接！");
         addItemToListView(log);logger->appendLogger(log);
     }
     else{
         ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_off.png)}");
-        log="[warning]驱动断开，请重新连接驱动！";
+        log=tr("[warning] 驱动断开，请重新连接驱动！");
         addItemToListView(log);logger->appendLogger(log);
     }
     //电压输出InstanceAO
     aoInstant=new AoInstant();
     aoInstant->setInstantAoPara(configureAO);
     aoInstant->configure();
-    outUToPCI(0);
+    outUToPCI(0.0);
     //InstantAI加速度当次采集
     aiInstant=new AiInstant();
     aiInstant->setInstantAiPara(configureAO);
@@ -177,9 +211,19 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     connect(ui->rbt_V,SIGNAL(clicked(bool)),this,SLOT(on_btn_preview_clicked()));
     connect(ui->rbt_A,SIGNAL(clicked(bool)),this,SLOT(on_btn_preview_clicked()));
     //-------------------------------滤波初始化------------------------------
-    sAvgFilter=new AvgFilter();
-    vAvgFilter=new AvgFilter();
-    aAvgFilter=new AvgFilter();
+    memset(sCurrentThreeFreedom,0,sizeof(sCurrentThreeFreedom));
+    m_filter_length=30;
+    sAvgFilter=new AvgFilter(m_filter_length);
+    sAvgFilterThreeFreedom=new AvgFilter[DISSENSORCOUNT]();
+    for(int i=0;i<DISSENSORCOUNT;i++)
+        sAvgFilterThreeFreedom[i].setLag(m_filter_length);
+    vAvgFilter=new AvgFilter(m_filter_length);
+    aAvgFilter=new AvgFilter(m_filter_length);
+
+    sHMAFilter=new HMAFilter(m_filter_length);
+    vHMAFilter=new HMAFilter(m_filter_length);
+    aHMAFilter=new HMAFilter(m_filter_length);
+
     sButtorFilter=new ButtorFilter();
     vButtorFilter=new ButtorFilter();
     aButtorFilter=new ButtorFilter();
@@ -188,12 +232,23 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
 
     sinePIDController=new PIDController();
     sinePIDController->setPIDPara(sinePIDInfo);
+    sinePIDControllerThreeFreedom=new PIDController[DISSENSORCOUNT];
+    for(int i=0;i<DISSENSORCOUNT;i++)
+        sinePIDControllerThreeFreedom[i].clear();
+    sinePIDControllerThreeFreedom[0].setPIDPara(pid3Info.dis);
+    sinePIDControllerThreeFreedom[1].setPIDPara(pid3Info.vel);
+    sinePIDControllerThreeFreedom[2].setPIDPara(pid3Info.acc);
 
-    //earthquakePIDController=new PIDController();
-    //earthquakePIDController->setPIDPara(sinePIDInfo);
+    accPIDController=new PIDController();
+    accPIDController->setPIDPara(accPIDInfo);
+
     //两种方式实现的三参量控制方法
-    tvcController.setTvcPara(tvcInfo);
-    pid3Controller.setPara(pid3Info);
+    tvcController=new TVController();
+    tvcController->setTvcPara(tvcInfo);
+
+    pid3Controller=new PID3Controller();
+    pid3Controller->setPara(pid3Info);
+    pid3Weight.setDate(1.0/3,1.0/3,1.0/3);
 
     ui->cmb_contr_method->setCurrentIndex(0);
     ui->listWidget_waveMode->setCurrentRow(0);
@@ -202,19 +257,20 @@ MainWindow::MainWindow(QWidget *parent) :QMainWindow(parent),//此处先拷贝�
     sController->configure(0,scur);
     waveMode=StaticPosionFlag;
 
-
 //---------------------------------开启多媒体定时器------------------------------------------------------------
     timer=new PerformanceTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(slotFuction()));
-    //timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
+    timer->start(PERFORMANCEINTERVAL);  //多媒体定时器开启
+    qDebug()<<"Mainwindow构造函数执行结束";
 }
 
 MainWindow::~MainWindow()
 {
-    outUToPCI(0);
-    logger->writeAll();//将日志保存到文本文档
+    outUToPCI(0.0);
+
     dataSaveToTxt();
     outDataToExcel();
+    logger->writeAll();//将日志保存到文本文档
 
     Enc7480_Close();
     delete doInstant;
@@ -223,17 +279,28 @@ MainWindow::~MainWindow()
     delete aiStreaming;
 
     delete sAvgFilter;
+    delete []sAvgFilterThreeFreedom;
     delete vAvgFilter;
     delete aAvgFilter;
     delete sButtorFilter;
     delete vButtorFilter;
     delete aButtorFilter;
+    delete sHMAFilter;
+    delete vHMAFilter;
+    delete aHMAFilter;
 
     delete sController;
     delete sinePIDController;
+    delete []sinePIDControllerThreeFreedom;
+    delete accPIDController;
+    delete tvcController;
+    delete pid3Controller;
     //delete earthquakePIDController;
 
+    DisConnectToDev_FreeDll();//断开SSI连接
     delete m_ChartViewer;
+    delete iterativeControlUI;
+    delete calibrationDialog;
     delete ui;
 }
 //------------------------------------------------------------------------------------------------------------------
@@ -241,8 +308,9 @@ MainWindow::~MainWindow()
 void MainWindow::slotFuction(){
     static double msCount_1000=0,msCount_100=0,msCount_10=0,elapsedTime=0;//static修饰的静态局部变量只执行初始化一次
     static double sCurrent_1=0,refPosition_pre=0,refVel_pre=0,refAcc_pre=0;
-    double sCurrent,vCurrent,aCurrent,refPosition=0,refVel=0,refAcc=0;
-    double uk=0,series0,series1;
+    double sCurrent,vCurrent,aCurrent;
+    double refPosition=0,refVel=0,refAcc=0;
+    double uk=0,ukThreeFreedom[DISSENSORCOUNT],series0,series1;
 
     msCount      += PERFORMANCEINTERVAL;//记录程序运行总时间 ms
     msCount_1000 += PERFORMANCEINTERVAL;//到1000ms清零
@@ -250,33 +318,17 @@ void MainWindow::slotFuction(){
     msCount_10   += PERFORMANCEINTERVAL;//到10ms清零
     elapsedTime  += PERFORMANCEINTERVAL / 1000.0;//程序运行总时间，绘图使用 Unit: s
     //--------------------Read Real Displacement--------------------------
-    sCurrent=getPosition(0);
-    //sCurrent=sin(2*PI*msCount/1000)+sin(2*PI*50*msCount/1000);//for Test
-    sCurrent=sAvgFilter->filter(sCurrent);//均值滤波
-    sCurrent=sButtorFilter->filter(sCurrent);
-    //--------------------位移过大保护--------------------
-    if (fabs(sCurrent)>systemInfo.maxAbsolutePosition){ //Protected Program
-        outUToPCI(0);
-        return;//查看位移发现位移过大，直接跳出定时器，等待手动输出电压调节
+    for(int i=0;i<DISSENSORCOUNT;i++){
+         sCurrentThreeFreedom[i]=getPosition(i);
+         sCurrentThreeFreedom[i]=sAvgFilterThreeFreedom[i].filter(sCurrentThreeFreedom[i]);
     }
-    //----------------------------差分计算速度------------------------------
-    vCurrent=(sCurrent-sCurrent_1)/(PERFORMANCEINTERVAL/1000.0);
-    vCurrent=vAvgFilter->filter(vCurrent);
-    vCurrent=vButtorFilter->filter(vCurrent);
-    sCurrent_1=sCurrent;
-    //------------------------------------读取加速度-------------------------
-    aCurrent=aiInstant->getAcc();//获取单个加速度
-    //aCurrent=aiStreaming->getAcc();//通过SteamingAi方式获取加速度
-    aCurrent=aAvgFilter->filter(aCurrent);
-    aCurrent=aButtorFilter->filter(aCurrent);
-
+    sCurrent=sCurrentThreeFreedom[0];//与原有程序兼容
     //---------------默认进行静态控制，固定住振动台------------------------------
     if(waveMode==StaticPosionFlag){//静态位移控制,固定采用PID控制方法
-        refPosition=0;uk=sController->getUk(sCurrent,refPosition);
+        refPosition=0;
+        uk=sController->getUk(sCurrent,refPosition);
         outUToPCI(uk);
     }
-    //最佳参数：P=-0.25，I=-0，D=-0.1；
-    //P=-0.25,I=0,D=-0.5 滤波，调零之后
 //----------------------------------------------startFlag=True-------------------------------------------------------------
     if(startFlag){
         msStartCount     += PERFORMANCEINTERVAL;//点击“开始”按钮之后，运行的时间  ms
@@ -291,47 +343,86 @@ void MainWindow::slotFuction(){
                 refVel=refData.VRef[refIndex];
                 refAcc=refData.ARef[refIndex++];
             }
-            else refPosition=refVel=refAcc=0;//结束实现为0
+            else {
+                refPosition=refVel=refAcc=0;//结束实现为0
+                //startFlag=false;//所有数据全部试验结束，停止试验
+                on_btnStop_clicked();
+            }
+
             refPosition_pre=refPosition;
             refVel_pre=refVel;
             refAcc_pre=refAcc;
+
             msStartCount_Ref=0;
         }else{//否则就等于上一次的参考值，为了解决地震波采样周期是5ms的情况--控制周期与参考信号周期不一致
             refPosition=refPosition_pre;
             refVel=refVel_pre;
             refAcc=refAcc_pre;
         }
-
+/*
+ * 3个参考值：refPosition、refVel、refAcc
+ * 3个实际值：sCurrent、vCurrent、aCurrent
+*/
         if (waveMode==SineWaveFlag||waveMode==SineSweepFlag||waveMode==RandomFlag||waveMode==TriangleFlag||waveMode==EarthquakeFlag){
             switch (controlMethod){//枚举控制方法
                 case PIDMethod:
-                    uk=sinePIDController->getUk(refPosition/12*10,sCurrent);//仅仅采用位移PID控制
+                    //uk=sinePIDController->getUk(refPosition,sCurrent);//仅仅采用位移PID控制
+
+                    for(int i=0;i<DISSENSORCOUNT;i++){
+                        ukThreeFreedom[i]=sinePIDControllerThreeFreedom[i].getUk(refPosition,sCurrentThreeFreedom[i]);
+                    }
+                    outUToPCI(ukThreeFreedom);
+                    break;
+                case ACCPIDMethod:
+                    uk=accPIDController->getUk(refAcc,aCurrent);
                     break;
                 case Para3Method:
-                    uk=tvcController.getUk(TStateInfo(refPosition,refVel,refAcc),TStateInfo(sCurrent,vCurrent,aCurrent));
+                    uk=tvcController->getUk(TStateInfo(refPosition,refVel,refAcc),TStateInfo(sCurrent,vCurrent,aCurrent));
                     break;
                 case PID3Method:
-                    uk=pid3Controller.getUk(TStateInfo(refPosition,refVel,refAcc),TStateInfo(sCurrent,vCurrent,aCurrent));
+                    uk=pid3Controller->getUk(TStateInfo(refPosition,refVel,refAcc),TStateInfo(sCurrent,vCurrent,aCurrent));
                     break;
                 default:break;
             }
-            outUToPCI(uk);
+            //outUToPCI(uk);
         }
     }
     //--------------10ms将数据存入绘图缓冲区----------------
     if(msCount_10>=10){
-        SArray[++dataCnt]=sCurrent;//将位移数据存进数组，从1开始计数
+        if(dataCnt>MAXDATACOUNT*0.95) dataCnt=0;//防止程序运行时间过程，超出数组长度
+        SArray[dataCnt]=sCurrent;//将位移数据存进数组，从0开始计数
+        //速度显示平滑滤波
         vCurrent=v2AvgFilter.filter(vCurrent);
         vCurrent=v2ButtorFilter.filter(vCurrent);
         VArray[dataCnt]=vCurrent;
-        AArray[dataCnt]=aCurrent;
 
-        refPosition=sDisplayBuffer.delay(refPosition);//参考值延迟绘图
-        refVel=vDisplayBuffer.delay(refVel);
-        refAcc=aDisplayBuffer.delay(refAcc);
+        //aCurrent=a2AvgFilter.filter(aCurrent);
+        //aCurrent=a2ButtorFilter.filter(aCurrent);
+        AArray[dataCnt]=aCurrent;
+        //startFlag==false时，全部为0
+        //startFlag==true时，为参考值
+        SRefArray[dataCnt]=refPosition;
+        VRefArray[dataCnt]=refVel;
+        ARefArray[dataCnt++]=refAcc;
+
+        //refPosition=sDisplayBuffer.delay(refPosition);//参考值延迟绘图
+        //refVel=vDisplayBuffer.delay(refVel);
+        //refAcc=aDisplayBuffer.delay(refAcc);
+        if(startFlag){//segData中数据个数：[0,segData.refCnt-1]
+            refSegData.SRef[segData.refCnt]=refPosition;
+            refSegData.VRef[segData.refCnt]=refVel;
+            refSegData.ARef[segData.refCnt]=refAcc;
+
+            segData.SRef[segData.refCnt]=sCurrent;
+            segData.VRef[segData.refCnt]=vCurrent;
+            segData.ARef[segData.refCnt++]=aCurrent;
+            if(segData.refCnt>MAXDATACOUNT*0.95) segData.refCnt=0;//防止程序运行时间过程，超出数组长度
+        }
 
         if(drawType==DisType){//显示实时位移
-            series0=refPosition;series1=sCurrent;
+            //series0=refPosition;series1=sCurrent;
+            series0=sCurrentThreeFreedom[0];series1=sCurrentThreeFreedom[1];
+            series0=100;series1=1;
         }else if(drawType==VelType){//显示实时速度
             series0=refVel;series1=vCurrent;
         }else{
@@ -346,7 +437,8 @@ void MainWindow::slotFuction(){
         ui->lcd_V->display(QString::number(vCurrent,'f',3));
         ui->lcd_A->display(QString::number(aCurrent,'f',3));
         msCount_100=0;
-        if(startFlag) ui->progressBar->setValue(min(refIndex,refData.refCnt));//更新进度条
+        if(startFlag)
+            ui->progressBar->setValue(min(refIndex,refData.refCnt));//更新进度条
     }
     //---------------update time in StateBar----------
     if (msCount_1000>=1000){
@@ -356,38 +448,33 @@ void MainWindow::slotFuction(){
         msCount_1000=0;
     }
 }
-//   if(iterativeControl_Flag)
-//   {
-//       PosVref=10*sin(2*PI*(elapseStartTime));
-//       series1=PosVref;
-//       SPrefArray[startIndex]=PosVref;
-//       ErrorArray[startIndex]=PosVref-sCurrent;
-//       //闭环PD迭代控制
-//       OutUArray[startIndex]=OutUPreArray[startIndex]+IterativeP*ErrorArray[startIndex]+IterativeD*(ErrorArray[startIndex]-ErrorArray[startIndex-1]);
-//       //开环PD迭代控制
-//       //OutUArray[startIndex]=OutUPreArray[startIndex]+IterativeP*ErrorPreArray[startIndex]+IterativeD*(ErrorPreArray[startIndex]-ErrorPreArray[startIndex-1]);
-//       //选择采用之前的参数
-//       //OutUArray[startIndex]=OutUPreArray[startIndex];
-//       outUToPCI(OutUArray[startIndex]);
-//       qDebug()<<"uk="<<OutUArray[startIndex]<<"  ek="<<ErrorArray[startIndex];
-//   }
 
 void MainWindow::on_btnStart_clicked(){
     if(refData.refCnt<500){
         QString mess="未载入数据或者采样点太少，请设置后重新开始";
         QMessageBox::warning(this,"警告",mess,QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
-        mess="[warning]"+mess;
+        mess="[warning] "+mess;
         addItemToListView(mess);logger->appendLogger(mess);
         return;
     }
+
+    QString log="[info] "+QString("试验开始");
+    addItemToListView(log);logger->appendLogger(log);
+
     ui->tabWidget_pic ->setCurrentIndex(0);//展示绘图页面，而不是预览界面
     //Icon以及Enable变化
     ui->btnStart->setStyleSheet("QPushButton#btnStart{border-image:url(:Icon/Icon/startIconClicked.png)}");
     ui->btnStart->setEnabled(false);
     ui->btnStop->setEnabled(true);
     ui->btnStop->setStyleSheet("QPushButton#btnStop{border-image:url(:Icon/Icon/stopIcon.png)}");
+    //在停止按钮里面也做了一次
+    sinePIDController->clear();//可能第一次结束，第二次试验
+    for(int i=0;i<DISSENSORCOUNT;i++)
+        sinePIDControllerThreeFreedom[i].clear();
+    accPIDController->clear();
+    tvcController->clear();
+    pid3Controller->clear();
 
-    //sinePIDController->clear();//可能第一次结束，第二次试验
     msStartCount=msStartCount_Ref=elapseStartTime=0;refIndex=1;
     waveMode=waveModeTmp;
     ui->progressBar->setRange(1,refData.refCnt);//设置进度条
@@ -400,8 +487,14 @@ void MainWindow::on_btnStop_clicked(){
     if(!startFlag) {
         QString mess="试验尚未开始";
         QMessageBox::warning(this,"警告",mess,QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+
+        mess="[warning] "+mess;
+        addItemToListView(mess);logger->appendLogger(mess);
         return;
     }
+    log="[info] "+QString("试验结束");
+    addItemToListView(log);logger->appendLogger(log);
+
     //timer->stop();//停止定时器就不会向buffer中写入数据，进而绘图就停止了
     startFlag=false;
     //此时继续让振动台位置固定
@@ -409,11 +502,40 @@ void MainWindow::on_btnStop_clicked(){
     sController->configure(0,scur);
     waveMode=StaticPosionFlag;
 
-    outUToPCI(0);
+    outUToPCI(0.0);
+
+    //清空位移PID控制器中累积的Uk_1,ek_1等
+    sinePIDController->clear();//可能第一次结束，第二次试验
+    for(int i=0;i<DISSENSORCOUNT;i++)
+        sinePIDControllerThreeFreedom[i].clear();
+    accPIDController->clear();
+    tvcController->clear();
+    pid3Controller->clear();
     //-----------------StyleSheet-----------------------
     ui->btnStart->setStyleSheet("QPushButton#btnStart{border-image:url(:Icon/Icon/startIcon.png)}");
     ui->btnStart->setEnabled(true);
     ui->btnStop->setStyleSheet("QPushButton#btnStop{border-image:url(:Icon/Icon/stopIconClicked.png)}");
+
+    ui->progressBar->setValue(refData.refCnt);//更新进度条
+    double coeff=MathTool::coeff(ydData.ARef,segData.ARef,ydData.refCnt);
+    QMessageBox::warning(this,"警告",QString("上轮试验结束，参考信号与实时信号的相关系数是：")+QString::number(coeff),QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+
+    //采样频率100Hz
+    segsData[segCnt].refCnt=segData.refCnt;
+    for(int i=0;i<segData.refCnt;i++){
+        segsData[segCnt].SRef[i]=segData.SRef[i];
+        segsData[segCnt].VRef[i]=segData.VRef[i];
+        segsData[segCnt].ARef[i]=segData.ARef[i];
+    }
+    //频率未定，可能大于100Hz
+    refsData[segCnt].refCnt=segData.refCnt;
+    for(int i=0;i<refData.refCnt;i++){
+        refsData[segCnt].SRef[i]=refSegData.SRef[i];
+        refsData[segCnt].VRef[i]=refSegData.VRef[i];
+        refsData[segCnt].ARef[i]=refSegData.ARef[i];
+    }
+    segCnt++;
+    segData.refCnt=0;
 }
 
 void MainWindow::on_action_Quit_triggered(){
@@ -464,6 +586,9 @@ void MainWindow::on_action_ChannelParameters_triggered(){
         qDebug()<<"haha"<<configureAI.deviceName<<configureAI.channelStart<<configureAI.channelCount<<configureAI.valueRange<<configureAI.clockRatePerChan<<configureAI.sectionLength;
         aiInstant->setInstantAiPara(configureAO);//将修改的参数重新配置
         aoInstant->setInstantAoPara(configureAO);
+
+        log="[info] "+QString("通道参数修改成功");
+        addItemToListView(log);logger->appendLogger(log);
     }
 }
 
@@ -475,11 +600,17 @@ void MainWindow::on_action_ControlParameters_triggered(){
         //exit(0);
     }
     else {
-        sinePIDController->setPIDPara(sinePIDInfo);//正弦波PID参数改变，重新载入控制器
-        //earthquakePIDController->setPIDPara(sinePIDInfo);
-        tvcController.setTvcPara(tvcInfo);//tvcInfo可能已经修改了，此处需要重新调用
+        sinePIDController->setPIDPara(sinePIDInfo);//位移PID参数改变，重新载入控制器
+        sinePIDControllerThreeFreedom[0].setPIDPara(pid3Info.dis);
+        sinePIDControllerThreeFreedom[1].setPIDPara(pid3Info.vel);
+        sinePIDControllerThreeFreedom[2].setPIDPara(pid3Info.acc);
+        accPIDController->setPIDPara(accPIDInfo);//加速度PID控制
+        tvcController->setTvcPara(tvcInfo);//tvcInfo可能已经修改了，此处需要重新调用
+        pid3Controller->setPara(pid3Info);
 //        qDebug()<<"PID 参数是:"<<sPIDInfo.SP<<"  "<<sPIDInfo.SI<<"  "<<sPIDInfo.SD;
 //        qDebug()<<"sinePID 参数是:"<<sinePIDInfo.SP<<"  "<<sinePIDInfo.SI<<"  "<<sinePIDInfo.SD;
+        log="[info] "+QString("控制参数修改成功");
+        addItemToListView(log);logger->appendLogger(log);
     }
 }
 
@@ -490,62 +621,57 @@ void MainWindow::on_action_SaveAsDefalut_triggered(){
     tmp.iniSettingAO=configureAO;
     IniHelper *tmpHelper=new IniHelper;
     QString info;
-    bool result=tmpHelper->writeToPCIIni("IniSetting/PCI1716.ini",tmp);
+    bool result=tmpHelper->writeToPCIIni("E://PopWilCacher//IniSetting//PCI1716.ini",tmp);
     if (result)
     {
-        info="[info]PCI1716.ini已保存为默认设置！";
+        info="[info] PCI1716.ini已保存为默认设置！";
     }
     else
-        info="[error]PCI1716.ini保存失败";
+        info="[error] PCI1716.ini保存失败";
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
     //------------------------------CtrlIni.ini---------------------------------------
-    result=tmpHelper->writeToCtrlIni("IniSetting/CtrlIni.ini",sPIDInfo,sinePIDInfo);
+    result=tmpHelper->writeToCtrlIni("E://PopWilCacher//IniSetting//CtrlIni.ini");
     if (result)
     {
-        info="[info]CtrlIni.ini已保存为默认设置！";
+        info="[info] CtrlIni.ini已保存为默认设置！";
     }
     else
-        info="[error]CtrlIni.ini保存失败";
+        info="[error] CtrlIni.ini保存失败";
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
 
-    result=tmpHelper->writeToTvcInfo("IniSetting/TvcInfo.ini");
+    result=tmpHelper->writeToTvcInfo("E://PopWilCacher//IniSetting//TvcInfo.ini");
     if (result){
-        info="[info]TvcInfo.ini已保存为默认设置！";
+        info="[info] TvcInfo.ini已保存为默认设置！";
     }
-    else info="[error]TvcInfo.ini保存失败";
+    else info="[error] TvcInfo.ini保存失败";
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
     //------------------------------SystemInfo.ini---------------------------------------
-    result=tmpHelper->writeToSystemInfoIni("IniSetting/SystemInfo.ini",systemInfo);
+    result=tmpHelper->writeToSystemInfoIni("E://PopWilCacher//IniSetting//SystemInfo.ini",systemInfo);
     if (result)
     {
-        info="[info]SystemInfo.ini已保存为默认设置！";
+        info="[info] SystemInfo.ini已保存为默认设置！";
     }
     else
-        info="[error]SystemInfo.ini保存失败";
+        info="[error] SystemInfo.ini保存失败";
     qDebug()<<info;
     addItemToListView(info);logger->appendLogger(info);
     delete tmpHelper;
 }
 
-void MainWindow::on_action_Identity_triggered(){
-    RBF *rbf=new RBF();
-    rbf->show();
-}
-
-void MainWindow::on_actionAction_SystemSettings_triggered(){
+void MainWindow::on_action_SystemSettings_triggered(){
     SystemSettings dialog;
     dialog.setSystemInfo();
     int resultDialog = dialog.exec();
-    if (resultDialog == QDialog::Rejected)
-    {
+    if (resultDialog == QDialog::Rejected){
         //exit(0);
     }
-    else if(resultDialog == QDialog::Accepted)
-    {
+    else if(resultDialog == QDialog::Accepted){
         qDebug()<<"new setted system info is :"<<systemInfo.contrlInterval<<systemInfo.drawInterval;
+        log="[info] "+QString("系统参数修改成功");
+        addItemToListView(log);logger->appendLogger(log);
     }
 }
 
@@ -570,16 +696,20 @@ void MainWindow::addItemToListView(QString str){
 }
 
 void MainWindow::outUToPCI(double value){
-    double vBias=-0.003;
     double MAXOUTU=systemInfo.maxOutU;
-    //vBias=0;
-    value+=vBias;
-
     value=value>MAXOUTU?MAXOUTU:value;
     value=value<-MAXOUTU?-MAXOUTU:value;
 
     aoInstant->outU(value);
-    //addItemToListView("输出电压"+QString::number(value));
+}
+
+void MainWindow::outUToPCI(double value[]){
+    double MAXOUTU=systemInfo.maxOutU;
+    for(int i=0;i<DISSENSORCOUNT;i++){
+        value[i]=value[i]>MAXOUTU?MAXOUTU:value[i];
+        value[i]=value[i]<-MAXOUTU?-MAXOUTU:value[i];
+    }
+    aoInstant->outU(value);
 }
 
 void MainWindow::on_btn_clearZero_clicked(){
@@ -664,6 +794,12 @@ void MainWindow::testFunction(){
 void MainWindow::on_btn_static_comfirm_clicked(){
     double sCurrent=getPosition(0);//这个就是当前的基准电压
     double desPosition=ui->lineEdit_desPosition->text().toDouble();
+    double staticControlRestrictDis=systemInfo.maxAbsolutePosition;
+    if(fabs(desPosition)>staticControlRestrictDis){
+        QMessageBox::warning(this,"警告","目标位置超过振动台量程，位移限幅±"+QString::number(staticControlRestrictDis)+"mm",\
+                             QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+        return;
+    }
     sController->configure(desPosition,sCurrent);
     waveMode=StaticPosionFlag;
 }
@@ -673,44 +809,115 @@ void MainWindow::on_btn_DO_clicked(){
     if(doInstant->getDoState()){
         ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_off.png)}");
         status = 0;
-        log="[warning]驱动已经断开！";
+        log=tr("[warning] 驱动已经断开！");
         addItemToListView(log);logger->appendLogger(log);
     }
     else{
         ui->btn_DO->setStyleSheet("QPushButton#btn_DO{border-image:url(:Icon/Icon/switch_on.png)}");
         status=1;
-        log="[info]驱动已连接！";
+        log=tr("[info] 驱动已连接！");
         addItemToListView(log);logger->appendLogger(log);
     }
     doInstant->setDoState(status);
 }
 
 void MainWindow::outDataToExcel(){
-    int count=100;
-//   QXlsx::Document xlsx;
-//   if(!xlsx.selectSheet("data"))
-//       xlsx.addSheet("data");
-//   xlsx.write("A1", "编号");
-//   xlsx.write("B1","输出/V");
-//   xlsx.write("C1","误差/mm");
-//   xlsx.write("D1","参考位移/mm");
-//   xlsx.write("E1","位移/mm");
-//   xlsx.write("F1","速度/mm/s");
-//   for (int i=1;i<=count;i++)
-//   {
-//       xlsx.write(i+1,1,i);
-//       xlsx.write(i+1,2,OutUArray[i]);
-//       xlsx.write(i+1,3,ErrorArray[i]);
-//       xlsx.write(i+1,4,SRefArray[i]);
-//       xlsx.write(i+1,5,SArray[i]);
-//       xlsx.write(i+1,6,VArray[i]);
-//   }
-//   QXlsx::Chart *lineChart = xlsx.insertChart(3, 8, QSize(900, 300));
-//   lineChart->setChartType(QXlsx::Chart::CT_Line);
-//   lineChart->addSeries(QXlsx::CellRange("A2:B"+QString::number(count)));
-//   xlsx.saveAs("E:\\data.xlsx");/*保存*/
-   log="[info]数据保存E:\\data.xlsx成功";
-   addItemToListView(log);logger->appendLogger(log);
+    QXlsx::Document xlsx;
+    QXlsx::Format centerAlign;
+    centerAlign.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    centerAlign.setVerticalAlignment(QXlsx::Format::AlignVCenter);
+    if(xlsx.selectSheet("Sheet1")) xlsx.deleteSheet("Sheet1");
+//-----------------Model Sheet-----------------------
+    if(!xlsx.selectSheet("Model")) xlsx.addSheet("Model");
+
+    xlsx.setColumnWidth(1,100,15);
+    xlsx.write("A1", "频率F",centerAlign);
+    xlsx.write("B1","Model_Real",centerAlign);
+    xlsx.write("C1","Model_Img",centerAlign);
+
+    int modelCnt=systemModel.Nfft/2+1;
+    for (int i=0;i<modelCnt;i++){
+       xlsx.write(i+2,1,systemModel.F[i],centerAlign);
+       xlsx.write(i+2,2,systemModel.Txy_real[i],centerAlign);
+       xlsx.write(i+2,3,systemModel.Txy_imag[i],centerAlign);
+    }
+
+    //QXlsx::Chart *lineChart = xlsx.insertChart(3, 8, QSize(900, 300));
+    //lineChart->setChartType(QXlsx::Chart::CT_Line);
+    //lineChart->addSeries(QXlsx::CellRange("A2:B"+QString::number(count)));
+    //-----------------Data Sheet-----------------------
+    if(!xlsx.selectSheet("Data")) xlsx.addSheet("Data");
+    xlsx.setColumnWidth(1,100,15);
+    QXlsx::Format format;
+    format.setHorizontalAlignment(QXlsx::Format::AlignHCenter);
+    format.setVerticalAlignment(QXlsx::Format::AlignVCenter);
+    format.setBorderStyle(QXlsx::Format::BorderThin);
+    format.setBorderColor(Qt::red);
+    format.setFontColor(Qt::blue);
+
+    xlsx.write("A1",QString("参考加速度Yd/g"),centerAlign);
+    for(int i=0;i<ydData.refCnt;i++)
+        xlsx.write(i+4,1,ydData.ARef[i],centerAlign);
+
+    xlsx.write("B1",QString("全局数据"),centerAlign);
+    xlsx.mergeCells("B1:H1",centerAlign);
+    xlsx.write("B2","内环参考值",centerAlign);
+    xlsx.mergeCells("B2:D2",centerAlign);
+    xlsx.write("E2","实时数据",centerAlign);
+    xlsx.mergeCells("E2:G2",centerAlign);
+    xlsx.write("B3","S/mm",centerAlign);
+    xlsx.write("C3","V/mm/s",centerAlign);
+    xlsx.write("D3","A/g",centerAlign);
+    xlsx.write("E3","S/mm",centerAlign);
+    xlsx.write("F3","V/mm/s",centerAlign);
+    xlsx.write("G3","A/g",centerAlign);
+    xlsx.write("H2","输出电压/V",centerAlign);
+    xlsx.mergeCells("H2:H3",centerAlign);
+    for(int i=0;i<dataCnt;i++){
+        xlsx.write(i+4,2,SRefArray[i],centerAlign);
+        xlsx.write(i+4,3,VRefArray[i],centerAlign);
+        xlsx.write(i+4,4,ARefArray[i],centerAlign);
+        xlsx.write(i+4,5,SArray[i],centerAlign);
+        xlsx.write(i+4,6,VArray[i],centerAlign);
+        xlsx.write(i+4,7,AArray[i],centerAlign);
+        xlsx.write(i+4,8,OutUArray[i],centerAlign);
+    }
+    for(int i=0;i<segCnt;i++){
+        xlsx.write(1,9+7*i,QString("迭代次数："+QString::number(i)),centerAlign);
+        xlsx.mergeCells(QXlsx::CellRange(1,9+7*i,1,15+7*i),centerAlign);
+        xlsx.write(2,9+7*i,"驱动信号",centerAlign);
+        xlsx.mergeCells(QXlsx::CellRange(2,9+7*i,2,11+7*i),centerAlign);
+        xlsx.write(2,12+7*i,"实时数据",centerAlign);
+        xlsx.mergeCells(QXlsx::CellRange(2,12+7*i,2,14+7*i),centerAlign);
+
+        xlsx.write(3,9+7*i,"S/mm",centerAlign);
+        xlsx.write(3,10+7*i,"V/mm/s",centerAlign);
+        xlsx.write(3,11+7*i,"A/g",centerAlign);
+        xlsx.write(3,12+7*i,"S/mm",centerAlign);
+        xlsx.write(3,13+7*i,"V/mm/s",centerAlign);
+        xlsx.write(3,14+7*i,"A/g",centerAlign);
+        xlsx.write(2,15+7*i,"输出电压/V",centerAlign);
+        xlsx.mergeCells(QXlsx::CellRange(2,15+7*i,3,15+7*i),centerAlign);
+        qDebug()<<"-----------------"<<refsData[i].refCnt<<"-------"<<segsData[i].refCnt;
+        for(int j=0;j<refsData[i].refCnt;j++){
+            xlsx.write(j+4,9+7*i,refsData[i].SRef[j],centerAlign);
+            xlsx.write(j+4,10+7*i,refsData[i].VRef[j],centerAlign);
+            xlsx.write(j+4,11+7*i,refsData[i].ARef[j],centerAlign);
+        }
+        for(int j=0;j<segsData[i].refCnt;j++){
+            xlsx.write(j+4,12+7*i,segsData[i].SRef[j],centerAlign);
+            xlsx.write(j+4,13+7*i,segsData[i].VRef[j],centerAlign);
+            xlsx.write(j+4,14+7*i,segsData[i].ARef[j],centerAlign);
+        }
+    }
+
+    QDateTime currentTime = QDateTime::currentDateTime();
+    QString current = currentTime.toString("yyyyMMdd_hhmm");
+    QString path="E://PopWilCacher//data//"+current+".xlsx";
+    qDebug()<<path;
+    xlsx.saveAs(path);/*保存*/
+    log="[info] 数据保存"+path+"成功";
+    addItemToListView(log);logger->appendLogger(log);
 }
 
 void MainWindow::dataSaveToTxt(){
@@ -720,25 +927,31 @@ void MainWindow::dataSaveToTxt(){
     path += ".txt";
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        message="[error]:文件"+path+"创建失败";
+        message="[error] 文件"+path+"创建失败";
         addItemToListView(message);logger->appendLogger(message);
         return;
     }
 
     QTextStream out(&file);
     out.setCodec(QTextCodec::codecForName("UTF-8"));
-    message="[info]:文件"+path+"创建成功！";
+    message="[info] 文件"+path+"创建成功！";
     addItemToListView(message);logger->appendLogger(message);
     //---------------data---------------
     out<<QString("采样点数： ")<<dataCnt<<endl;
-    out<<QString("i     输出/V     误差/mm     参考位移/mm      位移/mm     速度/mm/s     加速度/mm/ss")<<endl;
-    for(int i=1;i<=dataCnt;i++)
-        out<<i<<"   "<<OutUArray[i]<<"   "<<ErrorArray[i]<<"   "<<SRefArray[i]<<"   "<<SArray[i]<<"   "<<VArray[i]<<"   "<<AArray[i]<<endl;
-    double tp=MathTool::coeff(SArray,SRefArray,dataCnt);
-    out<<QString("位移的相关系数是：")<<tp<<endl;
-    qDebug()<<tp;
+    out<<QString("采样间隔/ms:")<<10<<endl;
+    out<<QString("i     参考位移/mm      参考速度/mm/s      参考加速度/g      位移/mm     速度/mm/s     加速度/g")<<endl;
+    for(int i=0;i<dataCnt;i++)
+         out<<i<<"    "<<SRefArray[i]<<"   "<<VRefArray[i]<<"   "<<ARefArray[i]<<"   "
+          <<SArray[i]<<"   "<<VArray[i]<<"   "<<AArray[i]<<endl;
 
-    message="[info]:实验数据保存成功，位置在"+path;
+    double coeff_dis=signalHandler.coeff(SArray,SRefArray,dataCnt);
+    out<<QString("位移的相关系数是：")<<coeff_dis<<endl;
+    double coeff_vel=signalHandler.coeff(VArray,VRefArray,dataCnt);
+    out<<QString("速度的相关系数是：")<<coeff_vel<<endl;
+    double coeff_acc=signalHandler.coeff(AArray,ARefArray,dataCnt);
+    out<<QString("加速度的相关系数是：")<<coeff_acc<<endl;
+
+    message="[info] 实验数据保存成功，位置在"+path;
     addItemToListView(message);logger->appendLogger(message);
     file.close();
 }
@@ -769,15 +982,34 @@ void MainWindow::on_action_ZoomOut_triggered()
 }
 
 double MainWindow::getPosition(int direct){
-    int x_position = Enc7480_Get_Encoder(direct);
-    //sCurrent=x_position*(-0.0024)-0.012;
-    double position=x_position*(-0.0024);
-    return position;
+    double position;
+    if(ssiEnable==false){//ENC_7480相对式位移采集卡
+        int x_position = Enc7480_Get_Encoder(direct);
+        //sCurrent=x_position*(-0.0024)-0.012;
+        position=x_position*g_dis_k+g_dis_bias;
+        return position;
+    }else{//SSI采集卡
+        double x_position=readSSIData(direct,hPDC1)/1000;
+        position=x_position*g_dis_k+g_dis_bias;
+        return position-160;
+    }
 }
 
 void MainWindow::on_btn_out_uk_clicked(){
     waveMode=DefaultFlag;
-    outUToPCI(ui->le_uk->text().toDouble());
+    double outU=ui->le_uk->text().toDouble();
+    double restrictOutU=systemInfo.maxOutUDebug;//调试模式下输出电压限制2V
+    if(outU>restrictOutU){
+        QMessageBox::warning(this,"警告","输出电压过大，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+        return;
+    }
+    if(outU<-restrictOutU){
+       QMessageBox::warning(this,"警告","输出电压过小，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+       return;
+    }
+    double outUList[DISSENSORCOUNT]={0};
+    outUList[0]=ui->le_uk->text().toDouble();
+    outUToPCI(outUList);
 }
 
 void MainWindow::on_btn_sine_load_clicked()
@@ -884,6 +1116,7 @@ void MainWindow::drawTmp(QString title, int n, double xlabel[], double data[]){
 }
 
 void MainWindow::on_btn_load_clicked(){
+    QString message;
 //首先将数组中的所有数据清零
     for(int i=0;i<MAXDATACOUNT;i++){//此处不适用memset，容易出错
         refData.SRef[i]=refData.VRef[i]=refData.ARef[i]=0;
@@ -896,20 +1129,14 @@ void MainWindow::on_btn_load_clicked(){
         ui->lab_earth_sample_T->setText(QString::number(refData.dataRefSampleT));
         waveModeTmp=EarthquakeFlag;
 
-        double t[10000],x[1000],out[1000][2];
-        for(int i=0;i<1000;i++)
-            x[i]=sin(2*PI*i/100);
-        signalHandler.fft(10,x,out);
         signalHandler.inteFD_All(refData.refCnt,(int)(1000/refData.dataRefSampleT),refData.ARef,&refData);
-        qDebug()<<refData.SRef[0];
-        qDebug()<<refData.SRef[1];
-        qDebug()<<refData.SRef[2];
-        qDebug()<<refData.SRef[3];
-        qDebug()<<refData.SRef[4];
 
+        message="[info] 地震波数据载入成功";
+        addItemToListView(message);logger->appendLogger(message);
         return;
     }
     double mid,mag,fs,sineCnt;
+
     switch (ui->listWidget_waveMode->currentRow()){
     case 0://正弦波
         mid    =ui->le_mid->text().toDouble();//中心坐标
@@ -918,15 +1145,24 @@ void MainWindow::on_btn_load_clicked(){
         sineCnt=ui->le_cnt->text().toDouble();//重复次数
         oscilator.caculateSine(TSineWaveInfo(mid,mag,fs,sineCnt));
         waveModeTmp=SineWaveFlag;
+
+        message="[info] 正弦波数据载入成功";
+        addItemToListView(message);logger->appendLogger(message);
         break;
     case 1://正弦扫频
         oscilator.caculateSineSweep(QString("E://PopWilCacher//SingalGenerator//SineSweepData.txt"));
         waveModeTmp=SineSweepFlag;
+
+        message="[info] 正弦扫频数据载入成功";
+        addItemToListView(message);logger->appendLogger(message);
         break;
     case 2://随机波
         mag=ui->le_random->text().toDouble();
         oscilator.caculateRandom(mag);
         waveModeTmp=RandomFlag;
+
+        message="[info] 随机波数据载入成功";
+        addItemToListView(message);logger->appendLogger(message);
         break;
     case 3://三角波
         mid    =ui->le_mid_tri->text().toDouble();//中心坐标
@@ -935,12 +1171,14 @@ void MainWindow::on_btn_load_clicked(){
         sineCnt=ui->le_cnt_tri->text().toDouble();//重复次数
         oscilator.caculateTriangle(TSineWaveInfo(mid,mag,fs,sineCnt));
         waveModeTmp=TriangleFlag;
+
+        message="[info] 三角波数据载入成功";
+        addItemToListView(message);logger->appendLogger(message);
         break;
     }
 }
 //预览就是把refData中的最多前10000个数据进行一个预览
-void MainWindow::on_btn_preview_clicked()
-{
+void MainWindow:: on_btn_preview_clicked(){
     QString title;
     ui->tabWidget_pic->setCurrentIndex(1);
     if(ui->tabWidget_controller->currentIndex()==2){//地震波
@@ -995,7 +1233,7 @@ void MainWindow::on_btn_sineSweep_open_clicked(){
     ui->le_sineSweep_filename->setText(fileName);
 }
 //延迟绘图参数设置
-void MainWindow::on_actionAction_drawDelay_triggered(){
+void MainWindow::on_action_DrawDelay_triggered(){
     DisplayBufferForm w;
     w.exec();
     //displayDelay这个全局变量可能已经修改了，此处需要重新载入
@@ -1014,4 +1252,117 @@ void MainWindow::on_rbt_V_plot_clicked(){
 
 void MainWindow::on_rbt_A_plot_clicked(){
     drawType=AccType;
+}
+
+void MainWindow::on_action_IterativeControl_triggered(){
+    iterativeControlUI->show();
+}
+
+void MainWindow::on_action_Calibration_triggered()
+{
+    calibrationDialog->show();
+}
+
+void MainWindow::on_action_SaveAsPicture_triggered()
+{
+
+}
+
+void MainWindow::on_action_Chinese_triggered(){
+    qApp->removeTranslator(englishTranslator);
+    //ui->retranslateUi(this);
+}
+
+void MainWindow::on_action_English_triggered(){
+    qApp->installTranslator(englishTranslator);
+    //ui->retranslateUi(this);
+}
+
+void MainWindow::changeEvent(QEvent *event){
+    if(event -> type() == QEvent::LanguageChange){
+        ui->retranslateUi(this); 
+        refreshUI();
+    }
+}
+
+void MainWindow::refreshUI(){
+    ui->btnStart->setToolTip(tr("开始"));
+    ui->btnStart->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
+    ui->btnStop->setToolTip(tr("停止"));
+    ui->btnStop->setMask(QRegion(0,0,50,50,QRegion::Ellipse));
+    ui->btn_DO->setToolTip(tr("开关"));
+    ui->btn_load->setToolTip(tr("载入数据"));
+
+    //问题：model之前的数据如何更改?
+
+//    QStandardItemModel *t=new QStandardItemModel(ui->listView_eventInformation);
+//    int rows=model->rowCount();
+//    for(int i=0;i<rows;i++){
+//        QStandardItem *item=model->item(i);
+//        t->appendRow(item);
+//    }
+//    model->clear();
+//    for(int i=0;i<rows;i++){
+//        QStandardItem *item=t->item(i);
+//        model->appendRow(item);
+//    }
+//    ui->btn_for_languge_test->setText(QString::number(model->rowCount()));
+    map<QString,QString> m;
+    m["[info] 通道参数文件载入成功！"]=tr("[info] 通道参数文件载入成功！");
+    m["[info] PID控制参数文件载入成功！"]=tr("[info] PID控制参数文件载入成功！");
+    m["[info] 三参量控制参数文件载入成功！"]=tr("[info] 三参量控制参数文件载入成功！");
+    m["[info] 系统参数文件载入成功 "]=tr("[info] 系统参数文件载入成功 ");
+    m["初始化ENC7480计数卡失败!"]=tr("初始化ENC7480计数卡失败!");
+    m["[error] 初始化ENC7480计数卡失败！"]=tr("[error] 初始化ENC7480计数卡失败！");
+    m["[info] 初始化ENC7480计数卡成功！"]=tr("[info] 初始化ENC7480计数卡成功！");
+    m["[error] 无法找到PCI设备！"]=tr("[error] 无法找到PCI设备！");
+    m["[info] 初始化PCI-1716设备成功！"]=tr("[info] 初始化PCI-1716设备成功！");
+    m["[info] 驱动已连接！"]=tr("[info] 驱动已连接！");
+    m["[warning] 驱动断开，请重新连接驱动！"]=tr("[warning] 驱动断开，请重新连接驱动！");
+    m["[warning] 驱动已经断开！"]=tr("[warning] 驱动已经断开！");
+
+
+    m["[info] channel parameters load sucess!"]="[info] 通道参数文件载入成功！";
+    for(int i=0;i<model->rowCount();i++){
+            QStandardItem *item=model->item(i);
+            if(m.find(item->text())!=m.end()){
+                item->setText(m[item->text()]);
+            }
+        }
+    ui->listView_eventInformation->setModel(model);
+    ui->listView_eventInformation->scrollToBottom();
+}
+
+void MainWindow::on_btn_out_uk_2_clicked(){
+    waveMode=DefaultFlag;
+    double outU=ui->le_uk->text().toDouble();
+    double restrictOutU=systemInfo.maxOutUDebug;//调试模式下输出电压限制2V
+    if(outU>restrictOutU){
+        QMessageBox::warning(this,"警告","输出电压过大，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+        return;
+    }
+    if(outU<-restrictOutU){
+       QMessageBox::warning(this,"警告","输出电压过小，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+       return;
+    }
+    double outUList[DISSENSORCOUNT]={0};
+    outUList[1]=ui->le_uk_2->text().toDouble();
+    outUToPCI(outUList);
+}
+
+void MainWindow::on_btn_out_uk_3_clicked(){
+    waveMode=DefaultFlag;
+    double outU=ui->le_uk->text().toDouble();
+    double restrictOutU=systemInfo.maxOutUDebug;//调试模式下输出电压限制2V
+    if(outU>restrictOutU){
+        QMessageBox::warning(this,"警告","输出电压过大，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+        return;
+    }
+    if(outU<-restrictOutU){
+       QMessageBox::warning(this,"警告","输出电压过小，限幅"+QString::number(restrictOutU)+"V",QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
+       return;
+    }
+    double outUList[DISSENSORCOUNT]={0};
+    outUList[2]=ui->le_uk_3->text().toDouble();
+    outUToPCI(outUList);
 }

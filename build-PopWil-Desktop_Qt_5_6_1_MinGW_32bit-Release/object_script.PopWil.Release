@@ -19,7 +19,6 @@ INPUT(
 ./release\systemsettings.o
 ./release\performancetimer.o
 ./release\mainwindow.o
-./release\rbf.o
 ./release\mychartviewer.o
 ./release\qchartviewer.o
 ./release\inihelper.o
@@ -30,6 +29,12 @@ INPUT(
 ./release\Oscilator.o
 ./release\DisplayBuffer.o
 ./release\DisplayBufferForm.o
+./release\HMAFilter.o
+./release\testfornothing.o
+./release\ssitool.o
+./release\ToolFromMatlab.o
+./release\calibration.o
+./release\IterativeControlMainWindow.o
 ./release\qrc_resource.o
 ./release\moc_testwindow.o
 ./release\moc_aboutform.o
@@ -38,9 +43,10 @@ INPUT(
 ./release\moc_systemsettings.o
 ./release\moc_performancetimer.o
 ./release\moc_mainwindow.o
-./release\moc_rbf.o
 ./release\moc_mychartviewer.o
 ./release\moc_qchartviewer.o
 ./release\moc_sinesweepmodule.o
 ./release\moc_DisplayBufferForm.o
+./release\moc_calibration.o
+./release\moc_IterativeControlMainWindow.o
 );

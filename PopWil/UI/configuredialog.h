@@ -30,6 +30,8 @@ private:
 		void DeviceChanged(int index);
 		void ButtonOKClicked();
 		void ButtonCancelClicked();
+        void on_radioButton_ENC_clicked();
+        void on_radioButton_SSI_clicked();
 };
 
 #endif // CONFIGUREDIALOG_H

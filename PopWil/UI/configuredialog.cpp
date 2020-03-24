@@ -16,7 +16,8 @@ ConfigureDialog::ConfigureDialog(QWidget *parent)
 	connect(ui.btnCancel, SIGNAL(clicked()), this, SLOT(ButtonCancelClicked()));	
 	Initailization();
     //qDebug()<<"the window is :"<<configure.channelStart<<configure.channelCount<<configure.deviceName;
-
+    ui.radioButton_ENC->setChecked(true);
+    ui.radioButton_SSI->setChecked(false);
 }
 
 ConfigureDialog::~ConfigureDialog()
@@ -250,4 +251,14 @@ void ConfigureDialog::ButtonCancelClicked()
     //qDebug()<<"the window is :"<<configure.channelStart<<configure.channelCount<<configure.deviceName;
 
 	this->reject();
+}
+
+void ConfigureDialog::on_radioButton_ENC_clicked()
+{
+    ssiEnable=false;
+}
+
+void ConfigureDialog::on_radioButton_SSI_clicked()
+{
+    ssiEnable=true;
 }

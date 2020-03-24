@@ -58,7 +58,7 @@ ConfigureParameterPCI IniHelper::readFromPciIni(QString fileName)
    return tmp;
 }
 
-void IniHelper::readFromCtrlIni(QString fileName,TPIDInfo &sInfo,TPIDInfo &sineInfo)
+void IniHelper::readFromCtrlIni(QString fileName)
 {
     if (fileName==NULL||fileName==""){
         QMessageBox::information(NULL,"提示","文件名为空，请重新输入",QMessageBox::Ok|QMessageBox::Cancel);
@@ -66,13 +66,17 @@ void IniHelper::readFromCtrlIni(QString fileName,TPIDInfo &sInfo,TPIDInfo &sineI
     }
     configIniRead = new QSettings(fileName, QSettings::IniFormat);
 
-    sInfo.SP = configIniRead->value("/SPID/P").toString().toDouble();
-    sInfo.SI = configIniRead->value("/SPID/I").toString().toDouble();
-    sInfo.SD = configIniRead->value("/SPID/D").toString().toDouble();
+    sPIDInfo.SP = configIniRead->value("/SPID/P").toString().toDouble();
+    sPIDInfo.SI = configIniRead->value("/SPID/I").toString().toDouble();
+    sPIDInfo.SD = configIniRead->value("/SPID/D").toString().toDouble();
 
-    sineInfo.SP = configIniRead->value("/SinePID/P").toString().toDouble();
-    sineInfo.SI = configIniRead->value("/SinePID/I").toString().toDouble();
-    sineInfo.SD = configIniRead->value("/SinePID/D").toString().toDouble();
+    sinePIDInfo.SP = configIniRead->value("/SinePID/P").toString().toDouble();
+    sinePIDInfo.SI = configIniRead->value("/SinePID/I").toString().toDouble();
+    sinePIDInfo.SD = configIniRead->value("/SinePID/D").toString().toDouble();
+
+    accPIDInfo.SP = configIniRead->value("/AccPID/P").toString().toDouble();
+    accPIDInfo.SI = configIniRead->value("/AccPID/I").toString().toDouble();
+    accPIDInfo.SD = configIniRead->value("/AccPID/D").toString().toDouble();
 
     delete configIniRead;
 }
@@ -89,8 +93,13 @@ TSystemInfo IniHelper::readFromSystemInfoIni(QString fileName)
 
     tmp.contrlInterval = configIniRead->value("/SystemInfo/ContrlInterval").toString().toInt();
     tmp.drawInterval = configIniRead->value("/SystemInfo/DrawInterval").toString().toInt();
-    tmp.maxAbsolutePosition = configIniRead->value("/SystemInfo/MaxAbsolutePosition").toString().toDouble();
+    tmp.maxOutUDebug = configIniRead->value("/SystemInfo/maxOutUDebug").toString().toDouble();
     tmp.maxOutU = configIniRead->value("/SystemInfo/MaxOutU").toString().toDouble();
+    tmp.maxAbsoluteForce = configIniRead->value("/SystemInfo/maxAbsoluteForce").toString().toDouble();
+    tmp.maxAbsolutePosition = configIniRead->value("/SystemInfo/MaxAbsolutePosition").toString().toDouble();
+    tmp.maxAbsoluteVel = configIniRead->value("/SystemInfo/maxAbsoluteVel").toString().toDouble();
+    tmp.maxAbsoluteAcc = configIniRead->value("/SystemInfo/maxAbsoluteAcc").toString().toDouble();
+    tmp.maxLoadWeight = configIniRead->value("/SystemInfo/maxLoadWeight").toString().toDouble();
 
     delete configIniRead;
     return tmp;
@@ -167,7 +176,7 @@ bool IniHelper::writeToPCIIni(QString fileName,ConfigureParameterPCI tmp)
     return true;
 }
 
-bool IniHelper::writeToCtrlIni(QString fileName,TPIDInfo sInfo,TPIDInfo sineInfo)
+bool IniHelper::writeToCtrlIni(QString fileName)
 {
     if (fileName==NULL||fileName=="")
     {
@@ -177,15 +186,21 @@ bool IniHelper::writeToCtrlIni(QString fileName,TPIDInfo sInfo,TPIDInfo sineInfo
     }
     configIniWrite = new QSettings(fileName, QSettings::IniFormat);//此处支持绝对路径
     configIniWrite->beginGroup("SPID");
-    configIniWrite->setValue("P", sInfo.SP);
-    configIniWrite->setValue("I", sInfo.SI);
-    configIniWrite->setValue("D", sInfo.SD);
+    configIniWrite->setValue("P", sPIDInfo.SP);
+    configIniWrite->setValue("I", sPIDInfo.SI);
+    configIniWrite->setValue("D", sPIDInfo.SD);
     configIniWrite->endGroup();
 
     configIniWrite->beginGroup("SinePID");
-    configIniWrite->setValue("P", sineInfo.SP);
-    configIniWrite->setValue("I", sineInfo.SI);
-    configIniWrite->setValue("D", sineInfo.SD);
+    configIniWrite->setValue("P", sinePIDInfo.SP);
+    configIniWrite->setValue("I", sinePIDInfo.SI);
+    configIniWrite->setValue("D", sinePIDInfo.SD);
+    configIniWrite->endGroup();
+
+    configIniWrite->beginGroup("AccPID");
+    configIniWrite->setValue("P", accPIDInfo.SP);
+    configIniWrite->setValue("I", accPIDInfo.SI);
+    configIniWrite->setValue("D", accPIDInfo.SD);
     configIniWrite->endGroup();
 
     delete configIniWrite;
@@ -206,8 +221,13 @@ bool IniHelper::writeToSystemInfoIni(QString fileName,TSystemInfo tmp)
     configIniWrite->beginGroup(QString("SystemInfo"));
     configIniWrite->setValue("ContrlInterval", tmp.contrlInterval);
     configIniWrite->setValue("DrawInterval", tmp.drawInterval);
-    configIniWrite->setValue("MaxAbsolutePosition", tmp.maxAbsolutePosition);
+    configIniWrite->setValue("maxOutUDebug", tmp.maxOutUDebug);
     configIniWrite->setValue("MaxOutU", tmp.maxOutU);
+    configIniWrite->setValue("maxAbsoluteForce", tmp.maxAbsoluteForce);
+    configIniWrite->setValue("MaxAbsolutePosition", tmp.maxAbsolutePosition);
+    configIniWrite->setValue("maxAbsoluteVel", tmp.maxAbsoluteVel);
+    configIniWrite->setValue("maxAbsoluteAcc", tmp.maxAbsoluteAcc);
+    configIniWrite->setValue("maxLoadWeight", tmp.maxLoadWeight);
     configIniWrite->endGroup();
 
     delete configIniWrite;

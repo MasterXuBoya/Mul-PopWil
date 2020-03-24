@@ -9,12 +9,12 @@ class IniHelper
 public:
     IniHelper();
     ConfigureParameterPCI readFromPciIni(QString fileName);
-    void readFromCtrlIni(QString fileName,TPIDInfo &sInfo,TPIDInfo &sineInfo);
+    void readFromCtrlIni(QString fileName);
     TSystemInfo readFromSystemInfoIni(QString fileName);
     void readFromTVCIno(QString fileName);
 
     bool writeToPCIIni(QString fileName,ConfigureParameterPCI tmp);
-    bool writeToCtrlIni(QString fileName,TPIDInfo sInfo,TPIDInfo sineInfo);
+    bool writeToCtrlIni(QString fileName);
     bool writeToSystemInfoIni(QString fileName,TSystemInfo tmp);
     bool writeToTvcInfo(QString fileName);
 

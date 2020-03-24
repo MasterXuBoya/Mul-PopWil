@@ -36,3 +36,14 @@ bool AoInstant::outU(double value){
         return true;
     else return false;//输出电压失败
 }
+
+bool AoInstant::outU(double value[DISSENSORCOUNT]){
+    ErrorCode errorCode = Success;
+    for(int i=0;i<DISSENSORCOUNT;i++)
+        scaledData[i]=value[i];
+    errorCode = instantAoCtrl->Write(instantAoPara.channelStart,instantAoPara.channelCount, scaledData);
+    QString ret=CheckError(errorCode);
+    if(ret=="success")//输出电压成功
+        return true;
+    else return false;//输出电压失败
+}

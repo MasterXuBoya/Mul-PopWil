@@ -160,6 +160,9 @@ Makefile: ../PopWil/PopWil.pro ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/win32-g++
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_widgets_private.pri \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_winextras.pri \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_winextras_private.pri \
+		../../build-qtxlsx-Desktop_Qt_5_6_0_MinGW_32bit-Debug/mkspecs/modules-inst/qt_lib_xlsx.pri \
+		../../build-qtxlsx-Desktop_Qt_5_6_0_MinGW_32bit-Debug/mkspecs/modules-inst/qt_lib_xlsx_private.pri \
+		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xlsx.pri \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xml.pri \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xml_private.pri \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xmlpatterns.pri \
@@ -190,6 +193,7 @@ Makefile: ../PopWil/PopWil.pro ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/win32-g++
 		../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/features/lex.prf \
 		../PopWil/PopWil.pro \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/lib/qtmain.prl \
+		../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Xlsx.prl \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Widgets.prl \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Gui.prl \
 		../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Core.prl
@@ -295,6 +299,9 @@ Makefile: ../PopWil/PopWil.pro ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/win32-g++
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_widgets_private.pri:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_winextras.pri:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_winextras_private.pri:
+../../build-qtxlsx-Desktop_Qt_5_6_0_MinGW_32bit-Debug/mkspecs/modules-inst/qt_lib_xlsx.pri:
+../../build-qtxlsx-Desktop_Qt_5_6_0_MinGW_32bit-Debug/mkspecs/modules-inst/qt_lib_xlsx_private.pri:
+../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xlsx.pri:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xml.pri:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xml_private.pri:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/modules/qt_lib_xmlpatterns.pri:
@@ -325,6 +332,7 @@ Makefile: ../PopWil/PopWil.pro ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/win32-g++
 ../../Qt/Qt5.6.0/5.6/mingw49_32/mkspecs/features/lex.prf:
 ../PopWil/PopWil.pro:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/lib/qtmain.prl:
+../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Xlsx.prl:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Widgets.prl:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Gui.prl:
 ../../Qt/Qt5.6.0/5.6/mingw49_32/lib/Qt5Core.prl:

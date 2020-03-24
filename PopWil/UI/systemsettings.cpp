@@ -35,16 +35,26 @@ void SystemSettings::setSystemInfo()
 {
     ui->spinBoxCtrlInterval->setValue(systemInfo.contrlInterval);
     ui->spinBoxDrawInterval->setValue(systemInfo.drawInterval);
-    ui->lineEdit_MaxAbsolutePosition->setText(QString::number(systemInfo.maxAbsolutePosition));
+    ui->lineEdit_MaxOutU_Debug->setText(QString::number(systemInfo.maxOutUDebug));
     ui->lineEdit_MaxOutU->setText(QString::number(systemInfo.maxOutU));
+    ui->led_Max_force->setText(QString::number(systemInfo.maxAbsoluteForce));
+    ui->lineEdit_MaxAbsolutePosition->setText(QString::number(systemInfo.maxAbsolutePosition));
+    ui->led_Max_Vel->setText(QString::number(systemInfo.maxAbsoluteVel));
+    ui->led_Max_Acc->setText(QString::number(systemInfo.maxAbsoluteAcc));
+    ui->led_Max_Weight->setText(QString::number(systemInfo.maxLoadWeight));
 }
 
 void SystemSettings::on_btnSaveOnce_clicked()
 {
     systemInfo.contrlInterval=ui->spinBoxCtrlInterval->value();
     systemInfo.drawInterval=ui->spinBoxDrawInterval->value();
-    systemInfo.maxAbsolutePosition=ui->lineEdit_MaxAbsolutePosition->text().toDouble();
+    systemInfo.maxOutUDebug=ui->lineEdit_MaxOutU_Debug->text().toDouble();
     systemInfo.maxOutU=ui->lineEdit_MaxOutU->text().toDouble();
+    systemInfo.maxAbsoluteForce=ui->led_Max_force->text().toDouble();
+    systemInfo.maxAbsolutePosition=ui->lineEdit_MaxAbsolutePosition->text().toDouble();
+    systemInfo.maxAbsoluteVel=ui->led_Max_Vel->text().toDouble();
+    systemInfo.maxAbsoluteAcc=ui->led_Max_Acc->text().toDouble();
+    systemInfo.maxLoadWeight=ui->led_Max_Weight->text().toDouble();
     this->accept();
 }
 

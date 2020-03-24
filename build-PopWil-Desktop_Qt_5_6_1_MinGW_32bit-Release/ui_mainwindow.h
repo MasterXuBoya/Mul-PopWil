@@ -64,9 +64,12 @@ public:
     QAction *action_ZoomOut;
     QAction *action_Pointer;
     QAction *action_SaveAsDefalut;
-    QAction *action_Identity;
-    QAction *actionAction_SystemSettings;
-    QAction *actionAction_drawDelay;
+    QAction *action_SystemSettings;
+    QAction *action_DrawDelay;
+    QAction *action_IterativeControl;
+    QAction *action_Calibration;
+    QAction *action_Chinese;
+    QAction *action_English;
     QWidget *centralWidget;
     QFrame *displayFrame;
     QPushButton *btnStart;
@@ -100,6 +103,14 @@ public:
     QLineEdit *le_uk;
     QLabel *label_4;
     QPushButton *btn_out_uk;
+    QLabel *label_30;
+    QLabel *label_S_7;
+    QPushButton *btn_out_uk_2;
+    QLineEdit *le_uk_2;
+    QLabel *label_31;
+    QLabel *label_S_8;
+    QPushButton *btn_out_uk_3;
+    QLineEdit *le_uk_3;
     QGroupBox *groupBox_3;
     QLabel *label_desPosition;
     QLineEdit *lineEdit_desPosition;
@@ -192,6 +203,7 @@ public:
     QMenu *menu;
     QMenu *menu_View;
     QMenu *menu_Settings;
+    QMenu *menu_2;
     QMenu *menu_Command;
     QMenu *menu_Data;
     QMenu *menu_Help;
@@ -247,44 +259,59 @@ public:
         action_StorageSettings->setObjectName(QStringLiteral("action_StorageSettings"));
         action_SaveAsPicture = new QAction(MainWindow);
         action_SaveAsPicture->setObjectName(QStringLiteral("action_SaveAsPicture"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/Icon/Icon/snapshot.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveAsPicture->setIcon(icon2);
         action_ChannelParameters = new QAction(MainWindow);
         action_ChannelParameters->setObjectName(QStringLiteral("action_ChannelParameters"));
-        QIcon icon2;
-        icon2.addFile(QStringLiteral(":/Icon/Icon/channel.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_ChannelParameters->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/Icon/Icon/channel_blue.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_ChannelParameters->setIcon(icon3);
         action_ControlParameters = new QAction(MainWindow);
         action_ControlParameters->setObjectName(QStringLiteral("action_ControlParameters"));
-        QIcon icon3;
-        icon3.addFile(QStringLiteral(":/Icon/Icon/ctrlSetting.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_ControlParameters->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/Icon/Icon/CtrlPara.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_ControlParameters->setIcon(icon4);
         action_LimitedParameters = new QAction(MainWindow);
         action_LimitedParameters->setObjectName(QStringLiteral("action_LimitedParameters"));
         action_ZoomIn = new QAction(MainWindow);
         action_ZoomIn->setObjectName(QStringLiteral("action_ZoomIn"));
-        QIcon icon4;
-        icon4.addFile(QStringLiteral(":/Icon/Icon/zoomin.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_ZoomIn->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/Icon/Icon/zoomin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_ZoomIn->setIcon(icon5);
         action_ZoomOut = new QAction(MainWindow);
         action_ZoomOut->setObjectName(QStringLiteral("action_ZoomOut"));
-        QIcon icon5;
-        icon5.addFile(QStringLiteral(":/Icon/Icon/zoomout.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_ZoomOut->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/Icon/Icon/zoomout.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_ZoomOut->setIcon(icon6);
         action_Pointer = new QAction(MainWindow);
         action_Pointer->setObjectName(QStringLiteral("action_Pointer"));
-        QIcon icon6;
-        icon6.addFile(QStringLiteral(":/Icon/Icon/pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_Pointer->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/Icon/Icon/pointer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Pointer->setIcon(icon7);
         action_SaveAsDefalut = new QAction(MainWindow);
         action_SaveAsDefalut->setObjectName(QStringLiteral("action_SaveAsDefalut"));
-        action_Identity = new QAction(MainWindow);
-        action_Identity->setObjectName(QStringLiteral("action_Identity"));
-        actionAction_SystemSettings = new QAction(MainWindow);
-        actionAction_SystemSettings->setObjectName(QStringLiteral("actionAction_SystemSettings"));
-        QIcon icon7;
-        icon7.addFile(QStringLiteral(":/Icon/Icon/settings2.png"), QSize(), QIcon::Normal, QIcon::Off);
-        actionAction_SystemSettings->setIcon(icon7);
-        actionAction_drawDelay = new QAction(MainWindow);
-        actionAction_drawDelay->setObjectName(QStringLiteral("actionAction_drawDelay"));
+        action_SystemSettings = new QAction(MainWindow);
+        action_SystemSettings->setObjectName(QStringLiteral("action_SystemSettings"));
+        QIcon icon8;
+        icon8.addFile(QStringLiteral(":/Icon/Icon/setting_bule.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SystemSettings->setIcon(icon8);
+        action_DrawDelay = new QAction(MainWindow);
+        action_DrawDelay->setObjectName(QStringLiteral("action_DrawDelay"));
+        action_IterativeControl = new QAction(MainWindow);
+        action_IterativeControl->setObjectName(QStringLiteral("action_IterativeControl"));
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/Icon/Icon/main.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        action_IterativeControl->setIcon(icon9);
+        action_Calibration = new QAction(MainWindow);
+        action_Calibration->setObjectName(QStringLiteral("action_Calibration"));
+        QIcon icon10;
+        icon10.addFile(QStringLiteral(":/Icon/Icon/calibration.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_Calibration->setIcon(icon10);
+        action_Chinese = new QAction(MainWindow);
+        action_Chinese->setObjectName(QStringLiteral("action_Chinese"));
+        action_English = new QAction(MainWindow);
+        action_English->setObjectName(QStringLiteral("action_English"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         displayFrame = new QFrame(centralWidget);
@@ -435,27 +462,27 @@ public:
         tab->setStyleSheet(QStringLiteral(""));
         line = new QFrame(tab);
         line->setObjectName(QStringLiteral("line"));
-        line->setGeometry(QRect(0, 110, 291, 16));
+        line->setGeometry(QRect(0, 120, 291, 101));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
         groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox_2->setGeometry(QRect(10, 10, 281, 80));
+        groupBox_2->setGeometry(QRect(10, 10, 281, 141));
         label_S_6 = new QLabel(groupBox_2);
         label_S_6->setObjectName(QStringLiteral("label_S_6"));
-        label_S_6->setGeometry(QRect(20, 40, 41, 16));
+        label_S_6->setGeometry(QRect(20, 20, 41, 16));
         le_uk = new QLineEdit(groupBox_2);
         le_uk->setObjectName(QStringLiteral("le_uk"));
-        le_uk->setGeometry(QRect(80, 40, 85, 20));
+        le_uk->setGeometry(QRect(80, 20, 85, 20));
         le_uk->setEchoMode(QLineEdit::Normal);
         le_uk->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
         le_uk->setClearButtonEnabled(true);
         label_4 = new QLabel(groupBox_2);
         label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setGeometry(QRect(170, 40, 16, 16));
+        label_4->setGeometry(QRect(170, 20, 16, 16));
         btn_out_uk = new QPushButton(groupBox_2);
         btn_out_uk->setObjectName(QStringLiteral("btn_out_uk"));
-        btn_out_uk->setGeometry(QRect(200, 40, 75, 23));
+        btn_out_uk->setGeometry(QRect(200, 20, 75, 23));
         QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -478,9 +505,77 @@ public:
 "    background-color:rgb(85, 170, 255);\n"
 "    border-style: inset;\n"
 "    }"));
+        label_30 = new QLabel(groupBox_2);
+        label_30->setObjectName(QStringLiteral("label_30"));
+        label_30->setGeometry(QRect(170, 50, 16, 16));
+        label_S_7 = new QLabel(groupBox_2);
+        label_S_7->setObjectName(QStringLiteral("label_S_7"));
+        label_S_7->setGeometry(QRect(20, 50, 41, 16));
+        btn_out_uk_2 = new QPushButton(groupBox_2);
+        btn_out_uk_2->setObjectName(QStringLiteral("btn_out_uk_2"));
+        btn_out_uk_2->setGeometry(QRect(200, 50, 75, 23));
+        sizePolicy1.setHeightForWidth(btn_out_uk_2->sizePolicy().hasHeightForWidth());
+        btn_out_uk_2->setSizePolicy(sizePolicy1);
+        btn_out_uk_2->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
+        le_uk_2 = new QLineEdit(groupBox_2);
+        le_uk_2->setObjectName(QStringLiteral("le_uk_2"));
+        le_uk_2->setGeometry(QRect(80, 50, 85, 20));
+        le_uk_2->setEchoMode(QLineEdit::Normal);
+        le_uk_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        le_uk_2->setClearButtonEnabled(true);
+        label_31 = new QLabel(groupBox_2);
+        label_31->setObjectName(QStringLiteral("label_31"));
+        label_31->setGeometry(QRect(170, 80, 16, 16));
+        label_S_8 = new QLabel(groupBox_2);
+        label_S_8->setObjectName(QStringLiteral("label_S_8"));
+        label_S_8->setGeometry(QRect(20, 80, 41, 16));
+        btn_out_uk_3 = new QPushButton(groupBox_2);
+        btn_out_uk_3->setObjectName(QStringLiteral("btn_out_uk_3"));
+        btn_out_uk_3->setGeometry(QRect(200, 80, 75, 23));
+        sizePolicy1.setHeightForWidth(btn_out_uk_3->sizePolicy().hasHeightForWidth());
+        btn_out_uk_3->setSizePolicy(sizePolicy1);
+        btn_out_uk_3->setStyleSheet(QLatin1String("QPushButton{\n"
+"    background-color:rgb(230, 240, 250);\n"
+"    border-radius: 10px;\n"
+"    border: 2px groove gray;\n"
+"    border-style: outset;\n"
+"\n"
+"    font:bold;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    background-color:white;\n"
+"    color: black;\n"
+"    }\n"
+"QPushButton:pressed{\n"
+"    background-color:rgb(85, 170, 255);\n"
+"    border-style: inset;\n"
+"    }"));
+        le_uk_3 = new QLineEdit(groupBox_2);
+        le_uk_3->setObjectName(QStringLiteral("le_uk_3"));
+        le_uk_3->setGeometry(QRect(80, 80, 85, 20));
+        le_uk_3->setEchoMode(QLineEdit::Normal);
+        le_uk_3->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+        le_uk_3->setClearButtonEnabled(true);
         groupBox_3 = new QGroupBox(tab);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        groupBox_3->setGeometry(QRect(10, 140, 281, 71));
+        groupBox_3->setGeometry(QRect(10, 190, 281, 71));
         label_desPosition = new QLabel(groupBox_3);
         label_desPosition->setObjectName(QStringLiteral("label_desPosition"));
         label_desPosition->setGeometry(QRect(11, 31, 60, 16));
@@ -648,7 +743,7 @@ public:
         line_3->setFrameShadow(QFrame::Sunken);
         label_15 = new QLabel(sineFrame);
         label_15->setObjectName(QStringLiteral("label_15"));
-        label_15->setGeometry(QRect(20, 10, 51, 21));
+        label_15->setGeometry(QRect(20, 10, 150, 21));
         label_15->setStyleSheet(QString::fromUtf8("font: 75 12pt \"\345\256\213\344\275\223\";\n"
 "font:bold;"));
         label_15->setAlignment(Qt::AlignCenter);
@@ -825,7 +920,7 @@ public:
         line_4->setFrameShadow(QFrame::Sunken);
         label_16 = new QLabel(sineSwepFrame);
         label_16->setObjectName(QStringLiteral("label_16"));
-        label_16->setGeometry(QRect(20, 10, 71, 21));
+        label_16->setGeometry(QRect(20, 10, 150, 21));
         label_16->setStyleSheet(QString::fromUtf8("font: 75 12pt \"\345\256\213\344\275\223\";\n"
 "font:bold;"));
         label_16->setAlignment(Qt::AlignCenter);
@@ -875,7 +970,7 @@ public:
         line_5->setFrameShadow(QFrame::Sunken);
         label_17 = new QLabel(randomFrame);
         label_17->setObjectName(QStringLiteral("label_17"));
-        label_17->setGeometry(QRect(20, 10, 61, 21));
+        label_17->setGeometry(QRect(20, 10, 150, 21));
         label_17->setStyleSheet(QString::fromUtf8("font: 75 12pt \"\345\256\213\344\275\223\";\n"
 "font:bold;"));
         label_17->setAlignment(Qt::AlignCenter);
@@ -886,7 +981,7 @@ public:
         triangleFrame->setFrameShadow(QFrame::Plain);
         label_21 = new QLabel(triangleFrame);
         label_21->setObjectName(QStringLiteral("label_21"));
-        label_21->setGeometry(QRect(20, 10, 61, 21));
+        label_21->setGeometry(QRect(20, 10, 150, 21));
         label_21->setStyleSheet(QString::fromUtf8("font: 75 12pt \"\345\256\213\344\275\223\";\n"
 "font:bold;"));
         label_21->setAlignment(Qt::AlignCenter);
@@ -1013,6 +1108,8 @@ public:
         menu_View->setObjectName(QStringLiteral("menu_View"));
         menu_Settings = new QMenu(menuBar);
         menu_Settings->setObjectName(QStringLiteral("menu_Settings"));
+        menu_2 = new QMenu(menu_Settings);
+        menu_2->setObjectName(QStringLiteral("menu_2"));
         menu_Command = new QMenu(menuBar);
         menu_Command->setObjectName(QStringLiteral("menu_Command"));
         menu_Data = new QMenu(menuBar);
@@ -1048,11 +1145,16 @@ public:
         menu->addAction(action_EarthWaveTest);
         menu_View->addAction(action_ToolFlag);
         menu_View->addAction(action_StatusFlag);
+        menu_Settings->addAction(action_Calibration);
         menu_Settings->addAction(action_ChannelParameters);
         menu_Settings->addAction(action_ControlParameters);
         menu_Settings->addAction(action_LimitedParameters);
-        menu_Settings->addAction(actionAction_SystemSettings);
-        menu_Settings->addAction(actionAction_drawDelay);
+        menu_Settings->addSeparator();
+        menu_Settings->addAction(action_SystemSettings);
+        menu_Settings->addAction(action_DrawDelay);
+        menu_Settings->addAction(menu_2->menuAction());
+        menu_2->addAction(action_Chinese);
+        menu_2->addAction(action_English);
         menu_Command->addAction(action_Start);
         menu_Command->addAction(action_Pause);
         menu_Command->addAction(action_Continue);
@@ -1065,7 +1167,7 @@ public:
         menu_Data->addAction(action_SaveAsPicture);
         menu_Help->addAction(action_HelpF1);
         menu_Help->addAction(action_About);
-        menu_Control->addAction(action_Identity);
+        menu_Control->addAction(action_IterativeControl);
         toolBar->addAction(action_Open);
         toolBar->addAction(action_Save);
         toolBar->addSeparator();
@@ -1073,9 +1175,13 @@ public:
         toolBar->addAction(action_ZoomIn);
         toolBar->addAction(action_ZoomOut);
         toolBar->addSeparator();
+        toolBar->addAction(action_Calibration);
         toolBar->addAction(action_ChannelParameters);
         toolBar->addAction(action_ControlParameters);
-        toolBar->addAction(actionAction_SystemSettings);
+        toolBar->addAction(action_SystemSettings);
+        toolBar->addSeparator();
+        toolBar->addAction(action_SaveAsPicture);
+        toolBar->addAction(action_IterativeControl);
 
         retranslateUi(MainWindow);
 
@@ -1088,7 +1194,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\345\215\225\350\207\252\347\224\261\345\272\246\346\250\241\346\213\237\346\214\257\345\212\250\345\217\260\346\216\247\345\210\266\347\263\273\347\273\237", 0));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\345\234\260\351\234\207\346\250\241\346\213\237\346\214\257\345\212\250\345\217\260\346\216\247\345\210\266\347\263\273\347\273\237", 0));
         action_Open->setText(QApplication::translate("MainWindow", "\346\211\223\345\274\200\350\257\225\351\252\214", 0));
         action_Open->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
         action_Save->setText(QApplication::translate("MainWindow", "\344\277\235\345\255\230\350\257\225\351\252\214", 0));
@@ -1115,9 +1221,12 @@ public:
         action_ZoomOut->setText(QApplication::translate("MainWindow", "\347\274\251\345\260\217", 0));
         action_Pointer->setText(QApplication::translate("MainWindow", "\346\214\207\351\222\210", 0));
         action_SaveAsDefalut->setText(QApplication::translate("MainWindow", "\344\277\235\345\255\230\344\270\272\351\273\230\350\256\244\350\256\276\347\275\256", 0));
-        action_Identity->setText(QApplication::translate("MainWindow", "RBF\350\276\250\350\257\206", 0));
-        actionAction_SystemSettings->setText(QApplication::translate("MainWindow", "\347\263\273\347\273\237\350\256\276\347\275\256", 0));
-        actionAction_drawDelay->setText(QApplication::translate("MainWindow", "\347\273\230\345\233\276\345\273\266\350\277\237\350\241\245\345\201\277", 0));
+        action_SystemSettings->setText(QApplication::translate("MainWindow", "\347\263\273\347\273\237\350\256\276\347\275\256", 0));
+        action_DrawDelay->setText(QApplication::translate("MainWindow", "\347\273\230\345\233\276\345\273\266\350\277\237\350\241\245\345\201\277", 0));
+        action_IterativeControl->setText(QApplication::translate("MainWindow", "\350\277\255\344\273\243\346\216\247\345\210\266\345\217\260", 0));
+        action_Calibration->setText(QApplication::translate("MainWindow", "\344\274\240\346\204\237\345\231\250\346\240\241\345\207\206", 0));
+        action_Chinese->setText(QApplication::translate("MainWindow", "\344\270\255\346\226\207", 0));
+        action_English->setText(QApplication::translate("MainWindow", "\350\213\261\350\257\255", 0));
         btnStart->setText(QString());
         btnStop->setText(QString());
         labeStatusl->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\347\212\266\346\200\201", 0));
@@ -1128,12 +1237,18 @@ public:
         label_V->setText(QApplication::translate("MainWindow", "\351\200\237\345\272\246\357\274\232", 0));
         label_S_3->setText(QApplication::translate("MainWindow", "mm/s", 0));
         label_A->setText(QApplication::translate("MainWindow", "\345\212\240\351\200\237\345\272\246\357\274\232", 0));
-        label_S_4->setText(QApplication::translate("MainWindow", "mm/ss", 0));
+        label_S_4->setText(QApplication::translate("MainWindow", "g", 0));
         labeStatusl_2->setText(QApplication::translate("MainWindow", "\350\257\225\351\252\214\344\277\241\346\201\257", 0));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "Debug", 0));
-        label_S_6->setText(QApplication::translate("MainWindow", "\347\224\265\345\216\213:", 0));
+        label_S_6->setText(QApplication::translate("MainWindow", "X:", 0));
         label_4->setText(QApplication::translate("MainWindow", "V", 0));
         btn_out_uk->setText(QApplication::translate("MainWindow", "\350\276\223\345\207\272", 0));
+        label_30->setText(QApplication::translate("MainWindow", "V", 0));
+        label_S_7->setText(QApplication::translate("MainWindow", "Y1:", 0));
+        btn_out_uk_2->setText(QApplication::translate("MainWindow", "\350\276\223\345\207\272", 0));
+        label_31->setText(QApplication::translate("MainWindow", "V", 0));
+        label_S_8->setText(QApplication::translate("MainWindow", "Y2:", 0));
+        btn_out_uk_3->setText(QApplication::translate("MainWindow", "\350\276\223\345\207\272", 0));
         groupBox_3->setTitle(QApplication::translate("MainWindow", "\351\235\231\346\200\201\346\216\247\345\210\266", 0));
         label_desPosition->setText(QApplication::translate("MainWindow", "\347\233\256\346\240\207\344\275\215\347\275\256\357\274\232", 0));
         label_3->setText(QApplication::translate("MainWindow", "mm", 0));
@@ -1158,7 +1273,7 @@ public:
         le_mag->setText(QApplication::translate("MainWindow", "5", 0));
         label_5->setText(QApplication::translate("MainWindow", "\351\207\215\345\244\215\346\254\241\346\225\260\357\274\232", 0));
         label_6->setText(QApplication::translate("MainWindow", "mm", 0));
-        le_cnt->setText(QApplication::translate("MainWindow", "20", 0));
+        le_cnt->setText(QApplication::translate("MainWindow", "200", 0));
         label_7->setText(QApplication::translate("MainWindow", "Hz", 0));
         label_8->setText(QApplication::translate("MainWindow", "\344\270\255\345\277\203\357\274\232", 0));
         le_mid->setText(QApplication::translate("MainWindow", "0", 0));
@@ -1177,6 +1292,7 @@ public:
         cmb_contr_method->clear();
         cmb_contr_method->insertItems(0, QStringList()
          << QApplication::translate("MainWindow", "PID\346\216\247\345\210\266", 0)
+         << QApplication::translate("MainWindow", "\345\212\240\351\200\237\345\272\246PID\346\216\247\345\210\266", 0)
          << QApplication::translate("MainWindow", "\344\270\211\345\217\202\351\207\217\346\216\247\345\210\266", 0)
          << QApplication::translate("MainWindow", "PID3\346\216\247\345\210\266", 0)
         );
@@ -1216,8 +1332,9 @@ public:
         menu->setTitle(QApplication::translate("MainWindow", "\346\226\260\345\273\272\350\257\225\351\252\214", 0));
         menu_View->setTitle(QApplication::translate("MainWindow", "\350\247\206\345\233\276(&V)", 0));
         menu_Settings->setTitle(QApplication::translate("MainWindow", "\350\256\276\347\275\256(&S)", 0));
+        menu_2->setTitle(QApplication::translate("MainWindow", "\350\257\255\350\250\200", 0));
         menu_Command->setTitle(QApplication::translate("MainWindow", "\345\221\275\344\273\244(&C)", 0));
-        menu_Data->setTitle(QApplication::translate("MainWindow", "\346\225\260\346\215\256(&D)", 0));
+        menu_Data->setTitle(QApplication::translate("MainWindow", "\346\230\276\347\244\272(&D)", 0));
         menu_Help->setTitle(QApplication::translate("MainWindow", "\345\270\256\345\212\251(&H)", 0));
         menu_Control->setTitle(QApplication::translate("MainWindow", "\346\216\247\345\210\266(&C)", 0));
         toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0));

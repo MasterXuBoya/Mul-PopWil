@@ -41,7 +41,6 @@
 #include "qmath.h"
 #include "inihelper.h"
 #include "ctrldialog.h"
-#include "rbf.h"
 #include "systemsettings.h"
 #include "QStandardItem"
 #include "mathtool.h"
@@ -65,6 +64,13 @@
 #include <QListWidgetItem>
 #include "DisplayBuffer.h"
 #include "DisplayBufferForm.h"
-
+#include "IterativeControlMainWindow.h"
+#include "HMAFilter.h"
+#include <QtXlsx/QtXlsx>
+#include "xlsxdocument.h"
+#include "xlsxformat.h"
+#include "xlsxcellrange.h"
+#include "xlsxworksheet.h"
+#include "calibration.h"
 
 #endif // POPWILHEADER_H

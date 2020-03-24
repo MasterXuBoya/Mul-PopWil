@@ -21,13 +21,13 @@ void Oscilator::caculateSine(TSineWaveInfo para){
             refData.SRef[++refData.refCnt]=sRef;
             vRef=(sRef-sRef_)/(systemInfo.contrlInterval*1.0/1000);
             refData.VRef[refData.refCnt]=vRef;
-            refData.ARef[refData.refCnt]=(vRef-vRef_)/(systemInfo.contrlInterval*1.0/1000);
+            refData.ARef[refData.refCnt]=(vRef-vRef_)/(systemInfo.contrlInterval*1.0/1000)/10000;
             sRef_=sRef;vRef_=vRef;
         }
         else {
             refData.SRef[++refData.refCnt]=mag*sin(2*PI*fs*elapseStartTime)+mid;
             refData.VRef[refData.refCnt]=mag*2*PI*fs*cos(2*PI*fs*elapseStartTime);
-            refData.ARef[refData.refCnt]=-mag*4*PI*PI*fs*fs*sin(2*PI*fs*elapseStartTime);
+            refData.ARef[refData.refCnt]=-mag*4*PI*PI*fs*fs*sin(2*PI*fs*elapseStartTime)/10000;
         }
         elapseStartTime += refData.dataRefSampleT*1.0/1000;
     }

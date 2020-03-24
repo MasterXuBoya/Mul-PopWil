@@ -10,6 +10,7 @@
 #define QDOUBLEBUFFEREDQUEUE_HDR
 
 #include <QMutex>
+#include "windows.h"
 
 template <class T>
 class QDoubleBufferedQueue
@@ -45,7 +46,24 @@ public:
         mutex.unlock();
 		return canWrite;
 	}
-
+//    bool putData(const TDataType& data){
+//        bool isFull=true;
+//        WaitForSingleObject(g_hMutex,INFINITE);
+//        if(bufferCnt<BUFFERSIZE){
+//            isFull=false;
+//            buffer[bufferCnt++]=data;
+//        }
+//        ReleaseMutex(g_hMutex);
+//        return isFull;
+//    }
+//    void getData(TDataType *&p,int dataLen){
+//        WaitForSingleObject(g_hMutex,INFINITE);
+//        p=buffer;dataLen=bufferCnt;
+//        if(buffer==buffer0)
+//            buffer=buffer1;
+//        else buffer=buffer0;
+//        ReleaseMutex(g_hMutex);
+//    }
     //
     // Get all the items in the queue. The T** argument should be the address of a variable to
     // receive the pointer to the item array. The return value is the size of the array.

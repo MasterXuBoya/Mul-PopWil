@@ -19,7 +19,6 @@ INPUT(
 ./debug\systemsettings.o
 ./debug\performancetimer.o
 ./debug\mainwindow.o
-./debug\rbf.o
 ./debug\mychartviewer.o
 ./debug\qchartviewer.o
 ./debug\inihelper.o
@@ -30,6 +29,12 @@ INPUT(
 ./debug\Oscilator.o
 ./debug\DisplayBuffer.o
 ./debug\DisplayBufferForm.o
+./debug\HMAFilter.o
+./debug\testfornothing.o
+./debug\ssitool.o
+./debug\ToolFromMatlab.o
+./debug\calibration.o
+./debug\IterativeControlMainWindow.o
 ./debug\qrc_resource.o
 ./debug\moc_testwindow.o
 ./debug\moc_aboutform.o
@@ -38,9 +43,10 @@ INPUT(
 ./debug\moc_systemsettings.o
 ./debug\moc_performancetimer.o
 ./debug\moc_mainwindow.o
-./debug\moc_rbf.o
 ./debug\moc_mychartviewer.o
 ./debug\moc_qchartviewer.o
 ./debug\moc_sinesweepmodule.o
 ./debug\moc_DisplayBufferForm.o
+./debug\moc_calibration.o
+./debug\moc_IterativeControlMainWindow.o
 );

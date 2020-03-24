@@ -49,6 +49,12 @@ public:
     QLineEdit *le_sine_P;
     QLineEdit *le_sine_I;
     QLineEdit *le_sine_D;
+    QWidget *layoutWidget_2;
+    QHBoxLayout *horizontalLayout_11;
+    QLabel *label_19;
+    QLineEdit *le_acc_P;
+    QLineEdit *le_acc_I;
+    QLineEdit *le_acc_D;
     QWidget *tab_2;
     QLabel *label_3;
     QWidget *layoutWidget3;
@@ -90,6 +96,10 @@ public:
     QLabel *label_17;
     QLabel *label_12;
     QLabel *label_18;
+    QLabel *label_20;
+    QLineEdit *le_ws;
+    QLineEdit *le_wv;
+    QLineEdit *le_wa;
     QLabel *label_4;
     QComboBox *cmbCtrlMode;
     QPushButton *btnOk;
@@ -110,7 +120,7 @@ public:
         tab->setObjectName(QStringLiteral("tab"));
         layoutWidget = new QWidget(tab);
         layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(11, 96, 491, 61));
+        layoutWidget->setGeometry(QRect(10, 80, 491, 51));
         horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -123,16 +133,19 @@ public:
 
         lineEdit_P = new QLineEdit(layoutWidget);
         lineEdit_P->setObjectName(QStringLiteral("lineEdit_P"));
+        lineEdit_P->setReadOnly(false);
 
         horizontalLayout->addWidget(lineEdit_P);
 
         lineEdit_I = new QLineEdit(layoutWidget);
         lineEdit_I->setObjectName(QStringLiteral("lineEdit_I"));
+        lineEdit_I->setReadOnly(false);
 
         horizontalLayout->addWidget(lineEdit_I);
 
         lineEdit_D = new QLineEdit(layoutWidget);
         lineEdit_D->setObjectName(QStringLiteral("lineEdit_D"));
+        lineEdit_D->setReadOnly(false);
 
         horizontalLayout->addWidget(lineEdit_D);
 
@@ -177,7 +190,7 @@ public:
         horizontalLayout_5->setStretch(3, 1);
         layoutWidget2 = new QWidget(tab);
         layoutWidget2->setObjectName(QStringLiteral("layoutWidget2"));
-        layoutWidget2->setGeometry(QRect(11, 181, 491, 71));
+        layoutWidget2->setGeometry(QRect(10, 150, 491, 51));
         horizontalLayout_4 = new QHBoxLayout(layoutWidget2);
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         horizontalLayout_4->setContentsMargins(0, 0, 0, 0);
@@ -207,6 +220,38 @@ public:
         horizontalLayout_4->setStretch(1, 1);
         horizontalLayout_4->setStretch(2, 1);
         horizontalLayout_4->setStretch(3, 1);
+        layoutWidget_2 = new QWidget(tab);
+        layoutWidget_2->setObjectName(QStringLiteral("layoutWidget_2"));
+        layoutWidget_2->setGeometry(QRect(10, 220, 491, 51));
+        horizontalLayout_11 = new QHBoxLayout(layoutWidget_2);
+        horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
+        horizontalLayout_11->setContentsMargins(0, 0, 0, 0);
+        label_19 = new QLabel(layoutWidget_2);
+        label_19->setObjectName(QStringLiteral("label_19"));
+        label_19->setStyleSheet(QStringLiteral("font: 75 12pt \"Agency FB\";"));
+        label_19->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_11->addWidget(label_19);
+
+        le_acc_P = new QLineEdit(layoutWidget_2);
+        le_acc_P->setObjectName(QStringLiteral("le_acc_P"));
+
+        horizontalLayout_11->addWidget(le_acc_P);
+
+        le_acc_I = new QLineEdit(layoutWidget_2);
+        le_acc_I->setObjectName(QStringLiteral("le_acc_I"));
+
+        horizontalLayout_11->addWidget(le_acc_I);
+
+        le_acc_D = new QLineEdit(layoutWidget_2);
+        le_acc_D->setObjectName(QStringLiteral("le_acc_D"));
+
+        horizontalLayout_11->addWidget(le_acc_D);
+
+        horizontalLayout_11->setStretch(0, 1);
+        horizontalLayout_11->setStretch(1, 1);
+        horizontalLayout_11->setStretch(2, 1);
+        horizontalLayout_11->setStretch(3, 1);
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -431,6 +476,27 @@ public:
         horizontalLayout_10->setStretch(1, 1);
         horizontalLayout_10->setStretch(2, 1);
         horizontalLayout_10->setStretch(3, 1);
+        label_20 = new QLabel(tab_3);
+        label_20->setObjectName(QStringLiteral("label_20"));
+        label_20->setGeometry(QRect(490, 10, 61, 41));
+        QFont font1;
+        font1.setFamily(QString::fromUtf8("\351\232\266\344\271\246"));
+        font1.setPointSize(12);
+        font1.setBold(false);
+        font1.setItalic(false);
+        font1.setWeight(9);
+        label_20->setFont(font1);
+        label_20->setStyleSheet(QString::fromUtf8("font: 75 12pt \"\351\232\266\344\271\246\";"));
+        label_20->setAlignment(Qt::AlignCenter);
+        le_ws = new QLineEdit(tab_3);
+        le_ws->setObjectName(QStringLiteral("le_ws"));
+        le_ws->setGeometry(QRect(500, 80, 41, 20));
+        le_wv = new QLineEdit(tab_3);
+        le_wv->setObjectName(QStringLiteral("le_wv"));
+        le_wv->setGeometry(QRect(500, 150, 41, 20));
+        le_wa = new QLineEdit(tab_3);
+        le_wa->setObjectName(QStringLiteral("le_wa"));
+        le_wa->setGeometry(QRect(500, 220, 41, 20));
         tabWidget->addTab(tab_3, QString());
         label_4 = new QLabel(CtrlDialog);
         label_4->setObjectName(QStringLiteral("label_4"));
@@ -491,7 +557,7 @@ public:
 
         retranslateUi(CtrlDialog);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(CtrlDialog);
@@ -504,7 +570,8 @@ public:
         label_7->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">P</span></p></body></html>", 0));
         label_6->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">I</span></p></body></html>", 0));
         label_5->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">D</span></p></body></html>", 0));
-        label_10->setText(QApplication::translate("CtrlDialog", "\345\212\250\346\200\201\346\216\247\345\210\266", 0));
+        label_10->setText(QApplication::translate("CtrlDialog", "\344\275\215\347\247\273\346\216\247\345\210\266", 0));
+        label_19->setText(QApplication::translate("CtrlDialog", "\345\212\240\351\200\237\345\272\246\346\216\247\345\210\266", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("CtrlDialog", "PID\345\217\202\346\225\260", 0));
         label_3->setText(QApplication::translate("CtrlDialog", "S", 0));
         label->setText(QApplication::translate("CtrlDialog", "\345\211\215\351\246\210", 0));
@@ -518,6 +585,7 @@ public:
         label_17->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">P</span></p></body></html>", 0));
         label_12->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">I</span></p></body></html>", 0));
         label_18->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">D</span></p></body></html>", 0));
+        label_20->setText(QApplication::translate("CtrlDialog", "\346\235\203\351\207\215", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("CtrlDialog", "PID3\345\217\202\346\225\260", 0));
         label_4->setText(QApplication::translate("CtrlDialog", "<html><head/><body><p><span style=\" font-size:12pt; font-weight:600;\">\346\216\247\345\210\266\346\226\271\345\274\217\357\274\232</span></p></body></html>", 0));
         btnOk->setText(QApplication::translate("CtrlDialog", "\347\241\256\345\256\232", 0));

@@ -1,11 +1,24 @@
 #include "AvgFilter.h"
 
-AvgFilter::AvgFilter()
-{
+AvgFilter::AvgFilter(){
+}
+
+AvgFilter::AvgFilter(int lag){
+    MAXFILTERCNT=lag;
     buffer=new double[MAXFILTERCNT];
     for(int i=0;i<MAXFILTERCNT;i++)
         buffer[i]=0;
-    avgFilterIndex=dataCnt=sum=0;
+    avgFilterIndex=-1;
+    dataCnt=sum=0;
+}
+
+void AvgFilter::setLag(int lag){
+    MAXFILTERCNT=lag;
+    buffer=new double[MAXFILTERCNT];
+    for(int i=0;i<MAXFILTERCNT;i++)
+        buffer[i]=0;
+    avgFilterIndex=-1;
+    dataCnt=sum=0;
 }
 
 AvgFilter::~AvgFilter(){

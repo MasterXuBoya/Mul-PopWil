@@ -22,6 +22,7 @@ public:
     void addItemToListView(QString str);
     void dataSaveToTxt();
     void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *event);
     double getPosition(int direct);
     void wavePreview(QString title);
     void drawTmp(QString title,int n,double xlabel[],double data[]);
@@ -45,11 +46,16 @@ private:
     Oscilator oscilator;
     SineSweepModule sineSweepForm;
     //-------------------------滤波器-------------------------------------
+    int m_filter_length;
     AvgFilter *sAvgFilter,*vAvgFilter,*aAvgFilter;
+    AvgFilter *sAvgFilterThreeFreedom;
+    HMAFilter *sHMAFilter,*vHMAFilter,*aHMAFilter;
+
     ButtorFilter *sButtorFilter,*vButtorFilter,*aButtorFilter;
-    AvgFilter v2AvgFilter;
-    ButtorFilter v2ButtorFilter;
+    AvgFilter v2AvgFilter,a2AvgFilter;
+    ButtorFilter v2ButtorFilter,a2ButtorFilter;
     SignalProcess signalHandler;//fft,频域积分
+    double sCurrentThreeFreedom[DISSENSORCOUNT];
     //---------------------控制器---------------------------------------------
     long msCount;//从打开程序开启的总时间   ms
     //-------试验开始之后变量----------------
@@ -58,10 +64,12 @@ private:
     int refIndex;//Reference中的索引
 
     StaticPositionController *sController;
-    PIDController *sinePIDController;//正弦波PID控制器
+    PIDController *sinePIDController;//位移PID控制器
+    PIDController *sinePIDControllerThreeFreedom;
+    PIDController *accPIDController;//加速度PID控制器
     //PIDController *earthquakePIDController;//地震波PID控制器
-    TVController tvcController;
-    PID3Controller pid3Controller;
+    TVController *tvcController;
+    PID3Controller *pid3Controller;
 
     PerformanceTimer *timer;
     int PERFORMANCEINTERVAL;
@@ -73,10 +81,16 @@ private:
     //------------------------UI---------------------------------------------
     QLabel *currentLabel;
     QStandardItemModel *model;
+    IterativeControlMainWindow *iterativeControlUI;
+    calibration *calibrationDialog;
+
+    QTranslator *englishTranslator;
 
     void outUToPCI(double value);
+    void outUToPCI(double value[DISSENSORCOUNT]);
     void outDataToExcel();
     void testFunction();
+
 private slots:
     void slotFuction();     //1ms多媒体定时器
     void on_action_Quit_triggered();
@@ -89,8 +103,7 @@ private slots:
     void on_btnStop_clicked();
     void on_action_ControlParameters_triggered();
     void on_action_SaveAsDefalut_triggered();
-    void on_action_Identity_triggered();
-    void on_actionAction_SystemSettings_triggered();
+    void on_action_SystemSettings_triggered();
     void on_btn_clearZero_clicked();
     void on_btn_static_comfirm_clicked();
     void on_btn_DO_clicked();
@@ -106,10 +119,18 @@ private slots:
     void on_btn_preview_clicked();
     void on_btn_sineswep_config_clicked();
     void on_btn_sineSweep_open_clicked();
-    void on_actionAction_drawDelay_triggered();
+    void on_action_DrawDelay_triggered();
     void on_rbt_S_plot_clicked();
     void on_rbt_V_plot_clicked();
     void on_rbt_A_plot_clicked();
+    void on_action_IterativeControl_triggered();
+    void on_action_Calibration_triggered();
+    void on_action_SaveAsPicture_triggered();
+    void on_action_Chinese_triggered();
+    void on_action_English_triggered();
+    void refreshUI();
+    void on_btn_out_uk_2_clicked();
+    void on_btn_out_uk_3_clicked();
 };
 #endif // MAINWINDOW_H
 

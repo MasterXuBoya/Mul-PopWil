@@ -30,6 +30,9 @@ INPUT(
 ./release\Oscilator.o
 ./release\DisplayBuffer.o
 ./release\DisplayBufferForm.o
+./release\IterativeControlMainWindow.o
+./release\ToolFromMatlab.o
+./release\HMAFilter.o
 ./release\qrc_resource.o
 ./release\moc_testwindow.o
 ./release\moc_aboutform.o
@@ -43,4 +46,5 @@ INPUT(
 ./release\moc_qchartviewer.o
 ./release\moc_sinesweepmodule.o
 ./release\moc_DisplayBufferForm.o
+./release\moc_IterativeControlMainWindow.o
 );
